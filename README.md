@@ -85,7 +85,7 @@ All copy lives in data files. You never need to touch layout code to change text
 | YouTube videos | `videos` array in `src/config/site.ts` |
 | Main menu (and footer columns) | `src/data/navigation.ts` |
 | Who we help pages | `src/data/audiences.ts` |
-| Blog articles | Markdown files in `src/content/blog/` |
+| Blog articles | `.mdx` files in `src/content/blog/` (plan: `BLOG-PLAN.md`) |
 | Events | `src/data/events.ts` |
 | Guides and toolkits | `src/data/guides.ts` (files in `public/guides/`) |
 | Privacy policy and terms | `src/pages/privacy.astro`, `src/pages/terms.astro` |
@@ -121,25 +121,59 @@ Three items stay hidden until you switch them on in `src/config/site.ts`: `showE
 
 Old `/insights/` links redirect to `/resources/` (in `vercel.json` and `.htaccess`).
 
-### Articles
+### Blog
 
-Create `src/content/blog/my-article.md`:
+The content plan for the first 10 posts is in [BLOG-PLAN.md](BLOG-PLAN.md). Posts are `.mdx` files in `src/content/blog/`. Copy the published post as a starting point:
 
-```md
+```mdx
 ---
 title: 'Article title'
-description: 'One or two sentences for cards and search results.'
-date: 2026-11-20
-author: 'Your name'
-authorRole: 'Founder, GCC Enable'
-tags: ['Managers']
-draft: false
+ogTitle: 'Shorter title for the share image (optional)'
+description: 'One or two sentences for cards, search results and social shares.'
+date: 2026-10-20T09:00:00+05:30
+topic: leadership            # a slug from src/data/topics.ts
+tags: ['Managers', 'GCC leadership']
+banner: ../../assets/blog/my-article/banner.png
+bannerAlt: 'Describe the banner image'
+programmes: ['gcc-manager-accelerator']   # recommended at the end
 ---
 
-Article body in Markdown.
+import Cta from '../../components/blog/Cta.astro';
+import Figure from '../../components/blog/Figure.astro';
+import KeyTakeaways from '../../components/blog/KeyTakeaways.astro';
+import Stat from '../../components/blog/Stat.astro';
+
+Opening paragraph (shown larger, as the lead).
+
+<KeyTakeaways items={['…', '…']} />
+
+## First section
+…
+
+---
+
+## Second section
+…
+
+<Cta programme="gcc-manager-accelerator" />
+…
+<Cta />
 ```
 
-It appears on `/resources/blog/` and at `/resources/blog/my-article/`, with reading time, an author box and a CTA. Set `draft: true` to hide it.
+- **Byline:** every post is bylined **GCC Enable Editorial** (the default `author`), shown with the logo mark and an "About GCC Enable Editorial" box. In search results it is marked up as an Organization author.
+- **Building blocks:** `<Cta />` (discovery call), `<Cta programme="slug" />`, `<Cta kind="newsletter" />`, `<KeyTakeaways items={[…]} />`, `<Stat value="72%" label="…" source="…" />`, and `<Figure caption="…">` around an image or diagram component (see `src/components/blog/diagrams/`).
+- **Dividers:** a line with only `---` between sections renders as the branded divider.
+- **Banner:** a 1600×640 PNG in `src/assets/blog/<slug>/`. It is optimised to WebP automatically.
+- **Social share image:** generated automatically for every post at `/og/blog/<slug>.png` (navy, logo, topic, title), and used for LinkedIn, X and WhatsApp previews. Set `ogTitle` if the title is too long.
+- **Scheduling:** a post whose `date` is in the future is hidden (no page, no listing, no sitemap entry) until a build runs on or after that date. Set `draft: true` to hide a post indefinitely.
+
+**Daily publishing.** `.github/workflows/daily-publish.yml` rebuilds and deploys the site to Vercel at 09:05 IST every day, so scheduled posts appear on their date without anyone touching it. One-time setup:
+
+1. In Vercel, go to **Account Settings → Tokens** and create a token (scope: your team, no expiry or a long one).
+2. In GitHub, go to **daviskovil/GCC-Enable → Settings → Secrets and variables → Actions → New repository secret**. Name it `VERCEL_TOKEN` and paste the token.
+3. To test it, open **Actions → Daily publish → Run workflow**.
+
+Until the secret is added, the workflow fails with a clear message and nothing else changes. Posts can still be released by running `npx vercel deploy --prod` on their date.
 
 ---
 
@@ -240,7 +274,7 @@ Search the project for `PLACEHOLDER`, `YOUR_` and `[` to find them all.
 
 **Content**
 
-- [ ] `src/content/blog/sample-what-hq-looks-for.md`: sample article, edit or delete it (the author is `[Founder name]`)
+- [ ] Add the `VERCEL_TOKEN` GitHub secret so scheduled blog posts publish daily (README → Blog)
 - [ ] `src/pages/privacy.astro` and `src/pages/terms.astro`: **have them reviewed by a lawyer**, then fill in `[Date]`, provider names, retention period, grievance officer and jurisdiction, and remove the "for legal review" notice in `src/layouts/LegalLayout.astro`
 
 **Hosting**

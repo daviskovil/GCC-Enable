@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import mdx from '@astrojs/mdx';
 import tailwindcss from '@tailwindcss/vite';
 import { site as siteConfig } from './src/config/site.ts';
 
@@ -18,6 +19,7 @@ export default defineConfig({
   trailingSlash: 'always',
   build: { format: 'directory' },
   integrations: [
+    mdx(),
     sitemap({
       filter: (page) => !hidden.some((h) => page.includes(h)),
     }),

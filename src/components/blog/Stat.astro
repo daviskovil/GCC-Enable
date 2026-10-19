@@ -1,0 +1,19 @@
+---
+/** Pull-out statistic with its source. Only use the sourced industry figures listed in the README. */
+interface Props {
+  value: string;
+  label: string;
+  source: string;
+}
+const { value, label, source } = Astro.props;
+---
+
+<aside class="not-prose my-10 grid gap-4 rounded-[14px] border border-line bg-white p-6 shadow-card sm:grid-cols-[auto_1fr] sm:items-center md:p-7">
+  <p class="font-heading text-5xl font-extrabold text-navy">
+    {value}
+  </p>
+  <div class="sm:border-l-2 sm:border-saffron sm:pl-5">
+    <p class="text-lg font-semibold text-navy">{label}</p>
+    <p class="mt-1 text-xs text-slate">Source: {source}</p>
+  </div>
+</aside>

@@ -1,0 +1,34 @@
+# Rebuilds and deploys the site every morning so scheduled blog posts (future `date`) go live.
+# One-time setup: add a repository secret named VERCEL_TOKEN (Vercel → Account Settings → Tokens).
+name: Daily publish
+
+on:
+  schedule:
+    - cron: '35 3 * * *' # 03:35 UTC = 09:05 IST
+  workflow_dispatch:
+
+concurrency:
+  group: daily-publish
+  cancel-in-progress: false
+
+env:
+  VERCEL_ORG_ID: team_wwrFdf8yGErJflY3TcqIzy8I
+  VERCEL_PROJECT_ID: prj_8M4ofk1eJxaYGextqb5jEDqivGJm
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Check token
+        run: |
+          if [ -z "${{ secrets.VERCEL_TOKEN }}" ]; then
+            echo "::error::Add a VERCEL_TOKEN repository secret to enable daily publishing."
+            exit 1
+          fi
+      - run: npx vercel@latest pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+      - run: npx vercel@latest build --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - run: npx vercel@latest deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}

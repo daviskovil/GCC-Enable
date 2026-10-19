@@ -1,0 +1,25 @@
+---
+/** "Key takeaways" box. Use: <KeyTakeaways items={['…', '…']} /> */
+import Icon from '../Icon.astro';
+interface Props {
+  items: string[];
+  title?: string;
+}
+const { items, title = 'Key takeaways' } = Astro.props;
+---
+
+<aside class="not-prose my-10 rounded-[14px] border border-line border-l-4 border-l-saffron bg-mist p-6 md:p-7" aria-label={title}>
+  <p class="flex items-center gap-2 font-heading text-lg font-extrabold text-navy">
+    <Icon name="list-checks" size={22} class="text-teal" />{title}
+  </p>
+  <ul class="mt-4 space-y-3">
+    {
+      items.map((item) => (
+        <li class="flex gap-3 text-base text-ink">
+          <Icon name="check" size={20} strokeWidth={2.5} class="mt-0.5 shrink-0 text-teal" />
+          <span>{item}</span>
+        </li>
+      ))
+    }
+  </ul>
+</aside>

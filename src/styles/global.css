@@ -291,3 +291,40 @@
 [data-form-status][data-state='success'] {
   font-weight: 600;
 }
+
+/* Article extras */
+.prose-gcc .not-prose ul {
+  list-style: none;
+  padding-left: 0;
+}
+.prose-gcc .not-prose li + li {
+  margin-top: 0;
+}
+.prose-gcc .not-prose a {
+  text-decoration: none;
+}
+.prose-gcc .not-prose ul.space-y-3 > li + li {
+  margin-top: 0.75rem;
+}
+/* Section divider: thin rule with the brand mark in the middle (Markdown "---") */
+.prose-gcc hr {
+  border: 0;
+  height: 28px;
+  margin: 3.25rem 0;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230F2A4A'/%3E%3Cpath d='M13.4 13.8H86.2V86.2H72.5V37.3L23.2 86.2 13.4 76.6 62.7 27.5H13.4Z' fill='%23fff'/%3E%3Ccircle cx='83.3' cy='14.6' r='9.9' fill='%23F5A623'/%3E%3C/svg%3E"),
+    linear-gradient(90deg, transparent, #cbd2dc 15%, #cbd2dc 44%, transparent 44%, transparent 56%, #cbd2dc 56%, #cbd2dc 85%, transparent);
+  background-repeat: no-repeat;
+  background-position: center, center;
+  background-size:
+    22px 22px,
+    100% 1px;
+}
+.prose-gcc h2 {
+  scroll-margin-top: 6rem;
+}
+.prose-gcc > p:first-of-type {
+  font-size: 1.2em;
+  line-height: 1.6;
+  color: var(--navy);
+}

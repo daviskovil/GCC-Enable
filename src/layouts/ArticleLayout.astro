@@ -1,85 +1,197 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from './BaseLayout.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import Icon from '../components/Icon.astro';
 import LogoMark from '../components/LogoMark.astro';
+import ProgrammeCard from '../components/ProgrammeCard.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import NewsletterForm from '../components/NewsletterForm.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { site } from '../config/site';
+import { getTopic, type TopicSlug } from '../data/topics';
+import { getProgramme, type Programme } from '../data/programmes';
 import { readingTime } from '../utils/readingTime';
+import { getArticles } from '../utils/blog';
 
 interface Props {
   article: CollectionEntry<'blog'>;
 }
 const { article } = Astro.props;
-const { title, description, date, author, authorRole, tags } = article.data;
+const { title, description, date, updated, author, tags, banner, bannerAlt, programmes: progSlugs } = article.data;
+const topic = getTopic(article.data.topic as TopicSlug);
 const minutes = readingTime(article.body ?? '');
-const url = new URL(`/resources/blog/${article.id}/`, site.url).href;
+const path = `/resources/blog/${article.id}/`;
+const url = new URL(path, site.url).href;
+const ogImage = `/og/blog/${article.id}.png`;
+const fmt = (d: Date) => d.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+
+const recommended = progSlugs.map(getProgramme).filter(Boolean) as Programme[];
+const more = (await getArticles()).filter((a) => a.id !== article.id).slice(0, 2);
+
+const share = [
+  { label: 'LinkedIn', icon: 'linkedin', href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}` },
+  { label: 'X', icon: 'brand-x', href: `https://x.com/intent/post?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}` },
+  { label: 'WhatsApp', icon: 'message-circle', href: `https://wa.me/?text=${encodeURIComponent(`${title} ${url}`)}` },
+  { label: 'Email', icon: 'mail', href: `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(url)}` },
+];
 
 const articleLd = {
   '@context': 'https://schema.org',
-  '@type': 'Article',
+  '@type': 'BlogPosting',
   headline: title,
   description,
   datePublished: date.toISOString(),
-  author: { '@type': 'Person', name: author },
+  dateModified: (updated ?? date).toISOString(),
+  author: { '@type': 'Organization', name: author, url: site.url },
   publisher: { '@id': `${site.url}/#organization` },
   mainEntityOfPage: url,
-  image: new URL('/og-image.png', site.url).href,
+  image: new URL(ogImage, site.url).href,
+  articleSection: topic.short,
+  keywords: tags.join(', '),
+  inLanguage: 'en-IN',
 };
 ---
 
-<BaseLayout title={title} description={description} type="article" jsonLd={[articleLd]}>
+<BaseLayout title={title} description={description} type="article" image={ogImage} jsonLd={[articleLd]}>
   <article>
     <header class="bg-dots-light border-b border-line bg-mist">
-      <div class="container-site py-12 md:py-16">
+      <div class="container-site pt-10 pb-12 md:pt-14 md:pb-16">
         <Breadcrumb items={[{ label: 'Resources', href: '/resources/' }, { label: 'Blog', href: '/resources/blog/' }, { label: title }]} />
-        <div class="mx-auto mt-8 max-w-3xl">
-          {
-            tags.length > 0 && (
-              <ul class="flex flex-wrap gap-2">
-                {tags.map((t) => (
-                  <li class="rounded-full border border-teal/40 bg-white px-3 py-1 text-sm font-semibold text-navy">{t}</li>
-                ))}
-              </ul>
-            )
-          }
-          <h1 class="mt-5 text-3xl font-extrabold md:text-5xl">{title}</h1>
-          <p class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-slate">
+        <div class="mx-auto mt-8 max-w-3xl text-center">
+          <a href={`/programmes/#${topic.slug}`} class="eyebrow hover:border-navy">{topic.short}</a>
+          <h1 class="mt-5 text-3xl leading-tight font-extrabold md:text-[2.8rem]">{title}</h1>
+          <p class="mx-auto mt-5 max-w-2xl text-lg text-slate">{description}</p>
+          <div class="mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm text-slate">
+            <span class="flex items-center gap-2 font-semibold text-navy">
+              <LogoMark size={24} class="rounded" />{author}
+            </span>
             <span class="flex items-center gap-1.5">
               <Icon name="calendar" size={16} class="text-teal" />
-              <time datetime={date.toISOString()}>
-                {date.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
-              </time>
+              <time datetime={date.toISOString()}>{fmt(date)}</time>
             </span>
             <span class="flex items-center gap-1.5">
               <Icon name="clock" size={16} class="text-teal" />{minutes} min read
             </span>
-          </p>
+          </div>
         </div>
       </div>
     </header>
 
+    {
+      banner && (
+        <div class="container-site -mt-1 md:-mt-2">
+          <div class="mx-auto max-w-5xl overflow-hidden rounded-b-[18px] shadow-card md:mt-0">
+            <Image
+              src={banner}
+              alt={bannerAlt ?? ''}
+              widths={[640, 1024, 1600]}
+              sizes="(min-width: 1024px) 1024px, 100vw"
+              class="h-auto w-full"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </div>
+        </div>
+      )
+    }
+
     <div class="container-site py-12 md:py-16">
-      <div class="prose-gcc mx-auto max-w-3xl text-lg">
-        <slot />
+      <div class="mx-auto grid max-w-5xl gap-10 lg:grid-cols-[1fr_56px] lg:gap-8">
+        <div class="prose-gcc mx-auto w-full max-w-3xl text-lg">
+          <slot />
+        </div>
+        <aside class="order-first lg:order-last" aria-label="Share this article">
+          <ul class="flex gap-2 lg:sticky lg:top-28 lg:flex-col">
+            <li class="mr-1 self-center text-xs font-bold tracking-widest text-slate uppercase lg:mr-0 lg:mb-1 lg:text-center">Share</li>
+            {
+              share.map((s) => (
+                <li>
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-line text-navy transition-colors hover:border-navy hover:bg-navy hover:text-white"
+                  >
+                    <Icon name={s.icon} size={18} label={`Share on ${s.label}`} />
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </aside>
       </div>
 
-      <aside class="card mx-auto mt-14 flex max-w-3xl gap-5 p-6 md:p-8" aria-label="About the author">
+      {
+        tags.length > 0 && (
+          <ul class="mx-auto mt-12 flex max-w-3xl flex-wrap gap-2" aria-label="Tags">
+            {tags.map((t) => (
+              <li class="rounded-full border border-line bg-white px-3 py-1 text-sm font-medium text-slate">#{t}</li>
+            ))}
+          </ul>
+        )
+      }
+
+      <aside class="card mx-auto mt-10 flex max-w-3xl gap-5 p-6 md:p-8" aria-label="About GCC Enable Editorial">
         <LogoMark size={56} class="shrink-0 rounded-lg" />
         <div>
-          <p class="text-sm font-semibold text-slate">Written by</p>
           <p class="font-heading text-lg font-bold text-navy">{author}</p>
-          {authorRole && <p class="text-sm text-slate">{authorRole}</p>}
-          <p class="mt-2 text-slate">GCC Enable runs training and workshops built only for India’s Global Capability Centres.</p>
+          <p class="mt-1 text-slate">
+            Practical writing for India’s GCC leaders, managers and L&amp;D teams, from the GCC Enable team. Our articles draw on
+            global delivery experience and are reviewed before publishing.
+          </p>
+          <a href="/about/" class="link-arrow mt-3 text-sm">About GCC Enable <Icon name="arrow-right" size={16} /></a>
         </div>
       </aside>
-
-      <p class="mx-auto mt-10 max-w-3xl">
-        <a href="/resources/blog/" class="link-arrow"><Icon name="arrow-left" size={18} /> All articles</a>
-      </p>
     </div>
   </article>
+
+  {
+    recommended.length > 0 && (
+      <section class="section border-t border-line bg-mist" aria-labelledby="rec-heading">
+        <div class="container-site">
+          <h2 id="rec-heading" class="h-accent text-2xl font-extrabold md:text-3xl">
+            Programmes related to this article
+          </h2>
+          <ul class="mt-10 grid gap-6 md:grid-cols-2">
+            {recommended.map((p) => (
+              <li>
+                <ProgrammeCard programme={p} showMeta />
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section" aria-labelledby="nl-heading">
+    <div class="container-site">
+      <div class="card grid items-center gap-8 p-7 md:grid-cols-2 md:p-10">
+        <div>
+          <h2 id="nl-heading" class="text-2xl font-extrabold">Enjoyed this? Get the weekly note.</h2>
+          <p class="mt-2 text-slate">One practical idea for GCC managers and L&amp;D leaders, every week.</p>
+        </div>
+        <NewsletterForm id="article-newsletter" />
+      </div>
+
+      {
+        more.length > 0 && (
+          <div class="mt-16">
+            <h2 class="text-2xl font-extrabold">More from the blog</h2>
+            <ul class="mt-8 grid gap-6 md:grid-cols-2">
+              {more.map((a) => (
+                <li>
+                  <ArticleCard article={a} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+    </div>
+  </section>
 
   <CtaBand />
 </BaseLayout>

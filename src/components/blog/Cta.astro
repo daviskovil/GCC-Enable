@@ -1,0 +1,67 @@
+---
+/**
+ * In-article call to action. Use in .mdx posts:
+ *   <Cta />                                    → discovery call banner
+ *   <Cta programme="gcc-manager-accelerator" /> → programme banner
+ *   <Cta kind="newsletter" />                  → newsletter banner
+ */
+import Icon from '../Icon.astro';
+import { getProgramme } from '../../data/programmes';
+
+interface Props {
+  kind?: 'call' | 'programme' | 'newsletter';
+  programme?: string;
+  title?: string;
+  text?: string;
+}
+const { programme: slug, title, text } = Astro.props;
+const kind = Astro.props.kind ?? (slug ? 'programme' : 'call');
+const p = slug ? getProgramme(slug) : undefined;
+
+const content = {
+  call: {
+    eyebrow: 'Talk to us',
+    title: title ?? 'Want to discuss this for your centre?',
+    text: text ?? 'Book a 30-minute discovery call. We will tell you honestly where we can help and where we cannot.',
+    href: '/contact/',
+    label: 'Book a discovery call',
+    icon: 'calendar-check',
+  },
+  programme: {
+    eyebrow: 'Related programme',
+    title: title ?? p?.title ?? '',
+    text: text ?? p?.summary ?? '',
+    href: p ? `/programmes/${p.slug}/` : '/programmes/',
+    label: 'Explore the programme',
+    icon: p?.icon ?? 'compass',
+  },
+  newsletter: {
+    eyebrow: 'Newsletter',
+    title: title ?? 'Get one practical idea every week',
+    text: text ?? 'The GCC Enable note: a five-minute weekly read for GCC managers and L&D leaders.',
+    href: '/resources/newsletter/',
+    label: 'Subscribe',
+    icon: 'mail',
+  },
+}[kind];
+---
+
+<aside
+  class="not-prose bg-dark-pattern relative my-12 overflow-hidden rounded-[16px] p-7 md:flex md:items-center md:gap-8 md:p-9"
+  aria-label={content.eyebrow}
+>
+  <svg class="pointer-events-none absolute -right-8 -bottom-8 h-40 w-40 opacity-[0.08]" viewBox="0 0 100 100" aria-hidden="true">
+    <path d="M13.4 13.8H86.2V86.2H72.5V37.3L23.2 86.2 13.4 76.6 62.7 27.5H13.4Z" fill="#fff"></path>
+  </svg>
+  <span class="relative hidden h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-white/10 text-saffron md:inline-flex">
+    <Icon name={content.icon} size={28} />
+  </span>
+  <div class="relative flex-1">
+    <p class="text-xs font-bold tracking-widest text-saffron uppercase">{content.eyebrow}</p>
+    <p class="mt-1.5 font-heading text-xl leading-snug font-extrabold text-white md:text-2xl">{content.title}</p>
+    <p class="mt-2 text-base text-white/80">{content.text}</p>
+  </div>
+  <a href={content.href} class="btn btn-primary relative mt-6 shrink-0 md:mt-0">
+    {content.label} <Icon name="arrow-right" size={18} />
+  </a>
+</aside>
