@@ -1,0 +1,88 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import ProgrammeCard from '../../components/ProgrammeCard.astro';
+import CustomWorkshopCard from '../../components/CustomWorkshopCard.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import FormatCards from '../../components/FormatCards.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { programmes, programmeCategories } from '../../data/programmes';
+
+const chips = ['All', ...programmeCategories];
+---
+
+<BaseLayout
+  title="Programmes"
+  description="Training programmes built only for India’s GCCs: AI-Ready Leadership, GenAI for engineering teams, GCC Manager Accelerator, services-to-captive onboarding, stakeholder management and mandate transfer."
+>
+  <PageHero
+    title="Programmes"
+    intro="Six core programmes designed around captive-centre realities, each tailored to your mandate after a short diagnostic. Need something specific? We design custom workshops too."
+    breadcrumb={[{ label: 'Programmes' }]}
+  />
+
+  <section class="section" aria-labelledby="catalogue-heading">
+    <div class="container-site">
+      <h2 id="catalogue-heading" class="sr-only">All programmes</h2>
+      <div class="flex flex-wrap gap-2" role="group" aria-label="Filter programmes by focus area">
+        {
+          chips.map((c, i) => (
+            <button
+              type="button"
+              class="rounded-full border border-line px-4 py-2 text-sm font-semibold text-navy transition-colors hover:border-navy aria-pressed:border-navy aria-pressed:bg-navy aria-pressed:text-white"
+              aria-pressed={i === 0 ? 'true' : 'false'}
+              data-filter={c}
+            >
+              {c}
+            </button>
+          ))
+        }
+      </div>
+      <p class="sr-only" role="status" aria-live="polite" data-filter-status></p>
+
+      <ul class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3" data-filter-grid>
+        {
+          programmes.map((p) => (
+            <li data-categories={p.categories.join(',')}>
+              <ProgrammeCard programme={p} showMeta />
+            </li>
+          ))
+        }
+        <li data-categories="all"><CustomWorkshopCard /></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section bg-mist" aria-labelledby="formats-heading">
+    <div class="container-site">
+      <SectionHeading
+        id="formats-heading"
+        title="Formats"
+        intro="Every programme can be delivered in the format that fits your centre: on-site in Pune and across India, virtual or blended."
+      />
+      <div class="mt-12"><FormatCards /></div>
+    </div>
+  </section>
+
+  <CtaBand title="Not sure which programme fits?" text="Tell us what HQ is asking of your centre. We will suggest a starting point, even if it is not one of ours." />
+</BaseLayout>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const items = document.querySelectorAll<HTMLLIElement>('[data-filter-grid] > li');
+  const status = document.querySelector<HTMLElement>('[data-filter-status]');
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const f = btn.dataset.filter!;
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      let shown = 0;
+      items.forEach((li) => {
+        const cats = li.dataset.categories || '';
+        const show = f === 'All' || cats === 'all' || cats.split(',').includes(f);
+        li.hidden = !show;
+        if (show) shown++;
+      });
+      if (status) status.textContent = `Showing ${shown} programmes`;
+    });
+  });
+</script>

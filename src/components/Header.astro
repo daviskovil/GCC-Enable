@@ -1,0 +1,267 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { programmes, customWorkshop } from '../data/programmes';
+import { site } from '../config/site';
+
+const path = Astro.url.pathname;
+const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+
+const links = [
+  { label: 'How we work', href: '/how-we-work/' },
+  { label: 'About', href: '/about/' },
+  { label: 'Insights', href: '/insights/' },
+  { label: 'Contact', href: '/contact/' },
+];
+---
+
+<header id="site-header" class="sticky top-0 z-50 border-b border-transparent bg-white transition-shadow duration-300">
+  <div class="container-site flex h-[76px] items-center justify-between gap-6">
+    <Logo />
+
+    <nav aria-label="Main" class="hidden lg:block">
+      <ul class="flex items-center gap-1">
+        <li class="relative" data-dropdown>
+          <button
+            type="button"
+            class:list={[
+              'inline-flex items-center gap-1 rounded-md px-3 py-2 font-semibold text-navy hover:bg-mist',
+              isActive('/programmes/') && 'underline decoration-saffron decoration-2 underline-offset-8',
+            ]}
+            aria-expanded="false"
+            aria-controls="programmes-menu"
+            data-dropdown-trigger
+          >
+            Programmes
+            <Icon name="chevron-down" size={16} class="transition-transform duration-200" />
+          </button>
+          <div
+            id="programmes-menu"
+            class="absolute top-full left-1/2 hidden w-[620px] -translate-x-1/2 pt-3"
+            data-dropdown-panel
+          >
+            <div class="card p-3">
+              <ul class="grid grid-cols-2 gap-1">
+                {
+                  programmes.map((p) => (
+                    <li>
+                      <a
+                        href={`/programmes/${p.slug}/`}
+                        class="group flex gap-3 rounded-lg p-3 hover:bg-mist"
+                      >
+                        <span class="icon-tile h-10 w-10">
+                          <Icon name={p.icon} size={20} />
+                        </span>
+                        <span>
+                          <span class="block font-heading leading-snug font-bold text-navy">{p.title}</span>
+                          <span class="block text-sm leading-snug text-slate">{p.audienceShort}</span>
+                        </span>
+                      </a>
+                    </li>
+                  ))
+                }
+              </ul>
+              <div class="mt-2 flex items-center justify-between gap-4 rounded-lg bg-mist px-4 py-3 text-sm">
+                <span class="text-slate">{customWorkshop.summary}</span>
+                <a href="/programmes/" class="link-arrow shrink-0">
+                  All programmes <Icon name="arrow-right" size={16} />
+                </a>
+              </div>
+            </div>
+          </div>
+        </li>
+        {
+          links.map((l) => (
+            <li>
+              <a
+                href={l.href}
+                class:list={[
+                  'rounded-md px-3 py-2 font-semibold text-navy hover:bg-mist',
+                  isActive(l.href) && 'underline decoration-saffron decoration-2 underline-offset-8',
+                ]}
+                aria-current={isActive(l.href) ? 'page' : undefined}
+              >
+                {l.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <a href="/contact/" class="btn btn-primary hidden sm:inline-flex">Book a discovery call</a>
+      <button
+        type="button"
+        class="inline-flex h-11 w-11 items-center justify-center rounded-lg text-navy hover:bg-mist lg:hidden"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        data-menu-open
+      >
+        <Icon name="menu" size={26} />
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div
+    id="mobile-menu"
+    class="fixed inset-0 z-50 hidden lg:hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Menu"
+    data-menu
+  >
+    <div class="absolute inset-0 bg-navy/40 opacity-0 transition-opacity duration-300" data-menu-backdrop></div>
+    <div
+      class="absolute inset-y-0 right-0 flex w-full max-w-md translate-x-full flex-col overflow-y-auto bg-white transition-transform duration-300"
+      data-menu-panel
+    >
+      <div class="flex h-[76px] shrink-0 items-center justify-between border-b border-line px-4 sm:px-6">
+        <Logo />
+        <button
+          type="button"
+          class="inline-flex h-11 w-11 items-center justify-center rounded-lg text-navy hover:bg-mist"
+          aria-label="Close menu"
+          data-menu-close
+        >
+          <Icon name="x" size={26} />
+        </button>
+      </div>
+      <nav aria-label="Mobile" class="flex-1 px-4 py-6 sm:px-6">
+        <p class="mb-2 text-sm font-semibold tracking-wide text-slate uppercase">Programmes</p>
+        <ul class="mb-6 space-y-1">
+          {
+            programmes.map((p) => (
+              <li>
+                <a href={`/programmes/${p.slug}/`} class="flex items-center gap-3 rounded-lg px-2 py-2.5 font-semibold text-navy hover:bg-mist">
+                  <Icon name={p.icon} size={20} class="shrink-0 text-teal" />
+                  {p.title}
+                </a>
+              </li>
+            ))
+          }
+          <li>
+            <a href="/programmes/" class="flex items-center gap-3 rounded-lg px-2 py-2.5 font-semibold text-navy hover:bg-mist">
+              <Icon name="arrow-right" size={20} class="text-teal" />
+              All programmes
+            </a>
+          </li>
+        </ul>
+        <ul class="space-y-1 border-t border-line pt-6">
+          {
+            links.map((l) => (
+              <li>
+                <a href={l.href} class="block rounded-lg px-2 py-3 font-heading text-lg font-bold text-navy hover:bg-mist">
+                  {l.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+      <div class="border-t border-line p-4 sm:p-6">
+        <a href="/contact/" class="btn btn-primary w-full">Book a discovery call</a>
+        <a href={`mailto:${site.email}`} class="mt-4 flex items-center justify-center gap-2 text-sm font-semibold text-navy">
+          <Icon name="mail" size={16} class="text-teal" />{site.email}
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  const header = document.getElementById('site-header')!;
+  const onScroll = () => {
+    const scrolled = window.scrollY > 8;
+    header.classList.toggle('shadow-header', scrolled);
+    header.classList.toggle('border-line', scrolled);
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // Desktop dropdown: hover on pointer devices, click and keyboard everywhere
+  document.querySelectorAll<HTMLElement>('[data-dropdown]').forEach((dd) => {
+    const trigger = dd.querySelector<HTMLButtonElement>('[data-dropdown-trigger]')!;
+    const panel = dd.querySelector<HTMLElement>('[data-dropdown-panel]')!;
+    const chevron = trigger.querySelector('svg');
+    let closeTimer: number | undefined;
+
+    const setOpen = (open: boolean) => {
+      trigger.setAttribute('aria-expanded', String(open));
+      panel.classList.toggle('hidden', !open);
+      chevron?.classList.toggle('rotate-180', open);
+    };
+    // Mouse users already opened it on hover, so a click keeps it open; keyboard and touch toggle
+    trigger.addEventListener('click', (e) => {
+      const isMouse = (e as PointerEvent).pointerType === 'mouse';
+      setOpen(isMouse ? true : trigger.getAttribute('aria-expanded') !== 'true');
+    });
+    dd.addEventListener('mouseenter', () => {
+      window.clearTimeout(closeTimer);
+      setOpen(true);
+    });
+    dd.addEventListener('mouseleave', () => {
+      closeTimer = window.setTimeout(() => setOpen(false), 150);
+    });
+    dd.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        setOpen(false);
+        trigger.focus();
+      }
+      if (e.key === 'ArrowDown' && document.activeElement === trigger) {
+        e.preventDefault();
+        setOpen(true);
+        panel.querySelector<HTMLAnchorElement>('a')?.focus();
+      }
+    });
+    dd.addEventListener('focusout', (e) => {
+      if (!dd.contains(e.relatedTarget as Node)) setOpen(false);
+    });
+  });
+
+  // Mobile slide-in menu
+  const menu = document.querySelector<HTMLElement>('[data-menu]')!;
+  const panel = menu.querySelector<HTMLElement>('[data-menu-panel]')!;
+  const backdrop = menu.querySelector<HTMLElement>('[data-menu-backdrop]')!;
+  const openBtn = document.querySelector<HTMLButtonElement>('[data-menu-open]')!;
+  const closeBtn = menu.querySelector<HTMLButtonElement>('[data-menu-close]')!;
+
+  const openMenu = () => {
+    menu.classList.remove('hidden');
+    openBtn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => {
+      panel.classList.remove('translate-x-full');
+      backdrop.classList.remove('opacity-0');
+    });
+    closeBtn.focus();
+  };
+  const closeMenu = () => {
+    panel.classList.add('translate-x-full');
+    backdrop.classList.add('opacity-0');
+    openBtn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    window.setTimeout(() => menu.classList.add('hidden'), 300);
+    openBtn.focus();
+  };
+  openBtn.addEventListener('click', openMenu);
+  closeBtn.addEventListener('click', closeMenu);
+  backdrop.addEventListener('click', closeMenu);
+  menu.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+    if (e.key === 'Tab') {
+      const focusables = panel.querySelectorAll<HTMLElement>('a, button');
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  });
+</script>

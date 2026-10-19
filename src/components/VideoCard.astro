@@ -1,0 +1,65 @@
+---
+/** Lite YouTube card: shows a lazy thumbnail; the iframe is created only on click (see scripts/ui.ts). */
+import Icon from './Icon.astro';
+import type { Video } from '../config/site';
+import { site } from '../config/site';
+
+interface Props {
+  video: Video;
+}
+const { video } = Astro.props;
+const placeholder = /^PLACEHOLDER/i.test(video.youtubeId);
+const date = new Date(video.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+---
+
+<article class="card card-hover flex h-full flex-col overflow-hidden">
+  <div class="relative aspect-video bg-navy">
+    {
+      placeholder ? (
+        <a
+          href={site.youtubeChannelUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="bg-dark-pattern absolute inset-0 flex flex-col items-center justify-center gap-3 text-white"
+        >
+          <span class="inline-flex h-14 w-14 items-center justify-center rounded-full bg-white/10">
+            <Icon name="play" size={24} />
+          </span>
+          <span class="rounded-full bg-saffron px-3 py-1 text-xs font-bold text-navy">Episode coming soon</span>
+          <span class="sr-only">Visit the GCC Enable channel</span>
+        </a>
+      ) : (
+        <button
+          type="button"
+          class="group absolute inset-0 h-full w-full"
+          data-yt={video.youtubeId}
+          data-title={video.title}
+          aria-label={`Play video: ${video.title}`}
+        >
+          <img
+            src={`https://i.ytimg.com/vi/${video.youtubeId}/hqdefault.jpg`}
+            alt=""
+            width="480"
+            height="360"
+            loading="lazy"
+            decoding="async"
+            class="h-full w-full object-cover"
+          />
+          <span class="absolute inset-0 flex items-center justify-center bg-navy/25 transition-colors group-hover:bg-navy/40">
+            <span class="inline-flex h-16 w-16 items-center justify-center rounded-full bg-saffron text-navy shadow-card">
+              <Icon name="play" size={26} />
+            </span>
+          </span>
+        </button>
+      )
+    }
+  </div>
+  <div class="flex flex-1 flex-col p-6">
+    <p class="flex items-center gap-1.5 text-sm text-slate">
+      <Icon name="calendar" size={15} class="text-teal" />
+      <time datetime={video.date}>{placeholder ? 'Coming soon' : date}</time>
+    </p>
+    <h3 class="mt-2 text-lg leading-snug font-bold">{video.title}</h3>
+    <p class="mt-2 text-slate">{video.description}</p>
+  </div>
+</article>

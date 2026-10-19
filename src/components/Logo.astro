@@ -1,0 +1,17 @@
+---
+/** Brand logo from the supplied artwork (generated into public/ by `npm run icons`). `inverse` = white text for navy backgrounds. */
+interface Props {
+  inverse?: boolean;
+  class?: string;
+}
+const { inverse = false, class: className = '' } = Astro.props;
+const webp = inverse ? '/logo-white-header.webp' : '/logo-header.webp';
+const png = inverse ? '/logo-white.png' : '/logo.png';
+---
+
+<a href="/" class={`inline-flex shrink-0 items-center ${className}`}>
+  <picture>
+    <source srcset={webp} type="image/webp" />
+    <img src={png} alt="GCC Enable home" width="127" height="44" class="h-11 w-auto" decoding="async" />
+  </picture>
+</a>

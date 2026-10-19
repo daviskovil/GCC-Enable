@@ -1,0 +1,50 @@
+---
+import Icon from './Icon.astro';
+interface Props {
+  items: { q: string; a: string }[];
+  id: string;
+  numbered?: boolean;
+}
+const { items, id, numbered = false } = Astro.props;
+---
+
+<div class="divide-y divide-line overflow-hidden rounded-[14px] border border-line bg-white">
+  {
+    items.map((item, i) => (
+      <div>
+        <h3 class="text-base">
+          <button
+            type="button"
+            class="flex w-full items-center gap-4 px-5 py-5 text-left font-heading text-lg font-bold text-navy hover:bg-mist md:px-6"
+            aria-expanded="false"
+            aria-controls={`${id}-panel-${i}`}
+            id={`${id}-trigger-${i}`}
+            data-accordion-trigger
+          >
+            {numbered && (
+              <span class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-navy font-heading text-sm text-white">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+            )}
+            <span class="flex-1">{item.q}</span>
+            <span class="acc-icon inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-teal/10 text-teal">
+              <Icon name="plus" size={18} />
+            </span>
+          </button>
+        </h3>
+        <div
+          id={`${id}-panel-${i}`}
+          class="accordion-panel"
+          role="region"
+          aria-labelledby={`${id}-trigger-${i}`}
+          data-open="false"
+          inert
+        >
+          <div>
+            <p class:list={['px-5 pb-5 text-slate md:px-6', numbered && 'md:pl-[4.5rem]']}>{item.a}</p>
+          </div>
+        </div>
+      </div>
+    ))
+  }
+</div>

@@ -1,0 +1,27 @@
+---
+/** Hidden unless site.showTestimonials is true. Replace PLACEHOLDER entries in src/data/content.ts first. */
+import Icon from './Icon.astro';
+import SectionHeading from './SectionHeading.astro';
+import { site } from '../config/site';
+import { testimonials } from '../data/content';
+---
+
+{
+  site.showTestimonials && (
+    <section class="section" aria-labelledby="testimonials-heading">
+      <div class="container-site">
+        <SectionHeading id="testimonials-heading" title="What GCC leaders say" center />
+        <ul class="mt-12 grid gap-6 md:grid-cols-3">
+          {testimonials.map((t) => (
+            <li class="card flex flex-col p-7" data-reveal>
+              <Icon name="quote" size={28} class="text-teal" />
+              <blockquote class="mt-4 flex-1 text-lg text-ink">{t.quote}</blockquote>
+              <p class="mt-6 font-heading font-bold text-navy">{t.name}</p>
+              <p class="text-sm text-slate">{t.role}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )
+}

@@ -1,0 +1,214 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import HeroGraphic from '../components/HeroGraphic.astro';
+import OptionalImage from '../components/OptionalImage.astro';
+import StatStrip from '../components/StatStrip.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ProgrammeCard from '../components/ProgrammeCard.astro';
+import CustomWorkshopCard from '../components/CustomWorkshopCard.astro';
+import ProcessSteps from '../components/ProcessSteps.astro';
+import FormatCards from '../components/FormatCards.astro';
+import Testimonials from '../components/Testimonials.astro';
+import ClientLogos from '../components/ClientLogos.astro';
+import VideoCard from '../components/VideoCard.astro';
+import NewsletterForm from '../components/NewsletterForm.astro';
+import Accordion from '../components/Accordion.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { site } from '../config/site';
+import { programmes } from '../data/programmes';
+import { home, faqs } from '../data/content';
+
+const faqLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<BaseLayout
+  description="Training and workshops built only for India’s Global Capability Centres. Leadership, AI readiness, manager development and onboarding programmes from Pune."
+  jsonLd={[faqLd]}
+>
+  <!-- Hero -->
+  <section class="relative overflow-hidden bg-white">
+    <div class="container-site grid items-center gap-12 py-14 md:py-20 lg:grid-cols-[1.05fr_1fr] lg:gap-10 lg:py-24">
+      <div>
+        <p class="eyebrow">{home.hero.tag}</p>
+        <h1 class="mt-6 text-4xl leading-[1.08] font-extrabold sm:text-5xl lg:text-[3.6rem]">
+          Helping GCCs win their <span class="relative whitespace-nowrap"
+            >next mandate.<svg
+              class="absolute -bottom-2 left-0 h-3 w-full"
+              viewBox="0 0 200 12"
+              preserveAspectRatio="none"
+              aria-hidden="true"><path d="M2 9 C 60 2, 140 2, 198 7" fill="none" stroke="#F5A623" stroke-width="4" stroke-linecap="round"></path></svg
+            ></span
+          >
+        </h1>
+        <p class="mt-7 max-w-xl text-lg text-slate md:text-xl">{home.hero.subtitle}</p>
+        <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+          <a href="/contact/" class="btn btn-primary">Book a discovery call <Icon name="arrow-right" size={18} /></a>
+          <a href="/programmes/" class="btn btn-outline">Explore programmes</a>
+        </div>
+        <p class="mt-7 flex items-center gap-2 text-sm font-medium text-slate">
+          <Icon name="map-pin" size={16} class="text-teal" />
+          {home.hero.trust}
+        </p>
+      </div>
+      <div class="mx-auto w-full max-w-[560px]">
+        <OptionalImage name="hero" alt="GCC Enable workshop" class="rounded-[18px] shadow-card" priority>
+          <HeroGraphic />
+        </OptionalImage>
+      </div>
+    </div>
+  </section>
+
+  <StatStrip />
+
+  <ClientLogos />
+
+  <!-- Problem -->
+  <section class="section" aria-labelledby="problem-heading">
+    <div class="container-site grid gap-12 lg:grid-cols-[1fr_1.15fr] lg:gap-16">
+      <div data-reveal>
+        <SectionHeading id="problem-heading" title={home.problem.title} />
+        {home.problem.body.map((p) => <p class="mt-5 text-lg text-slate">{p}</p>)}
+        <a href="/about/" class="link-arrow mt-7">Why we only work with GCCs <Icon name="arrow-right" size={18} /></a>
+      </div>
+      <ul class="grid gap-5">
+        {
+          home.problem.pains.map((pain) => (
+            <li class="card card-hover flex gap-5 p-6" data-reveal>
+              <span class="icon-tile">
+                <Icon name={pain.icon} />
+              </span>
+              <div>
+                <h3 class="text-lg font-bold">{pain.title}</h3>
+                <p class="mt-1.5 text-slate">{pain.body}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Programmes -->
+  <section class="section border-t border-line" aria-labelledby="programmes-heading">
+    <div class="container-site">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <SectionHeading
+          id="programmes-heading"
+          title="Programmes built for GCC realities"
+          intro="Six core programmes, each tailored to your centre’s mandate. Or a workshop designed from scratch."
+        />
+        <a href="/programmes/" class="link-arrow shrink-0">View all programmes <Icon name="arrow-right" size={18} /></a>
+      </div>
+      <ul class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          programmes.map((p) => (
+            <li data-reveal>
+              <ProgrammeCard programme={p} />
+            </li>
+          ))
+        }
+        <li data-reveal><CustomWorkshopCard /></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Why -->
+  <section class="section bg-mist" aria-labelledby="why-heading">
+    <div class="container-site">
+      <SectionHeading id="why-heading" title={home.why.title} intro={home.why.intro} center />
+      <ul class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          home.why.items.map((item) => (
+            <li class="card card-hover p-6" data-reveal>
+              <span class="icon-tile">
+                <Icon name={item.icon} />
+              </span>
+              <h3 class="mt-5 text-lg font-bold">{item.title}</h3>
+              <p class="mt-2 text-slate">{item.body}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- How we work -->
+  <section class="section" aria-labelledby="how-heading">
+    <div class="container-site">
+      <SectionHeading
+        id="how-heading"
+        title="How we work"
+        intro="A simple four-step approach, so every programme is linked to the result your centre needs."
+        center
+      />
+      <div class="mt-14"><ProcessSteps /></div>
+      <p class="mt-12 text-center">
+        <a href="/how-we-work/" class="link-arrow">See how we work in detail <Icon name="arrow-right" size={18} /></a>
+      </p>
+    </div>
+  </section>
+
+  <!-- Formats -->
+  <section class="section bg-mist" aria-labelledby="formats-heading">
+    <div class="container-site">
+      <SectionHeading
+        id="formats-heading"
+        title={home.formatsTitle}
+        intro="On-site in Pune and across India, or virtual. From a single focused workshop to a year-round academy."
+      />
+      <div class="mt-12"><FormatCards /></div>
+    </div>
+  </section>
+
+  <Testimonials />
+
+  <!-- Insights teaser -->
+  <section class="section" aria-labelledby="insights-heading">
+    <div class="container-site">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <SectionHeading id="insights-heading" title={home.insightsTitle} intro={home.insightsIntro} />
+        <a href="/insights/" class="link-arrow shrink-0">All insights <Icon name="arrow-right" size={18} /></a>
+      </div>
+      <ul class="mt-12 grid gap-6 md:grid-cols-3">
+        {
+          site.videos.slice(0, 3).map((v) => (
+            <li data-reveal>
+              <VideoCard video={v} />
+            </li>
+          ))
+        }
+      </ul>
+      <div class="card mt-10 grid items-center gap-8 p-7 md:grid-cols-[1.2fr_1fr] md:p-10" data-reveal>
+        <div>
+          <h3 class="text-2xl font-bold">The GCC Enable note</h3>
+          <p class="mt-2 text-slate">A practical weekly note for GCC managers and L&amp;D leaders. One idea, one tool, five minutes.</p>
+        </div>
+        <NewsletterForm id="home-newsletter" />
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section bg-mist" aria-labelledby="faq-heading">
+    <div class="container-site grid gap-10 lg:grid-cols-[1fr_1.6fr] lg:gap-16">
+      <div>
+        <SectionHeading id="faq-heading" title={home.faqTitle} />
+        <p class="mt-5 text-slate">
+          Something else on your mind? <a href="/contact/" class="link">Ask us directly</a>.
+        </p>
+      </div>
+      <Accordion items={faqs} id="faq" />
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>

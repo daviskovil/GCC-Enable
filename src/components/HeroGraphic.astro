@@ -1,0 +1,85 @@
+---
+/** Abstract hero composition built in SVG: programme cards over a rising-steps graphic. No numbers, no people. */
+---
+
+<svg
+  viewBox="0 0 560 500"
+  class="h-auto w-full"
+  role="img"
+  aria-label="Illustration: programme cards for AI-Ready Leadership and the Manager Accelerator above rising steps"
+>
+  <defs>
+    <pattern id="hg-dots" width="18" height="18" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.4" fill="#0F2A4A" opacity="0.12"></circle>
+    </pattern>
+    <filter id="hg-shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#0F2A4A" flood-opacity="0.12"></feDropShadow>
+    </filter>
+    <linearGradient id="hg-step" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1A3A5F"></stop>
+      <stop offset="1" stop-color="#0F2A4A"></stop>
+    </linearGradient>
+  </defs>
+
+  <!-- backdrop -->
+  <rect x="40" y="30" width="500" height="440" rx="28" fill="#F7F8FA"></rect>
+  <rect x="40" y="30" width="500" height="440" rx="28" fill="url(#hg-dots)"></rect>
+
+  <!-- rising steps -->
+  <g>
+    <rect x="250" y="360" width="62" height="90" rx="8" fill="url(#hg-step)" opacity="0.55"></rect>
+    <rect x="322" y="300" width="62" height="150" rx="8" fill="url(#hg-step)" opacity="0.7"></rect>
+    <rect x="394" y="230" width="62" height="220" rx="8" fill="url(#hg-step)" opacity="0.85"></rect>
+    <rect x="466" y="150" width="62" height="300" rx="8" fill="url(#hg-step)"></rect>
+    <path d="M262 340 L352 278 L424 206 L490 126" fill="none" stroke="#1F8A8A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 10"></path>
+    <path d="M478 124 L497 118 L493 137" fill="none" stroke="#1F8A8A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></path>
+    <circle cx="497" cy="112" r="10" fill="#F5A623"></circle>
+  </g>
+
+  <!-- card: AI-Ready Leadership -->
+  <g filter="url(#hg-shadow)">
+    <rect x="16" y="70" width="300" height="134" rx="16" fill="#FFFFFF"></rect>
+  </g>
+  <rect x="16" y="70" width="300" height="134" rx="16" fill="none" stroke="#E4E7EC"></rect>
+  <rect x="38" y="92" width="44" height="44" rx="11" fill="#1F8A8A" opacity="0.12"></rect>
+  <g transform="translate(48 102)" fill="none" stroke="#1F8A8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"></circle>
+    <path d="m16.24 7.76-1.8 5.4a2 2 0 0 1-1.28 1.28l-5.4 1.8 1.8-5.4a2 2 0 0 1 1.28-1.28z"></path>
+  </g>
+  <text x="96" y="111" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="18" fill="#0F2A4A">AI-Ready Leadership</text>
+  <text x="96" y="132" font-family="Inter, sans-serif" font-size="13" fill="#5B6675">Leadership workshop</text>
+  <rect x="38" y="158" width="256" height="8" rx="4" fill="#E4E7EC"></rect>
+  <rect x="38" y="158" width="180" height="8" rx="4" fill="#1F8A8A"></rect>
+  <text x="38" y="188" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="#5B6675">AI literacy · Role redesign · HQ case</text>
+
+  <!-- card: Manager Accelerator -->
+  <g filter="url(#hg-shadow)">
+    <rect x="70" y="250" width="290" height="150" rx="16" fill="#FFFFFF"></rect>
+  </g>
+  <rect x="70" y="250" width="290" height="150" rx="16" fill="none" stroke="#E4E7EC"></rect>
+  <rect x="92" y="272" width="44" height="44" rx="11" fill="#1F8A8A" opacity="0.12"></rect>
+  <g transform="translate(102 282)" fill="none" stroke="#1F8A8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+    <circle cx="9" cy="7" r="4"></circle>
+    <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+  </g>
+  <text x="150" y="291" font-family="Plus Jakarta Sans, sans-serif" font-weight="800" font-size="18" fill="#0F2A4A">Manager Accelerator</text>
+  <text x="150" y="312" font-family="Inter, sans-serif" font-size="13" fill="#5B6675">Cohort · coaching · project</text>
+  <!-- checklist -->
+  <g font-family="Inter, sans-serif" font-size="13" fill="#1C2430">
+    <circle cx="101" cy="343" r="9" fill="#1F8A8A"></circle>
+    <path d="M97 343 l3 3 l5 -6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+    <text x="118" y="347">Coaching 1:1s</text>
+    <circle cx="101" cy="373" r="9" fill="#1F8A8A"></circle>
+    <path d="M97 373 l3 3 l5 -6" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+    <text x="118" y="377">Decisions without escalating</text>
+  </g>
+
+  <!-- tag: mandate -->
+  <g filter="url(#hg-shadow)">
+    <rect x="330" y="56" width="176" height="46" rx="23" fill="#0F2A4A"></rect>
+  </g>
+  <circle cx="354" cy="79" r="7" fill="#F5A623"></circle>
+  <text x="370" y="84" font-family="Plus Jakarta Sans, sans-serif" font-weight="700" font-size="14" fill="#FFFFFF">Next mandate</text>
+</svg>

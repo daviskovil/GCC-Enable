@@ -1,0 +1,26 @@
+---
+import { stats } from '../data/content';
+const fmt = (n: number, d: number) => n.toLocaleString('en-IN', { minimumFractionDigits: d, maximumFractionDigits: d });
+---
+
+<section class="bg-dark-pattern text-white" aria-labelledby="stats-heading">
+  <div class="container-site py-14 md:py-16">
+    <h2 id="stats-heading" class="sr-only">The GCC talent challenge in numbers</h2>
+    <ul class="grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        stats.map((s) => (
+          <li class="border-l-2 border-saffron/70 pl-5">
+            <p class="font-heading text-4xl font-extrabold text-saffron md:text-5xl">
+              <span data-count={s.value} data-decimals={s.decimals}>
+                {fmt(s.value, s.decimals)}
+              </span>
+              <span class={s.suffix.length > 2 ? 'text-2xl md:text-3xl' : ''}>{s.suffix}</span>
+            </p>
+            <p class="mt-2 font-medium text-white">{s.label}</p>
+            <p class="mt-2 text-xs text-white/70">Source: {s.source}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

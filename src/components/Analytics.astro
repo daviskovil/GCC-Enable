@@ -1,0 +1,63 @@
+---
+/** Loads GA4 only when site.ga4Id is set, and only after the visitor accepts the cookie notice. */
+import { site } from '../config/site';
+const id = site.ga4Id;
+---
+
+{
+  id && (
+    <>
+      <div
+        id="cookie-notice"
+        class="fixed inset-x-4 bottom-4 z-[60] mx-auto hidden max-w-xl rounded-[14px] border border-line bg-white p-5 shadow-card-hover"
+        role="region"
+        aria-label="Cookie notice"
+      >
+        <p class="text-sm text-ink">
+          We use analytics cookies to understand how the site is used. No advertising cookies. See our{' '}
+          <a href="/privacy/" class="link">
+            privacy policy
+          </a>
+          .
+        </p>
+        <div class="mt-4 flex gap-3">
+          <button type="button" class="btn btn-primary px-4 py-2" data-consent="granted">
+            Accept
+          </button>
+          <button type="button" class="btn btn-outline px-4 py-2" data-consent="denied">
+            Decline
+          </button>
+        </div>
+      </div>
+      <script is:inline define:vars={{ id }}>
+        (function () {
+          var KEY = 'gcce-consent';
+          var notice = document.getElementById('cookie-notice');
+          var load = function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.src = 'https://www.googletagmanager.com/gtag/js?id=' + id;
+            document.head.appendChild(s);
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = function () { window.dataLayer.push(arguments); };
+            window.gtag('js', new Date());
+            window.gtag('config', id, { anonymize_ip: true });
+          };
+          var stored = null;
+          try { stored = localStorage.getItem(KEY); } catch (e) {}
+          if (stored === 'granted') return load();
+          if (stored === 'denied') return;
+          notice.classList.remove('hidden');
+          notice.querySelectorAll('[data-consent]').forEach(function (b) {
+            b.addEventListener('click', function () {
+              var v = b.getAttribute('data-consent');
+              try { localStorage.setItem(KEY, v); } catch (e) {}
+              notice.classList.add('hidden');
+              if (v === 'granted') load();
+            });
+          });
+        })();
+      </script>
+    </>
+  )
+}

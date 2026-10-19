@@ -1,0 +1,114 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import VideoCard from '../../components/VideoCard.astro';
+import NewsletterForm from '../../components/NewsletterForm.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { site } from '../../config/site';
+import { readingTime } from '../../utils/readingTime';
+
+const articles = (await getCollection('insights', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+const fmt = (d: Date) => d.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<BaseLayout
+  title="Insights"
+  description="Videos, podcast episodes, articles and a weekly newsletter for GCC leaders, managers and L&D teams in India."
+>
+  <PageHero
+    title="Insights"
+    intro="Practical ideas for running and growing a GCC in India: conversations on our channel, short articles and a weekly note for managers and L&D leaders."
+    breadcrumb={[{ label: 'Insights' }]}
+  />
+
+  <!-- Channel -->
+  <section class="section" aria-labelledby="channel-heading">
+    <div class="container-site">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <SectionHeading
+          id="channel-heading"
+          title="The GCC Enable channel"
+          intro="Short conversations with people who build and run GCCs: mandates, managers, AI and the services-to-captive shift."
+        />
+        <a href={site.youtubeChannelUrl} target="_blank" rel="noopener noreferrer" class="btn btn-navy shrink-0">
+          <Icon name="youtube" size={20} /> Subscribe on YouTube
+        </a>
+      </div>
+      <ul class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {
+          site.videos.map((v) => (
+            <li data-reveal>
+              <VideoCard video={v} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Newsletter -->
+  <section class="section bg-mist" aria-labelledby="newsletter-heading">
+    <div class="container-site">
+      <div class="card grid items-center gap-8 p-7 md:grid-cols-2 md:p-12">
+        <div>
+          <p class="eyebrow">Newsletter</p>
+          <h2 id="newsletter-heading" class="mt-4 text-3xl font-extrabold">The GCC Enable note</h2>
+          <p class="mt-3 text-lg text-slate">A practical weekly note for GCC managers and L&amp;D leaders.</p>
+          <ul class="mt-5 space-y-2 text-slate">
+            <li class="flex gap-2"><Icon name="check" size={20} class="mt-0.5 shrink-0 text-teal" /> One idea you can use that week</li>
+            <li class="flex gap-2"><Icon name="check" size={20} class="mt-0.5 shrink-0 text-teal" /> A tool or template for managers</li>
+            <li class="flex gap-2"><Icon name="check" size={20} class="mt-0.5 shrink-0 text-teal" /> Five minutes to read</li>
+          </ul>
+        </div>
+        <NewsletterForm id="insights-newsletter" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Articles -->
+  <section class="section" aria-labelledby="articles-heading">
+    <div class="container-site">
+      <SectionHeading id="articles-heading" title="Articles" />
+      {
+        articles.length === 0 ? (
+          <p class="mt-8 text-slate">New articles are on the way.</p>
+        ) : (
+          <ul class="mt-10 grid gap-6 md:grid-cols-2">
+            {articles.map((a) => (
+              <li>
+                <article class="card card-hover group relative flex h-full flex-col p-7" data-reveal>
+                  <p class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-slate">
+                    <span class="flex items-center gap-1.5">
+                      <Icon name="calendar" size={15} class="text-teal" />
+                      <time datetime={a.data.date.toISOString()}>{fmt(a.data.date)}</time>
+                    </span>
+                    <span class="flex items-center gap-1.5">
+                      <Icon name="clock" size={15} class="text-teal" />
+                      {readingTime(a.body ?? '')} min read
+                    </span>
+                  </p>
+                  <h3 class="mt-3 text-xl leading-snug font-bold">
+                    <a href={`/insights/${a.id}/`} class="after:absolute after:inset-0 after:rounded-[14px] after:content-['']">
+                      {a.data.title}
+                    </a>
+                  </h3>
+                  <p class="mt-2 flex-1 text-slate">{a.data.description}</p>
+                  <span class="link-arrow mt-5" aria-hidden="true">
+                    Read article <Icon name="arrow-right" size={18} />
+                  </span>
+                </article>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>

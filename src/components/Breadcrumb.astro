@@ -1,0 +1,39 @@
+---
+import Icon from './Icon.astro';
+import { site } from '../config/site';
+interface Props {
+  items: { label: string; href?: string }[];
+}
+const { items } = Astro.props;
+const all = [{ label: 'Home', href: '/' }, ...items];
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: all.map((it, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: it.label,
+    ...(it.href ? { item: new URL(it.href, site.url).href } : {}),
+  })),
+};
+---
+
+<nav aria-label="Breadcrumb" class="text-sm">
+  <ol class="flex flex-wrap items-center gap-1.5 text-slate">
+    {
+      all.map((it, i) => (
+        <li class="flex items-center gap-1.5">
+          {i > 0 && <Icon name="chevron-right" size={14} />}
+          {it.href && i < all.length - 1 ? (
+            <a href={it.href} class="font-medium text-navy hover:underline">
+              {it.label}
+            </a>
+          ) : (
+            <span aria-current="page">{it.label}</span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+<script type="application/ld+json" set:html={JSON.stringify(ld)} />

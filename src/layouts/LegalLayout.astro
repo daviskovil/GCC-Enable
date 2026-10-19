@@ -1,0 +1,28 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+interface Props {
+  title: string;
+  description: string;
+  updated: string;
+}
+const { title, description, updated } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <PageHero title={title} breadcrumb={[{ label: title }]}>
+    <p class="mt-5 text-slate">Last updated: {updated}</p>
+  </PageHero>
+  <section class="container-site py-12 md:py-16">
+    <div class="mx-auto max-w-3xl">
+      <p class="mb-10 flex gap-3 rounded-xl border border-saffron bg-mist p-4 text-sm text-ink">
+        <Icon name="circle-alert" size={20} class="mt-0.5 shrink-0 text-navy" />
+        <span><strong class="text-navy">[PLACEHOLDER: for legal review]</strong> This is template text. Have it reviewed by a qualified lawyer and update the bracketed details before launch.</span>
+      </p>
+      <div class="prose-gcc">
+        <slot />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import LogoMark from '../components/LogoMark.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import OptionalImage from '../components/OptionalImage.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { about, faculty, puneStat } from '../data/content';
+import { site } from '../config/site';
+---
+
+<BaseLayout
+  title="About"
+  description="Why GCC Enable exists: India’s GCCs are moving from execution to ownership, and training has not caught up. A training company built only for GCCs, based in Pune."
+>
+  <PageHero title="About GCC Enable" intro={about.intro} breadcrumb={[{ label: 'About' }]} />
+
+  <section class="section" aria-labelledby="story-heading">
+    <div class="container-site grid items-center gap-12 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
+      <div data-reveal>
+        <SectionHeading id="story-heading" title="Why we exist" />
+        {about.story.map((p) => <p class="mt-5 text-lg text-slate">{p}</p>)}
+        <p class="mt-6 text-xs text-slate">Pune GCC figure: {puneStat.value} {puneStat.label}. Source: {puneStat.source}.</p>
+      </div>
+      <div data-reveal>
+        <OptionalImage name="about" alt="GCC Enable team at work" class="w-full rounded-[18px] shadow-card">
+          <div class="bg-dark-pattern relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-[18px]">
+            <LogoMark size={140} inverse />
+            <span class="absolute bottom-6 left-6 rounded-full bg-white/10 px-4 py-1.5 text-sm font-semibold text-white">
+              {site.shortTagline}
+            </span>
+          </div>
+        </OptionalImage>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-mist py-16 md:py-20" aria-labelledby="mission-heading">
+    <div class="container-site text-center">
+      <h2 id="mission-heading" class="text-sm font-bold tracking-widest text-slate uppercase">Our mission</h2>
+      <p class="mx-auto mt-5 max-w-3xl font-heading text-2xl leading-snug font-extrabold text-navy md:text-4xl">
+        {about.mission}
+      </p>
+    </div>
+  </section>
+
+  <!-- Founder -->
+  <section class="section" aria-labelledby="founder-heading">
+    <div class="container-site">
+      <div class="card grid items-center gap-8 p-7 md:grid-cols-[220px_1fr] md:p-10">
+        <OptionalImage name="founder" alt={about.founder.name} class="aspect-square w-full rounded-[14px] object-cover" widths={[220, 440]} sizes="220px">
+          <div class="flex aspect-square w-full max-w-[220px] items-center justify-center rounded-[14px] border-2 border-dashed border-line bg-mist text-slate">
+            <span class="flex flex-col items-center gap-2 text-sm">
+              <Icon name="user-round" size={40} />
+              [Founder photo]
+            </span>
+          </div>
+        </OptionalImage>
+        <div>
+          <p class="text-sm font-bold tracking-widest text-slate uppercase">{about.founder.role}</p>
+          <h2 id="founder-heading" class="mt-2 text-3xl font-extrabold">{about.founder.name}</h2>
+          <p class="mt-4 text-lg text-slate">{about.founder.bio}</p>
+          {
+            about.founder.linkedin && (
+              <a href={about.founder.linkedin} class="link-arrow mt-5" target="_blank" rel="noopener noreferrer">
+                <Icon name="linkedin" size={18} /> Connect on LinkedIn
+              </a>
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section bg-mist" aria-labelledby="approach-heading">
+    <div class="container-site">
+      <SectionHeading id="approach-heading" title="Our approach" center />
+      <ul class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          about.values.map((v) => (
+            <li class="card card-hover p-6" data-reveal>
+              <span class="icon-tile">
+                <Icon name={v.icon} />
+              </span>
+              <h3 class="mt-5 text-lg font-bold">{v.title}</h3>
+              <p class="mt-2 text-slate">{v.body}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  {
+    site.showFacultySection && (
+      <section class="section" aria-labelledby="faculty-heading">
+        <div class="container-site">
+          <SectionHeading id="faculty-heading" title="Faculty and partners" />
+          <ul class="mt-10 grid gap-6 md:grid-cols-3">
+            {faculty.map((f) => (
+              <li class="card p-6">
+                <h3 class="text-lg font-bold">{f.name}</h3>
+                <p class="text-sm font-semibold text-slate">{f.role}</p>
+                <p class="mt-3 text-slate">{f.bio}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  <CtaBand />
+</BaseLayout>

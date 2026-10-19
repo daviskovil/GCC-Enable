@@ -1,0 +1,49 @@
+---
+import LegalLayout from '../layouts/LegalLayout.astro';
+import { site } from '../config/site';
+---
+
+<LegalLayout title="Privacy policy" description="How GCC Enable collects, uses and protects personal data." updated="[Date]">
+  <p>
+    This policy explains how {site.legalEntity} (“GCC Enable”, “we”, “us”) collects and uses personal data when you visit
+    {' '}{site.domain} or contact us. We aim to follow India’s Digital Personal Data Protection Act, 2023 and other applicable laws.
+  </p>
+
+  <h2>What we collect</h2>
+  <ul>
+    <li><strong>Details you give us</strong> through the contact or newsletter forms: name, work email, company, role, city, team size, areas of interest and your message.</li>
+    <li><strong>Usage data</strong>, only if analytics is enabled and you accept the cookie notice: pages visited, approximate location, device and browser type.</li>
+  </ul>
+
+  <h2>How we use it</h2>
+  <ul>
+    <li>To reply to your enquiry and arrange discovery calls.</li>
+    <li>To send our newsletter, if you subscribe. You can unsubscribe at any time.</li>
+    <li>To understand how the site is used and improve it (analytics, with consent).</li>
+  </ul>
+  <p>We do not sell your data, and we do not use it for advertising.</p>
+
+  <h2>Who we share it with</h2>
+  <p>
+    We use a small number of service providers to run the site: [hosting provider: Hostinger], [form provider: Web3Forms],
+    [newsletter provider], and [Google Analytics, if enabled]. They process data on our behalf under their own terms.
+  </p>
+
+  <h2>How long we keep it</h2>
+  <p>We keep enquiry details for up to [24 months] after our last contact, unless we start working together or the law requires longer.</p>
+
+  <h2>Your rights</h2>
+  <p>
+    You can ask to access, correct or delete your personal data, or withdraw consent, by emailing
+    <a href={`mailto:${site.email}`}>{site.email}</a>. We will respond within [30 days].
+  </p>
+
+  <h2>Cookies</h2>
+  <p>The site does not set cookies by default. If analytics is enabled, cookies are set only after you click “Accept” on the cookie notice.</p>
+
+  <h2>Contact</h2>
+  <p>
+    [Grievance officer name], {site.legalEntity}, {site.location.display}.
+    Email: <a href={`mailto:${site.email}`}>{site.email}</a>.
+  </p>
+</LegalLayout>

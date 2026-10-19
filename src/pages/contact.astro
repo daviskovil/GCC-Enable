@@ -1,0 +1,182 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../config/site';
+import { programmes, customWorkshop } from '../data/programmes';
+import { cities, teamSizes } from '../data/content';
+
+const interests = [...programmes.map((p) => p.title), customWorkshop.title];
+---
+
+<BaseLayout
+  title="Contact"
+  description="Book a discovery call with GCC Enable. Tell us about your centre and what you are trying to achieve. We reply within one working day."
+>
+  <section class="bg-dots-light bg-mist">
+    <div class="container-site py-12 md:py-20">
+      <Breadcrumb items={[{ label: 'Contact' }]} />
+      <div class="mt-8 grid gap-10 lg:grid-cols-[1fr_1.35fr] lg:gap-14">
+        <!-- Left -->
+        <div>
+          <h1 class="h-accent text-4xl font-extrabold md:text-5xl">Book a discovery call</h1>
+          <p class="mt-5 text-lg text-slate">
+            Tell us about your centre and what you’re trying to achieve. We’ll reply within one working day.
+          </p>
+          <ul class="mt-9 space-y-5">
+            <li class="flex gap-4">
+              <span class="icon-tile bg-white"><Icon name="mail" /></span>
+              <div>
+                <p class="text-sm font-semibold text-slate">Email</p>
+                <a href={`mailto:${site.email}`} class="link">{site.email}</a>
+              </div>
+            </li>
+            {
+              site.phone && (
+                <li class="flex gap-4">
+                  <span class="icon-tile bg-white">
+                    <Icon name="phone" />
+                  </span>
+                  <div>
+                    <p class="text-sm font-semibold text-slate">Phone</p>
+                    <a href={`tel:${site.phone.replace(/\s/g, '')}`} class="link">
+                      {site.phone}
+                    </a>
+                  </div>
+                </li>
+              )
+            }
+            {
+              site.social.linkedin && (
+                <li class="flex gap-4">
+                  <span class="icon-tile bg-white">
+                    <Icon name="linkedin" size={22} />
+                  </span>
+                  <div>
+                    <p class="text-sm font-semibold text-slate">LinkedIn</p>
+                    <a href={site.social.linkedin} target="_blank" rel="noopener noreferrer" class="link">
+                      Follow GCC Enable
+                    </a>
+                  </div>
+                </li>
+              )
+            }
+            <li class="flex gap-4">
+              <span class="icon-tile bg-white"><Icon name="map-pin" /></span>
+              <div>
+                <p class="text-sm font-semibold text-slate">Location</p>
+                <p class="font-semibold text-navy">{site.location.display}</p>
+                <p class="text-sm text-slate">Serving GCCs across India</p>
+              </div>
+            </li>
+          </ul>
+          {
+            site.bookingUrl && (
+              <a href={site.bookingUrl} target="_blank" rel="noopener noreferrer" class="btn btn-navy mt-9">
+                <Icon name="calendar-check" size={18} /> Pick a time in our calendar
+              </a>
+            )
+          }
+        </div>
+
+        <!-- Form -->
+        <div class="card p-6 md:p-9">
+          <form data-form="contact" novalidate class="grid gap-5 sm:grid-cols-2" aria-describedby="form-note">
+            <input type="hidden" name="subject" value="New discovery call request: GCC Enable website" />
+            <input type="hidden" name="form_type" value="Contact" />
+            <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+            <div>
+              <label for="name" class="field-label">Name <span aria-hidden="true">*</span></label>
+              <input id="name" name="name" type="text" autocomplete="name" required class="field" aria-describedby="name-error" data-error="Please enter your name." />
+              <p id="name-error" class="field-error" hidden></p>
+            </div>
+            <div>
+              <label for="email" class="field-label">Work email <span aria-hidden="true">*</span></label>
+              <input id="email" name="email" type="email" autocomplete="email" required class="field" aria-describedby="email-error" data-error="Please enter your work email." />
+              <p id="email-error" class="field-error" hidden></p>
+            </div>
+            <div>
+              <label for="company" class="field-label">Company / GCC <span aria-hidden="true">*</span></label>
+              <input id="company" name="company" type="text" autocomplete="organization" required class="field" aria-describedby="company-error" data-error="Please tell us your company." />
+              <p id="company-error" class="field-error" hidden></p>
+            </div>
+            <div>
+              <label for="role" class="field-label">Role</label>
+              <input id="role" name="role" type="text" autocomplete="organization-title" class="field" />
+            </div>
+            <div>
+              <label for="city" class="field-label">City <span aria-hidden="true">*</span></label>
+              <select id="city" name="city" required class="field" aria-describedby="city-error" data-error="Please choose a city.">
+                <option value="">Select a city</option>
+                {cities.map((c) => <option value={c}>{c}</option>)}
+              </select>
+              <p id="city-error" class="field-error" hidden></p>
+            </div>
+            <div>
+              <label for="team_size" class="field-label">Team size</label>
+              <select id="team_size" name="team_size" class="field">
+                <option value="">Select team size</option>
+                {teamSizes.map((t) => <option value={t}>{t}</option>)}
+              </select>
+            </div>
+
+            <fieldset class="sm:col-span-2">
+              <legend class="field-label">Area of interest</legend>
+              <div class="mt-1 grid gap-2.5 sm:grid-cols-2">
+                {
+                  interests.map((label, i) => (
+                    <label class="flex cursor-pointer items-start gap-3 rounded-lg border border-line px-3.5 py-2.5 text-sm hover:border-navy has-[:checked]:border-navy has-[:checked]:bg-mist">
+                      <input type="checkbox" name="interest" value={label} id={`interest-${i}`} class="mt-0.5 h-4 w-4 shrink-0 accent-[#0F2A4A]" />
+                      <span class="font-medium text-navy">{label}</span>
+                    </label>
+                  ))
+                }
+              </div>
+            </fieldset>
+
+            <div class="sm:col-span-2">
+              <label for="message" class="field-label">Message <span aria-hidden="true">*</span></label>
+              <textarea
+                id="message"
+                name="message"
+                rows="5"
+                required
+                class="field"
+                placeholder="What is HQ asking of your centre, and where do you need help?"
+                aria-describedby="message-error"
+                data-error="Please add a short message."></textarea>
+              <p id="message-error" class="field-error" hidden></p>
+            </div>
+
+            <div class="sm:col-span-2">
+              <label class="flex items-start gap-3 text-sm text-ink" for="consent">
+                <input id="consent" name="consent" type="checkbox" value="Yes" required class="mt-0.5 h-4 w-4 shrink-0 accent-[#0F2A4A]" aria-describedby="consent-error" data-error="Please agree so we can reply to you." />
+                <span>
+                  I agree to GCC Enable storing these details to respond to my enquiry, as described in the
+                  <a href="/privacy/" class="link">privacy policy</a>. <span aria-hidden="true">*</span>
+                </span>
+              </label>
+              <p id="consent-error" class="field-error" hidden></p>
+            </div>
+
+            <div class="flex flex-col gap-3 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between">
+              <button type="submit" class="btn btn-primary">Send enquiry <Icon name="send" size={18} /></button>
+              <p id="form-note" class="text-sm text-slate" data-form-status role="status" aria-live="polite">* Required fields</p>
+            </div>
+          </form>
+
+          <div data-form-success hidden tabindex="-1" class="py-10 text-center outline-none">
+            <span class="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-teal text-white">
+              <Icon name="check" size={32} strokeWidth={3} />
+            </span>
+            <h2 class="mt-6 text-2xl font-extrabold">Thank you. We’ve got your message.</h2>
+            <p class="mx-auto mt-3 max-w-md text-slate">
+              We’ll reply within one working day. If it’s urgent, email <a href={`mailto:${site.email}`} class="link">{site.email}</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

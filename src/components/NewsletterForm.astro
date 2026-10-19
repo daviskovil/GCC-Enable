@@ -1,0 +1,46 @@
+---
+import { site, isPlaceholder } from '../config/site';
+import Icon from './Icon.astro';
+
+interface Props {
+  dark?: boolean;
+  compact?: boolean;
+  id: string;
+}
+const { dark = false, compact = false, id } = Astro.props;
+const useEmbed = !isPlaceholder(site.newsletterEmbed);
+---
+
+<form
+  class="w-full"
+  method="post"
+  action={useEmbed ? site.newsletterEmbed : '#'}
+  target={useEmbed ? '_blank' : undefined}
+  data-form={useEmbed ? undefined : 'newsletter'}
+  novalidate={!useEmbed}
+>
+  <input type="hidden" name="subject" value="New newsletter signup: GCC Enable" />
+  <input type="hidden" name="form_type" value="Newsletter" />
+  <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
+  <label for={id} class={`mb-2 block text-sm font-semibold ${dark ? 'text-white' : 'text-navy'} ${compact ? 'sr-only' : ''}`}>
+    Work email
+  </label>
+  <div class={`flex gap-2 ${compact ? 'flex-col sm:flex-row lg:flex-col' : 'flex-col sm:flex-row'}`}>
+    <input
+      id={id}
+      type="email"
+      name="email"
+      required
+      autocomplete="email"
+      placeholder="you@company.com"
+      class={`field flex-1 ${dark ? 'border-white/20 bg-white/10 text-white placeholder:text-white/60' : ''}`}
+    />
+    <button type="submit" class="btn btn-primary shrink-0">
+      Subscribe
+      <Icon name="send" size={16} />
+    </button>
+  </div>
+  <p class={`mt-2 text-sm ${dark ? 'text-white/75' : 'text-slate'}`} data-form-status role="status" aria-live="polite">
+    No spam. Unsubscribe any time.
+  </p>
+</form>

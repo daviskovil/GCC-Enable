@@ -1,0 +1,197 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import Icon from '../../components/Icon.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import Accordion from '../../components/Accordion.astro';
+import ProgrammeCard from '../../components/ProgrammeCard.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { programmes, getProgramme, type Programme } from '../../data/programmes';
+import { site } from '../../config/site';
+
+export function getStaticPaths() {
+  return programmes.map((p) => ({ params: { slug: p.slug }, props: { programme: p } }));
+}
+
+const { programme: p } = Astro.props as { programme: Programme };
+const related = p.related.map(getProgramme).filter(Boolean) as Programme[];
+const url = new URL(`/programmes/${p.slug}/`, site.url).href;
+
+const courseLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Course',
+  name: p.title,
+  description: p.summary,
+  url,
+  inLanguage: 'en-IN',
+  audience: { '@type': 'Audience', audienceType: p.audienceShort },
+  teaches: p.outcomes,
+  provider: { '@type': 'Organization', name: site.name, url: site.url, '@id': `${site.url}/#organization` },
+  hasCourseInstance: p.formats.map((f) => ({
+    '@type': 'CourseInstance',
+    name: f.name,
+    description: f.detail,
+    courseMode: ['Onsite', 'Online', 'Blended'],
+    location: { '@type': 'Place', name: 'On-site at your centre in India, or virtual' },
+  })),
+};
+---
+
+<BaseLayout title={p.title} description={p.summary} jsonLd={[courseLd]}>
+  <!-- Hero -->
+  <section class="bg-dots-light border-b border-line bg-mist">
+    <div class="container-site py-12 md:py-20">
+      <Breadcrumb items={[{ label: 'Programmes', href: '/programmes/' }, { label: p.title }]} />
+      <div class="mt-8 grid items-start gap-10 lg:grid-cols-[1.5fr_1fr]">
+        <div>
+          <span class="icon-tile h-14 w-14 bg-white shadow-card"><Icon name={p.icon} size={28} /></span>
+          <h1 class="mt-6 text-4xl font-extrabold md:text-5xl">{p.title}</h1>
+          <p class="mt-5 max-w-2xl text-lg text-slate md:text-xl">{p.summary}</p>
+          <ul class="mt-7 flex flex-wrap gap-2.5 text-sm">
+            <li class="inline-flex items-center gap-2 rounded-full border border-line bg-white px-3.5 py-1.5 font-medium text-navy">
+              <Icon name="users" size={16} class="text-teal" />{p.audienceShort}
+            </li>
+            <li class="inline-flex items-center gap-2 rounded-full border border-line bg-white px-3.5 py-1.5 font-medium text-navy">
+              <Icon name="clock" size={16} class="text-teal" />{p.durationShort}
+            </li>
+            <li class="inline-flex items-center gap-2 rounded-full border border-line bg-white px-3.5 py-1.5 font-medium text-navy">
+              <Icon name="presentation" size={16} class="text-teal" />{p.formatShort}
+            </li>
+          </ul>
+        </div>
+        <aside class="card p-6 md:p-7" aria-label="Enquire">
+          <h2 class="text-xl font-bold">{p.cta}</h2>
+          <p class="mt-2 text-slate">
+            We tailor every programme after a short diagnostic. Start with a 30-minute discovery call.
+          </p>
+          <a href="/contact/" class="btn btn-primary mt-6 w-full">Book a discovery call</a>
+          <a href={`mailto:${site.email}?subject=${encodeURIComponent(`Enquiry: ${p.title}`)}`} class="link mt-4 inline-block text-sm">
+            Or email {site.email}
+          </a>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- Who + challenge -->
+  <section class="section" aria-labelledby="who-heading">
+    <div class="container-site grid gap-12 lg:grid-cols-2 lg:gap-16">
+      <div data-reveal>
+        <SectionHeading id="who-heading" title="Who it’s for" />
+        <ul class="mt-6 space-y-3">
+          {
+            p.whoFor.map((w) => (
+              <li class="flex gap-3">
+                <Icon name="user-round-check" size={22} class="mt-0.5 shrink-0 text-teal" />
+                <span>{w}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div data-reveal>
+        <SectionHeading title="The challenge" />
+        {p.challenge.map((c) => <p class="mt-5 text-lg text-slate">{c}</p>)}
+      </div>
+    </div>
+  </section>
+
+  <!-- Outcomes -->
+  <section class="section bg-mist" aria-labelledby="outcomes-heading">
+    <div class="container-site">
+      <SectionHeading id="outcomes-heading" title="What participants will be able to do" />
+      <ul class="mt-10 grid gap-5 md:grid-cols-2">
+        {
+          p.outcomes.map((o) => (
+            <li class="card flex gap-4 p-6" data-reveal>
+              <span class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-teal text-white">
+                <Icon name="check" size={18} strokeWidth={3} />
+              </span>
+              <span class="text-lg font-medium text-navy">{o}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- Modules -->
+  <section class="section" aria-labelledby="modules-heading">
+    <div class="container-site grid gap-10 lg:grid-cols-[1fr_1.6fr] lg:gap-16">
+      <div>
+        <SectionHeading
+          id="modules-heading"
+          title="Modules"
+          intro="The core modules. We adjust emphasis, cases and sequencing to your centre after the diagnostic."
+        />
+      </div>
+      <Accordion id="modules" numbered items={p.modules.map((m) => ({ q: m.title, a: m.description }))} />
+    </div>
+  </section>
+
+  <!-- Formats -->
+  <section class="section bg-mist" aria-labelledby="pformats-heading">
+    <div class="container-site">
+      <SectionHeading id="pformats-heading" title="Formats and duration" />
+      <ul class={`mt-10 grid gap-6 ${p.formats.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2'}`}>
+        {
+          p.formats.map((f) => (
+            <li class="card overflow-hidden" data-reveal>
+              <div class="border-b border-line bg-white px-6 py-5">
+                <h3 class="text-xl font-bold">{f.name}</h3>
+                <p class="mt-1 flex items-center gap-2 text-sm font-semibold text-slate">
+                  <Icon name="clock" size={16} class="text-teal" />
+                  {f.duration}
+                </p>
+              </div>
+              <p class="px-6 py-5 text-slate">{f.detail}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="mt-6 text-sm text-slate">
+        Delivered on-site in Pune and across India (Bengaluru, Hyderabad, Chennai, Mumbai, NCR), or virtually.
+      </p>
+    </div>
+  </section>
+
+  <!-- Impact -->
+  <section class="section" aria-labelledby="impact-heading">
+    <div class="container-site">
+      <div class="bg-dark-pattern grid gap-8 rounded-[18px] p-8 md:grid-cols-[1fr_1.4fr] md:p-12">
+        <div>
+          <h2 id="impact-heading" class="h-accent text-3xl font-extrabold text-white">How we measure impact</h2>
+          <p class="mt-4 text-white/80">Measures are agreed with your business sponsor before we start, and reviewed afterwards.</p>
+        </div>
+        <ul class="space-y-4">
+          {
+            p.impact.map((m) => (
+              <li class="flex gap-3 text-white">
+                <Icon name="chart-line" size={22} class="mt-0.5 shrink-0 text-saffron" />
+                <span>{m}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related -->
+  <section class="section border-t border-line pt-16" aria-labelledby="related-heading">
+    <div class="container-site">
+      <SectionHeading id="related-heading" title="Related programmes" />
+      <ul class="mt-10 grid gap-6 md:grid-cols-2">
+        {
+          related.map((r) => (
+            <li>
+              <ProgrammeCard programme={r} showMeta />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand title={`Interested in ${p.title}?`} />
+</BaseLayout>

@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import { programmes } from '../data/programmes';
+---
+
+<BaseLayout title="Page not found" description="The page you were looking for could not be found." noindex>
+  <section class="bg-dots-light bg-mist">
+    <div class="container-site py-20 text-center md:py-28">
+      <p class="font-heading text-7xl font-extrabold text-navy md:text-8xl">404</p>
+      <h1 class="mt-4 text-3xl font-extrabold md:text-4xl">This page has moved, or never existed.</h1>
+      <p class="mx-auto mt-4 max-w-xl text-lg text-slate">Try one of these instead, or head back to the home page.</p>
+      <div class="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+        <a href="/" class="btn btn-primary"><Icon name="house" size={18} /> Back to home</a>
+        <a href="/contact/" class="btn btn-outline">Contact us</a>
+      </div>
+      <ul class="mx-auto mt-12 grid max-w-3xl gap-3 text-left sm:grid-cols-2">
+        {
+          programmes.map((p) => (
+            <li>
+              <a href={`/programmes/${p.slug}/`} class="card flex items-center gap-3 p-4 font-semibold text-navy hover:border-navy">
+                <Icon name={p.icon} size={20} class="text-teal" />
+                {p.title}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

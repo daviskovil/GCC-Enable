@@ -1,0 +1,113 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import NewsletterForm from './NewsletterForm.astro';
+import { site } from '../config/site';
+import { programmes } from '../data/programmes';
+
+const company = [
+  { label: 'How we work', href: '/how-we-work/' },
+  { label: 'About', href: '/about/' },
+  { label: 'Insights', href: '/insights/' },
+  { label: 'Contact', href: '/contact/' },
+];
+const socials = [
+  { key: 'linkedin', label: 'LinkedIn', href: site.social.linkedin },
+  { key: 'youtube', label: 'YouTube', href: site.social.youtube },
+  { key: 'instagram', label: 'Instagram', href: site.social.instagram },
+  { key: 'brand-x', label: 'X', href: site.social.x },
+].filter((s) => s.href);
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-navy text-white">
+  <div class="container-site grid gap-10 py-16 md:grid-cols-2 lg:grid-cols-12">
+    <div class="lg:col-span-4">
+      <Logo inverse />
+      <p class="mt-5 max-w-xs text-white/80">{site.tagline}</p>
+      <p class="mt-2 text-sm font-semibold text-saffron">{site.shortTagline}</p>
+      <p class="mt-5 flex items-center gap-2 text-sm text-white/80">
+        <Icon name="map-pin" size={16} />{site.location.display}
+      </p>
+      <a href={`mailto:${site.email}`} class="mt-2 flex items-center gap-2 text-sm text-white/80 hover:text-white">
+        <Icon name="mail" size={16} />{site.email}
+      </a>
+      {
+        site.phone && (
+          <a href={`tel:${site.phone.replace(/\s/g, '')}`} class="mt-2 flex items-center gap-2 text-sm text-white/80 hover:text-white">
+            <Icon name="phone" size={16} />
+            {site.phone}
+          </a>
+        )
+      }
+    </div>
+
+    <nav aria-label="Footer programmes" class="lg:col-span-3">
+      <h2 class="font-heading text-base font-bold text-white">Programmes</h2>
+      <ul class="mt-4 space-y-2.5 text-sm">
+        {
+          programmes.map((p) => (
+            <li>
+              <a href={`/programmes/${p.slug}/`} class="text-white/80 hover:text-white hover:underline">
+                {p.title}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="grid grid-cols-2 gap-8 lg:col-span-2 lg:grid-cols-1">
+      <nav aria-label="Footer company">
+        <h2 class="font-heading text-base font-bold text-white">Company</h2>
+        <ul class="mt-4 space-y-2.5 text-sm">
+          {
+            company.map((l) => (
+              <li>
+                <a href={l.href} class="text-white/80 hover:text-white hover:underline">
+                  {l.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+      <div>
+        <h2 class="font-heading text-base font-bold text-white">Connect</h2>
+        <ul class="mt-4 flex flex-wrap gap-2">
+          {
+            socials.map((s) => (
+              <li>
+                <a
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 text-white transition-colors hover:bg-saffron hover:text-navy"
+                >
+                  <Icon name={s.key} size={18} label={`${site.name} on ${s.label}`} />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <div class="md:col-span-2 lg:col-span-3">
+      <h2 class="font-heading text-base font-bold text-white">The GCC Enable note</h2>
+      <p class="mt-4 mb-4 text-sm text-white/80">A practical weekly note for GCC managers and L&amp;D leaders.</p>
+      <NewsletterForm dark compact id="footer-newsletter" />
+    </div>
+  </div>
+
+  <div class="border-t border-white/10">
+    <div class="container-site flex flex-col gap-3 py-6 text-sm text-white/75 md:flex-row md:items-center md:justify-between">
+      <p>© {year} GCC Enable. All rights reserved.</p>
+      <ul class="flex flex-wrap items-center gap-x-5 gap-y-2">
+        <li><a href="/privacy/" class="hover:text-white hover:underline">Privacy</a></li>
+        <li><a href="/terms/" class="hover:text-white hover:underline">Terms</a></li>
+        <li>{site.legalEntity}</li>
+      </ul>
+    </div>
+  </div>
+</footer>

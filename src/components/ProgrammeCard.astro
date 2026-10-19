@@ -1,0 +1,32 @@
+---
+import Icon from './Icon.astro';
+import type { Programme } from '../data/programmes';
+interface Props {
+  programme: Programme;
+  headingLevel?: 'h2' | 'h3';
+  showMeta?: boolean;
+}
+const { programme: p, headingLevel: H = 'h3', showMeta = false } = Astro.props;
+---
+
+<article
+  class="card card-hover group relative flex h-full flex-col p-6 md:p-7"
+  data-categories={p.categories.join(',')}
+>
+  <span class="icon-tile"><Icon name={p.icon} /></span>
+  <H class="mt-5 text-xl font-bold">
+    <a href={`/programmes/${p.slug}/`} class="after:absolute after:inset-0 after:rounded-[14px] after:content-['']">
+      {p.title}
+    </a>
+  </H>
+  <p class="mt-2 flex-1 text-slate">{p.summary}</p>
+  {
+    showMeta && (
+      <ul class="mt-5 flex flex-wrap gap-2 text-sm">
+        <li class="rounded-full bg-mist px-3 py-1 font-medium text-navy">{p.audienceShort}</li>
+        <li class="rounded-full bg-mist px-3 py-1 font-medium text-navy">{p.durationShort}</li>
+      </ul>
+    )
+  }
+  <span class="link-arrow mt-5" aria-hidden="true">Learn more <Icon name="arrow-right" size={18} /></span>
+</article>
