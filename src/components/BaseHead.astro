@@ -66,6 +66,7 @@ const allLd = [...baseLd, ...jsonLd];
 <link rel="canonical" href={canonical} />
 {noindex && <meta name="robots" content="noindex, follow" />}
 <meta name="theme-color" content="#0F2A4A" />
+{site.googleSiteVerification && <meta name="google-site-verification" content={site.googleSiteVerification} />}
 
 <link rel="icon" href="/favicon.ico" sizes="any" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

@@ -84,6 +84,9 @@ export const site = {
    */
   newsletterEmbed: 'PLACEHOLDER_NEWSLETTER_FORM_ACTION_URL',
 
+  /** Google Search Console HTML-tag verification code (the content="…" value only). Empty = no tag. */
+  googleSiteVerification: 'htNft8ISIEhyCcdgMGv3yDPJtjV0J0KjJsgA75m3ncM',
+
   /** Google Analytics 4 measurement ID, e.g. G-XXXXXXX. Empty = no analytics and no cookie notice. */
   ga4Id: '',
 
