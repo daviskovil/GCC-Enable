@@ -45,7 +45,7 @@ The site is also deployed on Vercel as the project `gcc-enable` (https://gcc-ena
 
 - Deploy: `npx vercel deploy --prod` (or connect the GitHub repo in the Vercel dashboard for automatic deploys on push)
 - Domains: `gccenable.com` is the primary domain; `www.gccenable.com`, `gccenable.in` and `www.gccenable.in` 301-redirect to it (configured in Vercel → Project → Settings → Domains)
-- DNS (at the domain's DNS provider): `A @ 216.198.79.1` and `A @ 64.29.17.1` for each apex domain (or the single `76.76.21.21`), and `CNAME www cname.vercel-dns.com.`
+- DNS (at the domain's DNS provider): one `A @ 76.76.21.21` record for each apex domain, and `CNAME www cname.vercel-dns.com`
 
 ### `.htaccess`
 
