@@ -75,8 +75,8 @@ export const site = {
 
   /** Contact form handler: 'web3forms' (default) or 'php' (uses public/contact.php on Hostinger). */
   formHandler: 'web3forms' as 'web3forms' | 'php',
-  /** PLACEHOLDER: free access key from https://web3forms.com */
-  web3formsKey: 'YOUR_WEB3FORMS_KEY',
+  /** Web3Forms access key (https://web3forms.com, account: hello@gccenable.com). Public by design. */
+  web3formsKey: 'c4ab7cba-9072-4738-9c5c-68804ad10a2e',
 
   /**
    * Newsletter form action URL (Beehiiv / Substack / Mailchimp embed form action).

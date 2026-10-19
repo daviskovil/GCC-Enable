@@ -261,7 +261,6 @@ Search the project for `PLACEHOLDER`, `YOUR_` and `[` to find them all.
 - [ ] `social`: real LinkedIn, YouTube, Instagram and X URLs (clear any you don't use, and its icon disappears)
 - [ ] `youtubeChannelUrl`
 - [ ] `videos`: replace the three `PLACEHOLDER-*` IDs once episodes are live
-- [ ] `web3formsKey`: replace `YOUR_WEB3FORMS_KEY`
 - [ ] `newsletterEmbed`: replace `PLACEHOLDER_NEWSLETTER_FORM_ACTION_URL`, or leave it and receive signups by email
 - [ ] `bookingUrl`: add a Calendly or Cal.com link to show the calendar button on Contact
 - [ ] `ga4Id`: add if you want analytics
