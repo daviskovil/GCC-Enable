@@ -47,12 +47,12 @@
   ],
   "redirects": [
     {
-      "source": "/insights",
+      "source": "/insights{/}?",
       "destination": "/resources/",
       "permanent": true
     },
     {
-      "source": "/insights/:slug",
+      "source": "/insights/:slug{/}?",
       "destination": "/resources/blog/:slug/",
       "permanent": true
     }
