@@ -4,13 +4,19 @@ import Icon from './Icon.astro';
 import NewsletterForm from './NewsletterForm.astro';
 import { site } from '../config/site';
 import { programmesByTopic } from '../data/programmes';
+import { mainNav } from '../data/navigation';
 
-const company = [
-  { label: 'How we work', href: '/how-we-work/' },
-  { label: 'About', href: '/about/' },
-  { label: 'Insights', href: '/insights/' },
-  { label: 'Contact', href: '/contact/' },
-];
+/** Footer link columns mirror the main menu */
+const columns = mainNav
+  .filter((g) => g.kind !== 'link')
+  .map((g) => ({
+    label: g.label === 'About' ? 'Company' : g.label,
+    links:
+      g.kind === 'mega'
+        ? programmesByTopic.map(({ topic }) => ({ label: topic.short, href: `/programmes/#${topic.slug}` }))
+        : [...g.items!, ...(g.label === 'About' ? mainNav.filter((x) => x.kind === 'link') : [])],
+  }));
+
 const socials = [
   { key: 'linkedin', label: 'LinkedIn', href: site.social.linkedin },
   { key: 'youtube', label: 'YouTube', href: site.social.youtube },
@@ -21,8 +27,8 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="bg-navy text-white">
-  <div class="container-site grid gap-10 py-16 md:grid-cols-2 lg:grid-cols-12">
-    <div class="lg:col-span-4">
+  <div class="container-site grid gap-10 py-16 sm:grid-cols-2 lg:grid-cols-12">
+    <div class="sm:col-span-2 lg:col-span-4">
       <Logo inverse />
       <p class="mt-5 max-w-xs text-white/80">{site.tagline}</p>
       <p class="mt-2 text-sm font-semibold text-saffron">{site.shortTagline}</p>
@@ -40,62 +46,48 @@ const year = new Date().getFullYear();
           </a>
         )
       }
-    </div>
-
-    <nav aria-label="Footer programmes" class="lg:col-span-3">
-      <h2 class="font-heading text-base font-bold text-white">Programmes</h2>
-      <ul class="mt-4 space-y-2.5 text-sm">
+      <ul class="mt-6 flex flex-wrap gap-2">
         {
-          programmesByTopic.map(({ topic }) => (
+          socials.map((s) => (
             <li>
-              <a href={`/programmes/#${topic.slug}`} class="text-white/80 hover:text-white hover:underline">
-                {topic.short}
+              <a
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 text-white transition-colors hover:bg-saffron hover:text-navy"
+              >
+                <Icon name={s.key} size={18} label={`${site.name} on ${s.label}`} />
               </a>
             </li>
           ))
         }
       </ul>
-    </nav>
+    </div>
 
-    <div class="grid grid-cols-2 gap-8 lg:col-span-2 lg:grid-cols-1">
-      <nav aria-label="Footer company">
-        <h2 class="font-heading text-base font-bold text-white">Company</h2>
-        <ul class="mt-4 space-y-2.5 text-sm">
-          {
-            company.map((l) => (
+    {
+      columns.map((col) => (
+        <nav aria-label={`Footer ${col.label}`} class="lg:col-span-2">
+          <h2 class="font-heading text-base font-bold text-white">{col.label}</h2>
+          <ul class="mt-4 space-y-2.5 text-sm">
+            {col.links.map((l) => (
               <li>
                 <a href={l.href} class="text-white/80 hover:text-white hover:underline">
                   {l.label}
                 </a>
               </li>
-            ))
-          }
-        </ul>
-      </nav>
-      <div>
-        <h2 class="font-heading text-base font-bold text-white">Connect</h2>
-        <ul class="mt-4 flex flex-wrap gap-2">
-          {
-            socials.map((s) => (
-              <li>
-                <a
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 text-white transition-colors hover:bg-saffron hover:text-navy"
-                >
-                  <Icon name={s.key} size={18} label={`${site.name} on ${s.label}`} />
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-    </div>
+            ))}
+          </ul>
+        </nav>
+      ))
+    }
+  </div>
 
-    <div class="md:col-span-2 lg:col-span-3">
-      <h2 class="font-heading text-base font-bold text-white">The GCC Enable note</h2>
-      <p class="mt-4 mb-4 text-sm text-white/80">A practical weekly note for GCC managers and L&amp;D leaders.</p>
+  <div class="border-t border-white/10">
+    <div class="container-site grid items-center gap-6 py-8 md:grid-cols-[1fr_1.2fr]">
+      <div>
+        <h2 class="font-heading text-base font-bold text-white">The GCC Enable note</h2>
+        <p class="mt-1 text-sm text-white/80">A practical weekly note for GCC managers and L&amp;D leaders.</p>
+      </div>
       <NewsletterForm dark compact id="footer-newsletter" />
     </div>
   </div>

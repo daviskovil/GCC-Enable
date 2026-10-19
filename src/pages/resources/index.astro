@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import VideoCard from '../../components/VideoCard.astro';
+import NewsletterForm from '../../components/NewsletterForm.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { site } from '../../config/site';
+import { mainNav } from '../../data/navigation';
+import { getArticles } from '../../utils/blog';
+
+const sections = mainNav.find((g) => g.href === '/resources/')?.items ?? [];
+const articles = (await getArticles()).slice(0, 2);
+---
+
+<BaseLayout
+  title="Resources"
+  description="Articles, podcast episodes, videos and a weekly newsletter for GCC leaders, managers and L&D teams in India."
+>
+  <PageHero
+    title="Resources"
+    intro="Practical ideas for running and growing a GCC in India, from people who have delivered global work at scale."
+    breadcrumb={[{ label: 'Resources' }]}
+  />
+
+  <section class="section pb-0" aria-label="Resource types">
+    <div class="container-site">
+      <ul class:list={['grid gap-6 sm:grid-cols-2', sections.length === 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3']}>
+        {
+          sections.map((s) => (
+            <li>
+              <article class="card card-hover group relative flex h-full flex-col p-6">
+                <span class="icon-tile">
+                  <Icon name={s.icon!} />
+                </span>
+                <h2 class="mt-5 text-xl font-bold">
+                  <a href={s.href} class="after:absolute after:inset-0 after:rounded-[14px] after:content-['']">
+                    {s.label}
+                  </a>
+                </h2>
+                <p class="mt-2 flex-1 text-slate">{s.description}</p>
+                <span class="link-arrow mt-4" aria-hidden="true">
+                  Open <Icon name="arrow-right" size={18} />
+                </span>
+              </article>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="latest-heading">
+    <div class="container-site">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <SectionHeading id="latest-heading" title="Latest from the blog" />
+        <a href="/resources/blog/" class="link-arrow shrink-0">All articles <Icon name="arrow-right" size={18} /></a>
+      </div>
+      <ul class="mt-10 grid gap-6 md:grid-cols-2">
+        {
+          articles.map((a) => (
+            <li data-reveal>
+              <ArticleCard article={a} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section bg-mist" aria-labelledby="videos-heading">
+    <div class="container-site">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <SectionHeading id="videos-heading" title="Podcast and videos" />
+        <a href="/resources/videos/" class="link-arrow shrink-0">All episodes <Icon name="arrow-right" size={18} /></a>
+      </div>
+      <ul class="mt-10 grid gap-6 md:grid-cols-3">
+        {
+          site.videos.slice(0, 3).map((v) => (
+            <li data-reveal>
+              <VideoCard video={v} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="nl-heading">
+    <div class="container-site">
+      <div class="card grid items-center gap-8 p-7 md:grid-cols-2 md:p-10">
+        <div>
+          <h2 id="nl-heading" class="text-2xl font-extrabold">The GCC Enable note</h2>
+          <p class="mt-2 text-slate">A practical weekly note for GCC managers and L&amp;D leaders.</p>
+        </div>
+        <NewsletterForm id="resources-newsletter" />
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>

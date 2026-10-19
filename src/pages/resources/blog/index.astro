@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
+import ArticleCard from '../../../components/ArticleCard.astro';
+import CtaBand from '../../../components/CtaBand.astro';
+import { getArticles } from '../../../utils/blog';
+
+const articles = await getArticles();
+---
+
+<BaseLayout title="Blog" description="Practical articles for GCC site leaders, managers and L&D teams in India.">
+  <PageHero
+    title="Blog"
+    intro="Short, practical articles on mandates, managers, AI and the services-to-captive shift."
+    breadcrumb={[{ label: 'Resources', href: '/resources/' }, { label: 'Blog' }]}
+  />
+  <section class="section" aria-label="Articles">
+    <div class="container-site">
+      {
+        articles.length === 0 ? (
+          <p class="text-slate">New articles are on the way.</p>
+        ) : (
+          <ul class="grid gap-6 md:grid-cols-2">
+            {articles.map((a) => (
+              <li data-reveal>
+                <ArticleCard article={a} />
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+  </section>
+  <CtaBand />
+</BaseLayout>

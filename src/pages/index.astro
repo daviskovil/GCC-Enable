@@ -6,6 +6,8 @@ import OptionalImage from '../components/OptionalImage.astro';
 import StatStrip from '../components/StatStrip.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import TopicCard from '../components/TopicCard.astro';
+import AudienceCard from '../components/AudienceCard.astro';
+import { audiences } from '../data/audiences';
 import CustomWorkshopCard from '../components/CustomWorkshopCard.astro';
 import ProcessSteps from '../components/ProcessSteps.astro';
 import FormatCards from '../components/FormatCards.astro';
@@ -121,6 +123,25 @@ const faqLd = {
     </div>
   </section>
 
+  <!-- Who we help -->
+  <section class="section border-t border-line" aria-labelledby="who-heading">
+    <div class="container-site">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <SectionHeading id="who-heading" title="Who we help" intro="Different leaders in a GCC need different things from learning. Start with the role closest to yours." />
+        <a href="/who-we-help/" class="link-arrow shrink-0">See all roles <Icon name="arrow-right" size={18} /></a>
+      </div>
+      <ul class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          audiences.map((a) => (
+            <li data-reveal>
+              <AudienceCard audience={a} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
   <!-- Why -->
   <section class="section bg-mist" aria-labelledby="why-heading">
     <div class="container-site">
@@ -176,7 +197,7 @@ const faqLd = {
     <div class="container-site">
       <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
         <SectionHeading id="insights-heading" title={home.insightsTitle} intro={home.insightsIntro} />
-        <a href="/insights/" class="link-arrow shrink-0">All insights <Icon name="arrow-right" size={18} /></a>
+        <a href="/resources/" class="link-arrow shrink-0">All resources <Icon name="arrow-right" size={18} /></a>
       </div>
       <ul class="mt-12 grid gap-6 md:grid-cols-3">
         {

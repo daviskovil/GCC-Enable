@@ -56,6 +56,7 @@ $fields = [
     'City'             => clean('city', 100),
     'Team size'        => clean('team_size', 100),
     'Area of interest' => clean('interest', 1000),
+    'LinkedIn'         => clean('linkedin', 300),
     'Consent'          => clean('consent', 10),
 ];
 $message = isset($_POST['message']) ? mb_substr(strip_tags(trim((string) $_POST['message'])), 0, 5000) : '';

@@ -2,9 +2,9 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
-/** Articles: add a Markdown file to src/content/insights/ and it appears on /insights/. */
-const insights = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/insights' }),
+/** Articles: add a Markdown file to src/content/blog/ and it appears on /resources/blog/. */
+const blog = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -17,4 +17,4 @@ const insights = defineCollection({
   }),
 });
 
-export const collections = { insights };
+export const collections = { blog };

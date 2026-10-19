@@ -1,0 +1,138 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import Icon from '../../components/Icon.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import ProgrammeCard from '../../components/ProgrammeCard.astro';
+import AudienceCard from '../../components/AudienceCard.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { audiences, type Audience } from '../../data/audiences';
+import { getProgramme, type Programme } from '../../data/programmes';
+
+export function getStaticPaths() {
+  return audiences.map((a) => ({ params: { slug: a.slug }, props: { audience: a } }));
+}
+
+const { audience: a } = Astro.props as { audience: Audience };
+const recommended = a.programmes.map(getProgramme).filter(Boolean) as Programme[];
+const others = audiences.filter((x) => x.slug !== a.slug);
+---
+
+<BaseLayout title={a.label} description={a.intro}>
+  <section class="bg-dots-light border-b border-line bg-mist">
+    <div class="container-site py-12 md:py-20">
+      <Breadcrumb items={[{ label: 'Who we help', href: '/who-we-help/' }, { label: a.label }]} />
+      <div class="mt-8 grid items-start gap-10 lg:grid-cols-[1.5fr_1fr]">
+        <div>
+          <span class="icon-tile h-14 w-14 bg-white shadow-card"><Icon name={a.icon} size={28} /></span>
+          <h1 class="mt-6 text-4xl font-extrabold md:text-5xl">{a.title}</h1>
+          <p class="mt-5 max-w-2xl text-lg text-slate md:text-xl">{a.intro}</p>
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+            <a href="/contact/" class="btn btn-primary">Book a discovery call <Icon name="arrow-right" size={18} /></a>
+            <a href="#programmes" class="btn btn-outline">Recommended programmes</a>
+          </div>
+        </div>
+        <aside class="card p-6 md:p-7" aria-labelledby="priorities-heading">
+          <h2 id="priorities-heading" class="text-lg font-bold">What you are likely focused on</h2>
+          <ul class="mt-4 space-y-3">
+            {
+              a.priorities.map((p) => (
+                <li class="flex gap-3">
+                  <Icon name="target" size={20} class="mt-0.5 shrink-0 text-teal" />
+                  <span>{p}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="challenges-heading">
+    <div class="container-site">
+      <SectionHeading id="challenges-heading" title="What we hear from leaders like you" />
+      <ul class="mt-10 grid gap-6 md:grid-cols-3">
+        {
+          a.challenges.map((c) => (
+            <li class="card card-hover p-6" data-reveal>
+              <span class="icon-tile">
+                <Icon name={c.icon} />
+              </span>
+              <h3 class="mt-5 text-lg font-bold">{c.title}</h3>
+              <p class="mt-2 text-slate">{c.body}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section bg-mist" aria-labelledby="help-heading">
+    <div class="container-site grid gap-10 lg:grid-cols-2 lg:gap-16">
+      <div data-reveal>
+        <SectionHeading id="help-heading" title="How we help" />
+        <ul class="mt-6 space-y-4">
+          {
+            a.howWeHelp.map((h) => (
+              <li class="flex gap-3">
+                <span class="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-teal text-white">
+                  <Icon name="check" size={16} strokeWidth={3} />
+                </span>
+                <span class="text-lg">{h}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div class="bg-dark-pattern self-start rounded-[18px] p-8 md:p-10" data-reveal>
+        <h2 class="h-accent text-2xl font-extrabold text-white">How we measure it</h2>
+        <ul class="mt-6 space-y-4">
+          {
+            a.measures.map((m) => (
+              <li class="flex gap-3 text-white">
+                <Icon name="chart-line" size={22} class="mt-0.5 shrink-0 text-saffron" />
+                <span>{m}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="programmes" class="section scroll-mt-28" aria-labelledby="rec-heading">
+    <div class="container-site">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <SectionHeading id="rec-heading" title="Recommended programmes" intro="Where most leaders in your role start. Each is tailored after a short diagnostic." />
+        <a href="/programmes/" class="link-arrow shrink-0">All programmes <Icon name="arrow-right" size={18} /></a>
+      </div>
+      <ul class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          recommended.map((p) => (
+            <li data-reveal>
+              <ProgrammeCard programme={p} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section border-t border-line bg-mist" aria-labelledby="others-heading">
+    <div class="container-site">
+      <h2 id="others-heading" class="text-2xl font-extrabold">Other roles we work with</h2>
+      <ul class="mt-8 grid gap-6 md:grid-cols-3">
+        {
+          others.map((o) => (
+            <li>
+              <AudienceCard audience={o} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand title={a.ctaTitle} />
+</BaseLayout>

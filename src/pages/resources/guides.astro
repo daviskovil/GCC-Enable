@@ -1,0 +1,56 @@
+---
+/** Listed in the menu only when site.showGuides is true; until then the page is noindex and shows a sign-up prompt. */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import NewsletterForm from '../../components/NewsletterForm.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { site } from '../../config/site';
+import { guides } from '../../data/guides';
+
+const live = site.showGuides;
+---
+
+<BaseLayout
+  title="Guides and toolkits"
+  description="Practical checklists, templates and guides for GCC managers, leaders and L&D teams."
+  noindex={!live}
+>
+  <PageHero
+    title="Guides and toolkits"
+    intro="Checklists, templates and short guides you can use straight away."
+    breadcrumb={[{ label: 'Resources', href: '/resources/' }, { label: 'Guides and toolkits' }]}
+  />
+  <section class="section" aria-label="Guides">
+    <div class="container-site">
+      {
+        live ? (
+          <ul class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {guides.map((g) => (
+              <li class="card card-hover flex flex-col p-6" data-reveal>
+                <span class="icon-tile">
+                  <Icon name={g.icon} />
+                </span>
+                <p class="mt-5 text-sm font-semibold tracking-wide text-slate uppercase">{g.audience}</p>
+                <h2 class="mt-1 text-xl font-bold">{g.title}</h2>
+                <p class="mt-2 flex-1 text-slate">{g.description}</p>
+                <a href={g.file} class="btn btn-outline mt-6 self-start" download>
+                  <Icon name="download" size={18} /> Download ({g.format})
+                </a>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div class="card mx-auto grid max-w-3xl gap-6 p-7 md:p-10">
+            <div>
+              <h2 class="text-2xl font-bold">The first guides are on the way</h2>
+              <p class="mt-2 text-slate">Subscribe to the newsletter and we will send them to you when they are ready.</p>
+            </div>
+            <NewsletterForm id="guides-newsletter" />
+          </div>
+        )
+      }
+    </div>
+  </section>
+  <CtaBand />
+</BaseLayout>

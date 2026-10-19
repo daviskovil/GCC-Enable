@@ -20,6 +20,10 @@ ErrorDocument 404 /404.html
   RewriteCond %{HTTP_HOST} (^|\.)gccenable\.com$ [NC]
   RewriteRule ^(.*)$ https://%{ENV:CANONICAL_HOST}/$1 [R=301,L]
 
+  # Old Insights URLs moved under Resources
+  RewriteRule ^insights/?$ /resources/ [R=301,L]
+  RewriteRule ^insights/(.+?)/?$ /resources/blog/$1/ [R=301,L]
+
   # 3. Add a trailing slash to directory-style URLs (matches the site's link style)
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_URI} !(\.[a-zA-Z0-9]{1,5}|/)$

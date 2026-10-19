@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Icon from '../components/Icon.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import { site } from '../config/site';
+import { topics } from '../data/topics';
+
+const lookingFor = [
+  { icon: 'briefcase-business', title: 'Global delivery experience', body: 'You have led teams or programmes for global organisations, ideally inside or alongside a GCC.' },
+  { icon: 'presentation', title: 'A practical facilitator', body: 'You make sessions about real situations and practice, not slides.' },
+  { icon: 'target', title: 'Focus on outcomes', body: 'You care whether behaviour changes after the workshop, not just how it was rated on the day.' },
+];
+---
+
+<BaseLayout
+  title="Careers and faculty"
+  description="Work with GCC Enable or join our faculty of practitioners who run training and workshops for India’s GCCs."
+>
+  <PageHero
+    title="Careers and faculty"
+    intro="We are building a small team and a network of practitioner faculty. If you have done the work and enjoy helping others do it, we would like to hear from you."
+    breadcrumb={[{ label: 'About', href: '/about/' }, { label: 'Careers and faculty' }]}
+  />
+
+  <section class="section" aria-labelledby="faculty-heading">
+    <div class="container-site">
+      <SectionHeading
+        id="faculty-heading"
+        title="Join as faculty"
+        intro="Faculty lead workshops, coach managers and help design programmes. Most work with us part-time alongside their own practice."
+      />
+      <ul class="mt-10 grid gap-6 md:grid-cols-3">
+        {
+          lookingFor.map((l) => (
+            <li class="card p-6" data-reveal>
+              <span class="icon-tile">
+                <Icon name={l.icon} />
+              </span>
+              <h3 class="mt-5 text-lg font-bold">{l.title}</h3>
+              <p class="mt-2 text-slate">{l.body}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section bg-mist" aria-labelledby="roles-heading">
+    <div class="container-site grid gap-10 lg:grid-cols-[1fr_1.35fr] lg:gap-14">
+      <div>
+        <SectionHeading id="roles-heading" title="Careers" />
+        <p class="mt-5 text-lg text-slate">
+          We do not have open full-time roles right now. We are always glad to hear from programme managers, instructional
+          designers and business development people who know the GCC world.
+        </p>
+        <p class="mt-5 text-slate">
+          Prefer email? Write to <a href={`mailto:${site.email}?subject=Careers`} class="link">{site.email}</a>.
+        </p>
+      </div>
+
+      <div class="card p-6 md:p-9">
+        <h2 class="text-2xl font-bold">Introduce yourself</h2>
+        <form data-form="contact" novalidate class="mt-6 grid gap-5 sm:grid-cols-2">
+          <input type="hidden" name="subject" value="New faculty / careers enquiry: GCC Enable website" />
+          <input type="hidden" name="form_type" value="Careers" />
+          <input type="checkbox" name="botcheck" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <div>
+            <label for="c-name" class="field-label">Name <span aria-hidden="true">*</span></label>
+            <input id="c-name" name="name" type="text" autocomplete="name" required class="field" aria-describedby="c-name-error" data-error="Please enter your name." />
+            <p id="c-name-error" class="field-error" hidden></p>
+          </div>
+          <div>
+            <label for="c-email" class="field-label">Email <span aria-hidden="true">*</span></label>
+            <input id="c-email" name="email" type="email" autocomplete="email" required class="field" aria-describedby="c-email-error" />
+            <p id="c-email-error" class="field-error" hidden></p>
+          </div>
+          <div>
+            <label for="c-interest" class="field-label">I’m interested in <span aria-hidden="true">*</span></label>
+            <select id="c-interest" name="role" required class="field" aria-describedby="c-interest-error" data-error="Please choose one.">
+              <option value="">Select</option>
+              <option>Joining as faculty</option>
+              <option>A role on the team</option>
+            </select>
+            <p id="c-interest-error" class="field-error" hidden></p>
+          </div>
+          <div>
+            <label for="c-linkedin" class="field-label">LinkedIn profile</label>
+            <input id="c-linkedin" name="linkedin" type="url" inputmode="url" placeholder="https://linkedin.com/in/…" class="field" />
+          </div>
+          <div class="sm:col-span-2">
+            <label for="c-topic" class="field-label">Main area of expertise</label>
+            <select id="c-topic" name="interest" class="field">
+              <option value="">Select a topic area</option>
+              {topics.map((t) => <option value={t.short}>{t.short}</option>)}
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="sm:col-span-2">
+            <label for="c-message" class="field-label">A few lines about your experience <span aria-hidden="true">*</span></label>
+            <textarea id="c-message" name="message" rows="5" required class="field" aria-describedby="c-message-error" data-error="Please add a short note."></textarea>
+            <p id="c-message-error" class="field-error" hidden></p>
+          </div>
+          <div class="sm:col-span-2">
+            <label class="flex items-start gap-3 text-sm text-ink" for="c-consent">
+              <input id="c-consent" name="consent" type="checkbox" value="Yes" required class="mt-0.5 h-4 w-4 shrink-0 accent-[#0F2A4A]" aria-describedby="c-consent-error" data-error="Please agree so we can reply to you." />
+              <span>I agree to GCC Enable storing these details to respond, as described in the <a href="/privacy/" class="link">privacy policy</a>. <span aria-hidden="true">*</span></span>
+            </label>
+            <p id="c-consent-error" class="field-error" hidden></p>
+          </div>
+          <div class="flex flex-col gap-3 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between">
+            <button type="submit" class="btn btn-primary">Send <Icon name="send" size={18} /></button>
+            <p class="text-sm text-slate" data-form-status role="status" aria-live="polite">* Required fields</p>
+          </div>
+        </form>
+        <div data-form-success hidden tabindex="-1" class="py-10 text-center outline-none">
+          <span class="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-full bg-teal text-white">
+            <Icon name="check" size={32} strokeWidth={3} />
+          </span>
+          <h2 class="mt-6 text-2xl font-extrabold">Thank you. We’ll be in touch.</h2>
+          <p class="mx-auto mt-3 max-w-md text-slate">We read every note and reply within a few working days.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

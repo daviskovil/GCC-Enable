@@ -90,7 +90,12 @@ export const site = {
   /** Feature flags */
   showTestimonials: false,
   showClientLogos: false,
+  /** Faculty page (About ▾ Faculty) and the faculty section on About. Add profiles in src/data/content.ts first. */
   showFacultySection: false,
+  /** Events in the main menu and footer. Add events in src/data/events.ts first. */
+  showEvents: false,
+  /** Guides and toolkits under Resources. Add guides in src/data/guides.ts first. */
+  showGuides: false,
   showTopBar: true,
 };
 

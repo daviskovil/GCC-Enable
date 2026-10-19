@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import VideoCard from '../../components/VideoCard.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { site } from '../../config/site';
+---
+
+<BaseLayout
+  title="Podcast and videos"
+  description="Conversations with people who build and run GCCs in India: mandates, managers, AI and the services-to-captive shift."
+>
+  <PageHero
+    title="Podcast and videos"
+    intro="Short conversations with people who build and run GCCs: mandates, managers, AI and the services-to-captive shift."
+    breadcrumb={[{ label: 'Resources', href: '/resources/' }, { label: 'Podcast and videos' }]}
+  >
+    <a href={site.youtubeChannelUrl} target="_blank" rel="noopener noreferrer" class="btn btn-navy mt-8">
+      <Icon name="youtube" size={20} /> Subscribe on YouTube
+    </a>
+  </PageHero>
+  <section class="section" aria-label="Episodes">
+    <div class="container-site">
+      <ul class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {
+          site.videos.map((v) => (
+            <li data-reveal>
+              <VideoCard video={v} />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+  <CtaBand />
+</BaseLayout>

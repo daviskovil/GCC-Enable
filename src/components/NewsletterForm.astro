@@ -25,7 +25,7 @@ const useEmbed = !isPlaceholder(site.newsletterEmbed);
   <label for={id} class={`mb-2 block text-sm font-semibold ${dark ? 'text-white' : 'text-navy'} ${compact ? 'sr-only' : ''}`}>
     Work email
   </label>
-  <div class={`flex gap-2 ${compact ? 'flex-col sm:flex-row lg:flex-col' : 'flex-col sm:flex-row'}`}>
+  <div class={`flex gap-2 ${compact ? 'flex-col sm:flex-row' : 'flex-col sm:flex-row'}`}>
     <input
       id={id}
       type="email"

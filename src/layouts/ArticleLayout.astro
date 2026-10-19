@@ -9,12 +9,12 @@ import { site } from '../config/site';
 import { readingTime } from '../utils/readingTime';
 
 interface Props {
-  article: CollectionEntry<'insights'>;
+  article: CollectionEntry<'blog'>;
 }
 const { article } = Astro.props;
 const { title, description, date, author, authorRole, tags } = article.data;
 const minutes = readingTime(article.body ?? '');
-const url = new URL(`/insights/${article.id}/`, site.url).href;
+const url = new URL(`/resources/blog/${article.id}/`, site.url).href;
 
 const articleLd = {
   '@context': 'https://schema.org',
@@ -33,7 +33,7 @@ const articleLd = {
   <article>
     <header class="bg-dots-light border-b border-line bg-mist">
       <div class="container-site py-12 md:py-16">
-        <Breadcrumb items={[{ label: 'Insights', href: '/insights/' }, { label: title }]} />
+        <Breadcrumb items={[{ label: 'Resources', href: '/resources/' }, { label: 'Blog', href: '/resources/blog/' }, { label: title }]} />
         <div class="mx-auto mt-8 max-w-3xl">
           {
             tags.length > 0 && (
@@ -76,7 +76,7 @@ const articleLd = {
       </aside>
 
       <p class="mx-auto mt-10 max-w-3xl">
-        <a href="/insights/" class="link-arrow"><Icon name="arrow-left" size={18} /> All insights</a>
+        <a href="/resources/blog/" class="link-arrow"><Icon name="arrow-left" size={18} /> All articles</a>
       </p>
     </div>
   </article>

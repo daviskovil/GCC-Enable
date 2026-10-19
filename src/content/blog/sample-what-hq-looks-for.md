@@ -8,7 +8,7 @@ tags: ['Mandates', 'Leadership']
 sample: true
 ---
 
-> **This is a sample article** included to show how articles look on the site. Edit or delete `src/content/insights/sample-what-hq-looks-for.md` before launch.
+> **This is a sample article** included to show how articles look on the site. Edit or delete `src/content/blog/sample-what-hq-looks-for.md` before launch.
 
 Most GCC leaders know the moment. A global sponsor asks, "Could your team own this?" What happens next depends less on the pitch and more on what HQ has already seen.
 

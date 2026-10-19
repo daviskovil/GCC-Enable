@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import Icon from '../../components/Icon.astro';
+import NewsletterForm from '../../components/NewsletterForm.astro';
+
+const points = [
+  { icon: 'lightbulb', text: 'One idea you can use that week' },
+  { icon: 'wrench', text: 'A tool or template for managers and L&D' },
+  { icon: 'clock', text: 'Five minutes to read, every week' },
+  { icon: 'mail', text: 'No spam. Unsubscribe any time.' },
+];
+---
+
+<BaseLayout
+  title="Newsletter"
+  description="The GCC Enable note: a practical weekly email for GCC managers and L&D leaders in India."
+>
+  <section class="bg-dots-light bg-mist">
+    <div class="container-site py-12 md:py-20">
+      <Breadcrumb items={[{ label: 'Resources', href: '/resources/' }, { label: 'Newsletter' }]} />
+      <div class="mt-8 grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+        <div>
+          <p class="eyebrow">Weekly newsletter</p>
+          <h1 class="h-accent mt-5 text-4xl font-extrabold md:text-5xl">The GCC Enable note</h1>
+          <p class="mt-5 text-lg text-slate md:text-xl">A practical weekly note for GCC managers and L&amp;D leaders.</p>
+          <ul class="mt-8 space-y-3">
+            {
+              points.map((p) => (
+                <li class="flex gap-3">
+                  <Icon name={p.icon} size={22} class="mt-0.5 shrink-0 text-teal" />
+                  <span>{p.text}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <div class="card p-7 md:p-10">
+          <h2 class="text-2xl font-bold">Subscribe</h2>
+          <p class="mt-2 mb-6 text-slate">Use your work email. The first note arrives the following week.</p>
+          <NewsletterForm id="newsletter-page" />
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

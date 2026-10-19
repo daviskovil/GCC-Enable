@@ -83,7 +83,11 @@ All copy lives in data files. You never need to touch layout code to change text
 | Programmes (cards, menu, detail pages) | `src/data/programmes.ts` |
 | Home page copy, statistics, process steps, formats, FAQ, About copy, values | `src/data/content.ts` |
 | YouTube videos | `videos` array in `src/config/site.ts` |
-| Articles | Markdown files in `src/content/insights/` |
+| Main menu (and footer columns) | `src/data/navigation.ts` |
+| Who we help pages | `src/data/audiences.ts` |
+| Blog articles | Markdown files in `src/content/blog/` |
+| Events | `src/data/events.ts` |
+| Guides and toolkits | `src/data/guides.ts` (files in `public/guides/`) |
 | Privacy policy and terms | `src/pages/privacy.astro`, `src/pages/terms.astro` |
 | Colours, fonts, spacing | `src/styles/global.css` (`@theme` block) |
 
@@ -107,9 +111,19 @@ Edit `videos` in `src/config/site.ts`:
 
 `youtubeId` is the part after `watch?v=` in the video URL. IDs that start with `PLACEHOLDER` show a branded "Episode coming soon" card. Real IDs show the YouTube thumbnail. The player (from `youtube-nocookie.com`) loads only when the visitor clicks, so pages stay fast. The first three videos appear on the home page.
 
+### Main menu
+
+The menu is defined once in `src/data/navigation.ts` and used by the desktop header, the mobile menu and the footer:
+
+**Programmes ▾** (topic mega menu) · **Who we help ▾** · **Resources ▾** (Blog, Podcast and videos, Newsletter, Guides and toolkits) · **Events** · **About ▾** (Our story, How we work, Faculty, Careers / Join as faculty, Contact) · *Book a discovery call*
+
+Three items stay hidden until you switch them on in `src/config/site.ts`: `showEvents` (Events), `showGuides` (Guides and toolkits) and `showFacultySection` (Faculty). While a switch is off, the item is left out of the menu, footer and sitemap, and its page is marked noindex and shows a newsletter sign-up instead.
+
+Old `/insights/` links redirect to `/resources/` (in `vercel.json` and `.htaccess`).
+
 ### Articles
 
-Create `src/content/insights/my-article.md`:
+Create `src/content/blog/my-article.md`:
 
 ```md
 ---
@@ -125,7 +139,7 @@ draft: false
 Article body in Markdown.
 ```
 
-It appears on `/insights/` and at `/insights/my-article/`, with reading time, an author box and a CTA. Set `draft: true` to hide it.
+It appears on `/resources/blog/` and at `/resources/blog/my-article/`, with reading time, an author box and a CTA. Set `draft: true` to hide it.
 
 ---
 
@@ -222,10 +236,11 @@ Search the project for `PLACEHOLDER`, `YOUR_` and `[` to find them all.
 - [ ] `about.founder`: `[Founder name]`, `[Founder bio: …]`, optional LinkedIn URL
 - [ ] Add `founder.jpg` (and optionally `hero.jpg`, `about.jpg`) to `src/assets/images/`
 - [ ] Before turning on `showTestimonials`, `showClientLogos` or `showFacultySection`, replace every `PLACEHOLDER` entry with real, approved content
+- [ ] Before turning on `showEvents` or `showGuides`, replace the `PLACEHOLDER` entries in `src/data/events.ts` and `src/data/guides.ts`
 
 **Content**
 
-- [ ] `src/content/insights/sample-what-hq-looks-for.md`: sample article, edit or delete it (the author is `[Founder name]`)
+- [ ] `src/content/blog/sample-what-hq-looks-for.md`: sample article, edit or delete it (the author is `[Founder name]`)
 - [ ] `src/pages/privacy.astro` and `src/pages/terms.astro`: **have them reviewed by a lawyer**, then fill in `[Date]`, provider names, retention period, grievance officer and jurisdiction, and remove the "for legal review" notice in `src/layouts/LegalLayout.astro`
 
 **Hosting**

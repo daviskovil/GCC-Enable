@@ -1,0 +1,19 @@
+---
+import Icon from './Icon.astro';
+import type { Audience } from '../data/audiences';
+interface Props {
+  audience: Audience;
+}
+const { audience: a } = Astro.props;
+---
+
+<article class="card card-hover group relative flex h-full flex-col p-6 md:p-7">
+  <span class="icon-tile"><Icon name={a.icon} /></span>
+  <h3 class="mt-5 text-xl font-bold">
+    <a href={`/who-we-help/${a.slug}/`} class="after:absolute after:inset-0 after:rounded-[14px] after:content-['']">
+      {a.label}
+    </a>
+  </h3>
+  <p class="mt-2 flex-1 text-slate">{a.short}</p>
+  <span class="link-arrow mt-5" aria-hidden="true">See how we help <Icon name="arrow-right" size={18} /></span>
+</article>

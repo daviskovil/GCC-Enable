@@ -2,17 +2,12 @@
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 import { programmesByTopic, customWorkshop } from '../data/programmes';
+import { mainNav, isGroupActive } from '../data/navigation';
 import { site } from '../config/site';
 
 const path = Astro.url.pathname;
-const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
-
-const links = [
-  { label: 'How we work', href: '/how-we-work/' },
-  { label: 'About', href: '/about/' },
-  { label: 'Insights', href: '/insights/' },
-  { label: 'Contact', href: '/contact/' },
-];
+const activeClass = 'underline decoration-saffron decoration-2 underline-offset-8';
+const lastIndex = mainNav.length - 1;
 ---
 
 <header id="site-header" class="sticky top-0 z-50 border-b border-transparent bg-white transition-shadow duration-300">
@@ -21,77 +16,102 @@ const links = [
 
     <nav aria-label="Main" class="hidden lg:block">
       <ul class="flex items-center gap-1">
-        <li data-dropdown>
-          <button
-            type="button"
-            class:list={[
-              'inline-flex items-center gap-1 rounded-md px-3 py-2 font-semibold text-navy hover:bg-mist',
-              isActive('/programmes/') && 'underline decoration-saffron decoration-2 underline-offset-8',
-            ]}
-            aria-expanded="false"
-            aria-controls="programmes-menu"
-            data-dropdown-trigger
-          >
-            Programmes
-            <Icon name="chevron-down" size={16} class="transition-transform duration-200" />
-          </button>
-          <div
-            id="programmes-menu"
-            class="absolute inset-x-4 top-full hidden pt-1 sm:inset-x-6 lg:inset-x-8"
-            data-dropdown-panel
-          >
-            <div class="card p-6">
-              <ul class="grid grid-cols-4 gap-x-6 gap-y-7">
-                {
-                  programmesByTopic.map(({ topic, programmes: list }) => (
-                    <li>
-                      <a
-                        href={`/programmes/#${topic.slug}`}
-                        class="flex items-center gap-2 text-xs font-bold tracking-wider text-slate uppercase hover:text-navy"
-                      >
-                        <Icon name={topic.icon} size={16} class="shrink-0 text-teal" />
-                        {topic.short}
-                      </a>
-                      <ul class="mt-2.5 space-y-1">
-                        {list.map((p) => (
+        {
+          mainNav.map((group, gi) => {
+            const active = isGroupActive(group, path);
+            if (group.kind === 'link')
+              return (
+                <li>
+                  <a
+                    href={group.href}
+                    class:list={['rounded-md px-3 py-2 font-semibold text-navy hover:bg-mist', active && activeClass]}
+                    aria-current={active ? 'page' : undefined}
+                  >
+                    {group.label}
+                  </a>
+                </li>
+              );
+            const menuId = `menu-${group.label.toLowerCase().replace(/[^a-z]+/g, '-')}`;
+            return (
+              <li class={group.kind === 'dropdown' ? 'relative' : ''} data-dropdown>
+                <button
+                  type="button"
+                  class:list={['inline-flex items-center gap-1 rounded-md px-3 py-2 font-semibold text-navy hover:bg-mist', active && activeClass]}
+                  aria-expanded="false"
+                  aria-controls={menuId}
+                  data-dropdown-trigger
+                >
+                  {group.label}
+                  <Icon name="chevron-down" size={16} class="transition-transform duration-200" />
+                </button>
+                {group.kind === 'mega' ? (
+                  <div id={menuId} class="absolute inset-x-4 top-full hidden pt-1 sm:inset-x-6 lg:inset-x-8" data-dropdown-panel>
+                    <div class="card p-6">
+                      <ul class="grid grid-cols-4 gap-x-6 gap-y-7">
+                        {programmesByTopic.map(({ topic, programmes: list }) => (
                           <li>
                             <a
-                              href={`/programmes/${p.slug}/`}
-                              class="-mx-2 block rounded-md px-2 py-1.5 font-heading text-[0.95rem] leading-snug font-bold text-navy hover:bg-mist"
+                              href={`/programmes/#${topic.slug}`}
+                              class="flex items-center gap-2 text-xs font-bold tracking-wider text-slate uppercase hover:text-navy"
                             >
-                              {p.title}
+                              <Icon name={topic.icon} size={16} class="shrink-0 text-teal" />
+                              {topic.short}
                             </a>
+                            <ul class="mt-2.5 space-y-1">
+                              {list.map((p) => (
+                                <li>
+                                  <a
+                                    href={`/programmes/${p.slug}/`}
+                                    class="-mx-2 block rounded-md px-2 py-1.5 font-heading text-[0.95rem] leading-snug font-bold text-navy hover:bg-mist"
+                                  >
+                                    {p.title}
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
                           </li>
                         ))}
                       </ul>
-                    </li>
-                  ))
-                }
-              </ul>
-              <div class="mt-6 flex items-center justify-between gap-4 rounded-lg bg-mist px-4 py-3 text-sm">
-                <span class="text-slate">{customWorkshop.summary}</span>
-                <a href="/programmes/" class="link-arrow shrink-0">
-                  All programmes <Icon name="arrow-right" size={16} />
-                </a>
-              </div>
-            </div>
-          </div>
-        </li>
-        {
-          links.map((l) => (
-            <li>
-              <a
-                href={l.href}
-                class:list={[
-                  'rounded-md px-3 py-2 font-semibold text-navy hover:bg-mist',
-                  isActive(l.href) && 'underline decoration-saffron decoration-2 underline-offset-8',
-                ]}
-                aria-current={isActive(l.href) ? 'page' : undefined}
-              >
-                {l.label}
-              </a>
-            </li>
-          ))
+                      <div class="mt-6 flex items-center justify-between gap-4 rounded-lg bg-mist px-4 py-3 text-sm">
+                        <span class="text-slate">{customWorkshop.summary}</span>
+                        <a href="/programmes/" class="link-arrow shrink-0">
+                          All programmes <Icon name="arrow-right" size={16} />
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div
+                    id={menuId}
+                    class:list={['absolute top-full hidden w-[400px] pt-3', gi === lastIndex ? 'right-0' : 'left-0']}
+                    data-dropdown-panel
+                  >
+                    <ul class="card p-2.5">
+                      {group.items!.map((item) => (
+                        <li>
+                          <a
+                            href={item.href}
+                            class="flex gap-3 rounded-lg p-3 hover:bg-mist"
+                            aria-current={path === item.href ? 'page' : undefined}
+                          >
+                            {item.icon && (
+                              <span class="icon-tile h-10 w-10">
+                                <Icon name={item.icon} size={20} />
+                              </span>
+                            )}
+                            <span>
+                              <span class="block font-heading leading-snug font-bold text-navy">{item.label}</span>
+                              {item.description && <span class="block text-sm leading-snug text-slate">{item.description}</span>}
+                            </span>
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </li>
+            );
+          })
         }
       </ul>
     </nav>
@@ -136,35 +156,57 @@ const links = [
           <Icon name="x" size={26} />
         </button>
       </div>
-      <nav aria-label="Mobile" class="flex-1 px-4 py-6 sm:px-6">
-        <p class="mb-2 text-sm font-semibold tracking-wide text-slate uppercase">Programmes</p>
-        <ul class="mb-6 space-y-1">
+      <nav aria-label="Mobile" class="flex-1 px-4 py-4 sm:px-6">
+        <ul class="divide-y divide-line">
           {
-            programmesByTopic.map(({ topic }) => (
-              <li>
-                <a href={`/programmes/#${topic.slug}`} class="flex items-center gap-3 rounded-lg px-2 py-2.5 font-semibold text-navy hover:bg-mist">
-                  <Icon name={topic.icon} size={20} class="shrink-0 text-teal" />
-                  {topic.short}
-                </a>
-              </li>
-            ))
-          }
-          <li>
-            <a href="/programmes/" class="flex items-center gap-3 rounded-lg px-2 py-2.5 font-semibold text-navy hover:bg-mist">
-              <Icon name="arrow-right" size={20} class="text-teal" />
-              All programmes
-            </a>
-          </li>
-        </ul>
-        <ul class="space-y-1 border-t border-line pt-6">
-          {
-            links.map((l) => (
-              <li>
-                <a href={l.href} class="block rounded-lg px-2 py-3 font-heading text-lg font-bold text-navy hover:bg-mist">
-                  {l.label}
-                </a>
-              </li>
-            ))
+            mainNav.map((group, gi) => {
+              if (group.kind === 'link')
+                return (
+                  <li>
+                    <a href={group.href} class="block py-4 font-heading text-lg font-bold text-navy">
+                      {group.label}
+                    </a>
+                  </li>
+                );
+              const items =
+                group.kind === 'mega'
+                  ? [
+                      ...programmesByTopic.map(({ topic }) => ({ label: topic.short, href: `/programmes/#${topic.slug}`, icon: topic.icon })),
+                      { label: 'All programmes', href: '/programmes/', icon: 'arrow-right' },
+                    ]
+                  : group.items!;
+              const panelId = `m-panel-${gi}`;
+              return (
+                <li>
+                  <button
+                    type="button"
+                    class="flex w-full items-center justify-between py-4 text-left font-heading text-lg font-bold text-navy"
+                    aria-expanded="false"
+                    aria-controls={panelId}
+                    data-accordion-trigger
+                  >
+                    {group.label}
+                    <span class="acc-icon inline-flex h-8 w-8 items-center justify-center rounded-full bg-teal/10 text-teal">
+                      <Icon name="plus" size={18} />
+                    </span>
+                  </button>
+                  <div id={panelId} class="accordion-panel" data-open="false" inert>
+                    <div>
+                      <ul class="space-y-0.5 pb-4">
+                        {items.map((item) => (
+                          <li>
+                            <a href={item.href} class="flex items-center gap-3 rounded-lg px-2 py-2.5 font-semibold text-navy hover:bg-mist">
+                              {item.icon && <Icon name={item.icon} size={20} class="shrink-0 text-teal" />}
+                              {item.label}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </li>
+              );
+            })
           }
         </ul>
       </nav>
@@ -189,6 +231,8 @@ const links = [
   window.addEventListener('scroll', onScroll, { passive: true });
 
   // Desktop dropdown: hover on pointer devices, click and keyboard everywhere
+  // Only one dropdown open at a time
+  const closers: ((open: boolean) => void)[] = [];
   document.querySelectorAll<HTMLElement>('[data-dropdown]').forEach((dd) => {
     const trigger = dd.querySelector<HTMLButtonElement>('[data-dropdown-trigger]')!;
     const panel = dd.querySelector<HTMLElement>('[data-dropdown-panel]')!;
@@ -196,10 +240,12 @@ const links = [
     let closeTimer: number | undefined;
 
     const setOpen = (open: boolean) => {
+      if (open) closers.forEach((close) => close !== setOpen && close(false));
       trigger.setAttribute('aria-expanded', String(open));
       panel.classList.toggle('hidden', !open);
       chevron?.classList.toggle('rotate-180', open);
     };
+    closers.push(setOpen);
     // Mouse users already opened it on hover, so a click keeps it open; keyboard and touch toggle
     trigger.addEventListener('click', (e) => {
       const isMouse = (e as PointerEvent).pointerType === 'mouse';
@@ -259,7 +305,7 @@ const links = [
   menu.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeMenu();
     if (e.key === 'Tab') {
-      const focusables = panel.querySelectorAll<HTMLElement>('a, button');
+      const focusables = [...panel.querySelectorAll<HTMLElement>('a, button')].filter((el) => !el.closest('[inert]'));
       const first = focusables[0];
       const last = focusables[focusables.length - 1];
       if (e.shiftKey && document.activeElement === first) {
