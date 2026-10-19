@@ -220,9 +220,19 @@ export const about = {
   mission:
     'Our mission is to help India’s GCCs build the capability to win, and keep, bigger global mandates.',
   founder: {
-    name: '[Founder name]',
-    role: 'Founder',
-    bio: '[Founder bio: global IT service delivery experience across India, UK and US]',
+    name: 'Davis Rajan',
+    role: 'Founder, GCC Enable',
+    bio: [
+      'Davis has spent more than 20 years running enterprise IT for global companies, across the US, UK, Europe, Latin America and India.',
+      'From the UK, he led IT service delivery across 19 European countries, turning around and stabilising operations for a global enterprise. He then moved to the US, where he managed large-scale global delivery for a leading pharmaceutical company, overseeing end-user computing, networks, data centre, storage and service desk for 8,000+ users across North America and LATAM. He later became General Manager and Country Head of IT End User Services at Vodafone India, supporting 30,000+ users nationwide.',
+      'Having run delivery from both the client side and the provider side, he knows what global headquarters expect from their teams in India. GCC Enable puts that experience to work for India’s Global Capability Centres, through practical content, conversations with GCC leaders, and training that helps teams upskill and perform.',
+    ],
+    highlights: [
+      { value: '20+ years', label: 'Running enterprise IT for global companies' },
+      { value: '19 countries', label: 'IT service delivery led across Europe' },
+      { value: '30,000+ users', label: 'Supported as Country Head, IT End User Services' },
+    ],
+    /** PLACEHOLDER: add the LinkedIn profile URL to show a "Connect on LinkedIn" link */
     linkedin: '',
   },
   values: [

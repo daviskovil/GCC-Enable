@@ -47,23 +47,52 @@ import { site } from '../config/site';
 
   <!-- Founder -->
   <section class="section" aria-labelledby="founder-heading">
-    <div class="container-site">
-      <div class="card grid items-center gap-8 p-7 md:grid-cols-[220px_1fr] md:p-10">
-        <OptionalImage name="founder" alt={about.founder.name} class="aspect-square w-full rounded-[14px] object-cover" widths={[220, 440]} sizes="220px">
-          <div class="flex aspect-square w-full max-w-[220px] items-center justify-center rounded-[14px] border-2 border-dashed border-line bg-mist text-slate">
-            <span class="flex flex-col items-center gap-2 text-sm">
-              <Icon name="user-round" size={40} />
-              [Founder photo]
-            </span>
+    <div class="container-site grid items-start gap-10 lg:grid-cols-[380px_1fr] lg:gap-16">
+      <figure class="mx-auto w-full max-w-[380px] lg:sticky lg:top-28" data-reveal>
+        <div class="relative">
+          <div class="absolute -right-3 -bottom-3 h-full w-full rounded-[18px] bg-navy" aria-hidden="true"></div>
+          <div class="relative overflow-hidden rounded-[18px] border border-line bg-white">
+            <OptionalImage
+              name="founder"
+              alt={`${about.founder.name}, ${about.founder.role}`}
+              class="aspect-square h-auto w-full object-cover"
+              widths={[380, 760]}
+              sizes="(min-width: 1024px) 380px, 90vw"
+            >
+              <div class="flex aspect-square w-full items-center justify-center bg-mist text-slate">
+                <Icon name="user-round" size={56} />
+              </div>
+            </OptionalImage>
           </div>
-        </OptionalImage>
-        <div>
-          <p class="text-sm font-bold tracking-widest text-slate uppercase">{about.founder.role}</p>
-          <h2 id="founder-heading" class="mt-2 text-3xl font-extrabold">{about.founder.name}</h2>
-          <p class="mt-4 text-lg text-slate">{about.founder.bio}</p>
+          <span class="absolute -top-3 -left-3 h-6 w-6 rounded-full bg-saffron" aria-hidden="true"></span>
+        </div>
+        <figcaption class="mt-7 text-center">
+          <span class="block font-heading text-xl font-extrabold text-navy">{about.founder.name}</span>
+          <span class="block text-sm font-semibold text-slate">{about.founder.role}</span>
+        </figcaption>
+      </figure>
+
+      <div data-reveal>
+        <div><p class="eyebrow">Meet the founder</p></div>
+        <h2 id="founder-heading" class="h-accent mt-5 text-3xl font-extrabold md:text-4xl">{about.founder.name}</h2>
+        <div class="mt-6 space-y-4 text-lg text-slate">
+          {about.founder.bio.map((para) => <p>{para}</p>)}
+        </div>
+        <ul class="mt-8 grid gap-4 sm:grid-cols-3">
+          {
+            about.founder.highlights.map((h) => (
+              <li class="rounded-[14px] border border-line bg-mist p-5">
+                <p class="font-heading text-2xl font-extrabold text-navy">{h.value}</p>
+                <p class="mt-1 text-sm text-slate">{h.label}</p>
+              </li>
+            ))
+          }
+        </ul>
+        <div class="mt-8 flex flex-wrap items-center gap-4">
+          <a href="/contact/" class="btn btn-primary">Talk to {about.founder.name.split(' ')[0]} <Icon name="arrow-right" size={18} /></a>
           {
             about.founder.linkedin && (
-              <a href={about.founder.linkedin} class="link-arrow mt-5" target="_blank" rel="noopener noreferrer">
+              <a href={about.founder.linkedin} class="link-arrow" target="_blank" rel="noopener noreferrer">
                 <Icon name="linkedin" size={18} /> Connect on LinkedIn
               </a>
             )

@@ -1,5 +1,6 @@
 ---
 import { site } from '../config/site';
+import { about } from '../data/content';
 
 export interface SeoProps {
   title?: string;
@@ -37,6 +38,7 @@ const baseLd = [
       addressCountry: 'IN',
     },
     areaServed: 'IN',
+    founder: { '@type': 'Person', name: about.founder.name, jobTitle: about.founder.role },
     sameAs,
   },
   {
