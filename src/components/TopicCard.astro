@@ -1,0 +1,32 @@
+---
+import Icon from './Icon.astro';
+import type { Topic } from '../data/topics';
+import type { Programme } from '../data/programmes';
+interface Props {
+  topic: Topic;
+  programmes: Programme[];
+}
+const { topic, programmes } = Astro.props;
+---
+
+<article class="card card-hover flex h-full flex-col p-6 md:p-7">
+  <span class="icon-tile"><Icon name={topic.icon} /></span>
+  <h3 class="mt-5 text-xl font-bold">
+    <a href={`/programmes/#${topic.slug}`} class="hover:underline hover:decoration-saffron hover:decoration-2 hover:underline-offset-4">
+      {topic.short}
+    </a>
+  </h3>
+  <p class="mt-2 text-slate">{topic.summary}</p>
+  <ul class="mt-5 flex-1 space-y-1.5 border-t border-line pt-4">
+    {
+      programmes.map((p) => (
+        <li>
+          <a href={`/programmes/${p.slug}/`} class="link-arrow text-[0.95rem] leading-snug">
+            <Icon name="arrow-right" size={16} class="shrink-0" />
+            {p.title}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</article>

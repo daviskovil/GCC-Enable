@@ -8,6 +8,7 @@ import ProgrammeCard from '../../components/ProgrammeCard.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { programmes, getProgramme, type Programme } from '../../data/programmes';
 import { site } from '../../config/site';
+import { getTopic } from '../../data/topics';
 
 export function getStaticPaths() {
   return programmes.map((p) => ({ params: { slug: p.slug }, props: { programme: p } }));
@@ -15,6 +16,7 @@ export function getStaticPaths() {
 
 const { programme: p } = Astro.props as { programme: Programme };
 const related = p.related.map(getProgramme).filter(Boolean) as Programme[];
+const topic = getTopic(p.topic);
 const url = new URL(`/programmes/${p.slug}/`, site.url).href;
 
 const courseLd = {
@@ -24,6 +26,7 @@ const courseLd = {
   description: p.summary,
   url,
   inLanguage: 'en-IN',
+  about: topic.title,
   audience: { '@type': 'Audience', audienceType: p.audienceShort },
   teaches: p.outcomes,
   provider: { '@type': 'Organization', name: site.name, url: site.url, '@id': `${site.url}/#organization` },
@@ -41,11 +44,20 @@ const courseLd = {
   <!-- Hero -->
   <section class="bg-dots-light border-b border-line bg-mist">
     <div class="container-site py-12 md:py-20">
-      <Breadcrumb items={[{ label: 'Programmes', href: '/programmes/' }, { label: p.title }]} />
+      <Breadcrumb
+        items={[
+          { label: 'Programmes', href: '/programmes/' },
+          { label: topic.short, href: `/programmes/#${topic.slug}` },
+          { label: p.title },
+        ]}
+      />
       <div class="mt-8 grid items-start gap-10 lg:grid-cols-[1.5fr_1fr]">
         <div>
           <span class="icon-tile h-14 w-14 bg-white shadow-card"><Icon name={p.icon} size={28} /></span>
-          <h1 class="mt-6 text-4xl font-extrabold md:text-5xl">{p.title}</h1>
+          <p class="mt-6">
+            <a href={`/programmes/#${topic.slug}`} class="eyebrow hover:border-navy">{topic.short}</a>
+          </p>
+          <h1 class="mt-4 text-4xl font-extrabold md:text-5xl">{p.title}</h1>
           <p class="mt-5 max-w-2xl text-lg text-slate md:text-xl">{p.summary}</p>
           <ul class="mt-7 flex flex-wrap gap-2.5 text-sm">
             <li class="inline-flex items-center gap-2 rounded-full border border-line bg-white px-3.5 py-1.5 font-medium text-navy">

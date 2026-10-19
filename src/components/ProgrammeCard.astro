@@ -9,10 +9,7 @@ interface Props {
 const { programme: p, headingLevel: H = 'h3', showMeta = false } = Astro.props;
 ---
 
-<article
-  class="card card-hover group relative flex h-full flex-col p-6 md:p-7"
-  data-categories={p.categories.join(',')}
->
+<article class="card card-hover group relative flex h-full flex-col p-6 md:p-7">
   <span class="icon-tile"><Icon name={p.icon} /></span>
   <H class="mt-5 text-xl font-bold">
     <a href={`/programmes/${p.slug}/`} class="after:absolute after:inset-0 after:rounded-[14px] after:content-['']">

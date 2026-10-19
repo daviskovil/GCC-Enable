@@ -1,7 +1,7 @@
 ---
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
-import { programmes, customWorkshop } from '../data/programmes';
+import { programmesByTopic, customWorkshop } from '../data/programmes';
 import { site } from '../config/site';
 
 const path = Astro.url.pathname;
@@ -16,12 +16,12 @@ const links = [
 ---
 
 <header id="site-header" class="sticky top-0 z-50 border-b border-transparent bg-white transition-shadow duration-300">
-  <div class="container-site flex h-[76px] items-center justify-between gap-6">
+  <div class="container-site relative flex h-[76px] items-center justify-between gap-6">
     <Logo />
 
     <nav aria-label="Main" class="hidden lg:block">
       <ul class="flex items-center gap-1">
-        <li class="relative" data-dropdown>
+        <li data-dropdown>
           <button
             type="button"
             class:list={[
@@ -37,31 +37,38 @@ const links = [
           </button>
           <div
             id="programmes-menu"
-            class="absolute top-full left-1/2 hidden w-[620px] -translate-x-1/2 pt-3"
+            class="absolute inset-x-4 top-full hidden pt-1 sm:inset-x-6 lg:inset-x-8"
             data-dropdown-panel
           >
-            <div class="card p-3">
-              <ul class="grid grid-cols-2 gap-1">
+            <div class="card p-6">
+              <ul class="grid grid-cols-4 gap-x-6 gap-y-7">
                 {
-                  programmes.map((p) => (
+                  programmesByTopic.map(({ topic, programmes: list }) => (
                     <li>
                       <a
-                        href={`/programmes/${p.slug}/`}
-                        class="group flex gap-3 rounded-lg p-3 hover:bg-mist"
+                        href={`/programmes/#${topic.slug}`}
+                        class="flex items-center gap-2 text-xs font-bold tracking-wider text-slate uppercase hover:text-navy"
                       >
-                        <span class="icon-tile h-10 w-10">
-                          <Icon name={p.icon} size={20} />
-                        </span>
-                        <span>
-                          <span class="block font-heading leading-snug font-bold text-navy">{p.title}</span>
-                          <span class="block text-sm leading-snug text-slate">{p.audienceShort}</span>
-                        </span>
+                        <Icon name={topic.icon} size={16} class="shrink-0 text-teal" />
+                        {topic.short}
                       </a>
+                      <ul class="mt-2.5 space-y-1">
+                        {list.map((p) => (
+                          <li>
+                            <a
+                              href={`/programmes/${p.slug}/`}
+                              class="-mx-2 block rounded-md px-2 py-1.5 font-heading text-[0.95rem] leading-snug font-bold text-navy hover:bg-mist"
+                            >
+                              {p.title}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
                     </li>
                   ))
                 }
               </ul>
-              <div class="mt-2 flex items-center justify-between gap-4 rounded-lg bg-mist px-4 py-3 text-sm">
+              <div class="mt-6 flex items-center justify-between gap-4 rounded-lg bg-mist px-4 py-3 text-sm">
                 <span class="text-slate">{customWorkshop.summary}</span>
                 <a href="/programmes/" class="link-arrow shrink-0">
                   All programmes <Icon name="arrow-right" size={16} />
@@ -133,11 +140,11 @@ const links = [
         <p class="mb-2 text-sm font-semibold tracking-wide text-slate uppercase">Programmes</p>
         <ul class="mb-6 space-y-1">
           {
-            programmes.map((p) => (
+            programmesByTopic.map(({ topic }) => (
               <li>
-                <a href={`/programmes/${p.slug}/`} class="flex items-center gap-3 rounded-lg px-2 py-2.5 font-semibold text-navy hover:bg-mist">
-                  <Icon name={p.icon} size={20} class="shrink-0 text-teal" />
-                  {p.title}
+                <a href={`/programmes/#${topic.slug}`} class="flex items-center gap-3 rounded-lg px-2 py-2.5 font-semibold text-navy hover:bg-mist">
+                  <Icon name={topic.icon} size={20} class="shrink-0 text-teal" />
+                  {topic.short}
                 </a>
               </li>
             ))

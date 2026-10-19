@@ -3,10 +3,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import Icon from '../components/Icon.astro';
 import { site } from '../config/site';
-import { programmes, customWorkshop } from '../data/programmes';
+import { programmesByTopic, customWorkshop } from '../data/programmes';
 import { cities, teamSizes } from '../data/content';
 
-const interests = [...programmes.map((p) => p.title), customWorkshop.title];
+const interests = [...programmesByTopic.map(({ topic }) => topic.short), customWorkshop.title];
 ---
 
 <BaseLayout

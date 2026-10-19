@@ -5,7 +5,7 @@ import HeroGraphic from '../components/HeroGraphic.astro';
 import OptionalImage from '../components/OptionalImage.astro';
 import StatStrip from '../components/StatStrip.astro';
 import SectionHeading from '../components/SectionHeading.astro';
-import ProgrammeCard from '../components/ProgrammeCard.astro';
+import TopicCard from '../components/TopicCard.astro';
 import CustomWorkshopCard from '../components/CustomWorkshopCard.astro';
 import ProcessSteps from '../components/ProcessSteps.astro';
 import FormatCards from '../components/FormatCards.astro';
@@ -16,7 +16,7 @@ import NewsletterForm from '../components/NewsletterForm.astro';
 import Accordion from '../components/Accordion.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { site } from '../config/site';
-import { programmes } from '../data/programmes';
+import { programmes, programmesByTopic } from '../data/programmes';
 import { home, faqs } from '../data/content';
 
 const faqLd = {
@@ -31,7 +31,7 @@ const faqLd = {
 ---
 
 <BaseLayout
-  description="Training and workshops built only for India’s Global Capability Centres. Leadership, AI readiness, manager development and onboarding programmes from Pune."
+  description="Training and workshops built only for India’s Global Capability Centres. GenAI, leadership, stakeholder management, product, cloud, delivery, domain and onboarding programmes from Pune."
   jsonLd={[faqLd]}
 >
   <!-- Hero -->
@@ -104,15 +104,15 @@ const faqLd = {
         <SectionHeading
           id="programmes-heading"
           title="Programmes built for GCC realities"
-          intro="Six core programmes, each tailored to your centre’s mandate. Or a workshop designed from scratch."
+          intro={`${programmes.length} programmes across the ${programmesByTopic.length} topic areas GCCs invest in most, each tailored to your centre’s mandate. Or a workshop designed from scratch.`}
         />
         <a href="/programmes/" class="link-arrow shrink-0">View all programmes <Icon name="arrow-right" size={18} /></a>
       </div>
       <ul class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {
-          programmes.map((p) => (
+          programmesByTopic.map(({ topic, programmes: list }) => (
             <li data-reveal>
-              <ProgrammeCard programme={p} />
+              <TopicCard topic={topic} programmes={list} />
             </li>
           ))
         }

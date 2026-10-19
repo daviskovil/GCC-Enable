@@ -79,14 +79,17 @@ All copy lives in data files. You never need to touch layout code to change text
 | What | File |
 | --- | --- |
 | Site name, email, phone, social links, booking link, form keys, analytics, feature flags | `src/config/site.ts` |
-| Programmes (cards, dropdown, footer and all six detail pages) | `src/data/programmes.ts` |
+| Topic areas (how programmes are grouped on the site) | `src/data/topics.ts` |
+| Programmes (cards, menu, detail pages) | `src/data/programmes.ts` |
 | Home page copy, statistics, process steps, formats, FAQ, About copy, values | `src/data/content.ts` |
 | YouTube videos | `videos` array in `src/config/site.ts` |
 | Articles | Markdown files in `src/content/insights/` |
 | Privacy policy and terms | `src/pages/privacy.astro`, `src/pages/terms.astro` |
 | Colours, fonts, spacing | `src/styles/global.css` (`@theme` block) |
 
-**Adding a programme:** add an object to the `programmes` array in `src/data/programmes.ts`. Its card, menu entry, footer link and `/programmes/<slug>/` page are generated automatically. `categories` drives the filter chips on `/programmes/`; `icon` is any [Lucide icon name](https://lucide.dev/icons).
+**Adding a programme:** add an object to the `programmes` array in `src/data/programmes.ts` and set `topic` to one of the slugs in `src/data/topics.ts`. Its card, menu entry and `/programmes/<slug>/` page are generated automatically, under that topic. `icon` is any [Lucide icon name](https://lucide.dev/icons).
+
+**Topic areas:** the Programmes page, the Programmes mega menu, the home page grid, the footer and the contact form's "Area of interest" list are all grouped by the topics in `src/data/topics.ts`, in that order. A topic with no programmes is hidden automatically.
 
 **Adding a service line later** (advisory, talent, technology): add a page in `src/pages/` and a link in `links` inside `src/components/Header.astro` and `company` in `src/components/Footer.astro`. The header has room for one or two more items, or you can turn a link into a second dropdown by copying the Programmes dropdown block.
 

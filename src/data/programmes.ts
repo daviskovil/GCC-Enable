@@ -4,7 +4,7 @@
  * To add a programme, add an object to the array; the site picks it up automatically.
  */
 
-export type ProgrammeCategory = 'Leadership' | 'AI' | 'Managers' | 'Onboarding';
+import { topics, type TopicSlug } from './topics';
 
 export interface ProgrammeFormat {
   name: string;
@@ -18,7 +18,8 @@ export interface Programme {
   /** Lucide icon name */
   icon: string;
   summary: string;
-  categories: ProgrammeCategory[];
+  /** Topic area this programme sits under (see src/data/topics.ts) */
+  topic: TopicSlug;
   audienceShort: string;
   durationShort: string;
   formatShort: string;
@@ -32,8 +33,6 @@ export interface Programme {
   cta: string;
 }
 
-export const programmeCategories: ProgrammeCategory[] = ['Leadership', 'AI', 'Managers', 'Onboarding'];
-
 export const programmes: Programme[] = [
   {
     slug: 'ai-ready-leadership',
@@ -41,7 +40,7 @@ export const programmes: Programme[] = [
     icon: 'compass',
     summary:
       'AI literacy for the people who decide where the centre goes next: what changes, what to redesign and how to make the case to HQ.',
-    categories: ['Leadership', 'AI'],
+    topic: 'ai',
     audienceShort: 'Site leaders, directors, N-1s',
     durationShort: '1 day + optional sprints',
     formatShort: 'Leadership workshop',
@@ -113,7 +112,7 @@ export const programmes: Programme[] = [
     icon: 'code-xml',
     summary:
       'Hands-on use of AI copilots and agents in real engineering and delivery workflows, done safely and measured properly.',
-    categories: ['AI'],
+    topic: 'ai',
     audienceShort: 'Engineers, tech leads, QA, delivery',
     durationShort: '1–2 days or multi-week',
     formatShort: 'Bootcamp or cohort',
@@ -185,7 +184,7 @@ export const programmes: Programme[] = [
     icon: 'users',
     summary:
       'A cohort programme for the “missing middle”: new and mid-level managers who must lead, decide and coach without escalating to HQ.',
-    categories: ['Managers', 'Leadership'],
+    topic: 'leadership',
     audienceShort: 'New and mid-level managers',
     durationShort: '3–4 months',
     formatShort: 'Cohort with coaching',
@@ -260,8 +259,8 @@ export const programmes: Programme[] = [
     title: 'Services-to-Captive Onboarding',
     icon: 'door-open',
     summary:
-      'Helps laterals from IT services firms make the shift to ownership, outcomes and product thinking, so they become productive sooner.',
-    categories: ['Onboarding'],
+      'A “GCC 101” for laterals from IT services firms: the shift to ownership, outcomes and product thinking, so they become productive sooner.',
+    topic: 'onboarding',
     audienceShort: 'Laterals from IT services firms',
     durationShort: '2–3 days',
     formatShort: 'Runs every intake',
@@ -333,7 +332,7 @@ export const programmes: Programme[] = [
     icon: 'globe',
     summary:
       'Practical skills for working with HQ: influencing without authority, pushing back well and running global meetings that decide things.',
-    categories: ['Managers'],
+    topic: 'stakeholder',
     audienceShort: 'Managers and leads working with HQ',
     durationShort: '1–2 days',
     formatShort: 'Workshop',
@@ -400,7 +399,7 @@ export const programmes: Programme[] = [
     icon: 'arrow-right-left',
     summary:
       'For leaders taking over work from HQ: plan the transition, transfer knowledge, manage risk and prove the centre is ready.',
-    categories: ['Leadership'],
+    topic: 'leadership',
     audienceShort: 'Delivery and programme leaders',
     durationShort: 'Workshop + playbook',
     formatShort: 'Workshop, playbook, coaching',
@@ -466,6 +465,299 @@ export const programmes: Programme[] = [
     related: ['ai-ready-leadership', 'global-stakeholder-management'],
     cta: 'Talk about your next transition',
   },
+  {
+    slug: 'product-thinking',
+    title: 'Product Management and Product Thinking',
+    icon: 'lightbulb',
+    summary:
+      'Helps GCC teams move from delivering requirements to owning problems, outcomes and product decisions alongside HQ.',
+    topic: 'product',
+    audienceShort: 'Product owners, leads, engineers',
+    durationShort: '2 days or 6-week cohort',
+    formatShort: 'Workshop or cohort',
+    whoFor: [
+      'Product owners and product managers in the centre',
+      'Engineering and tech leads who want a bigger say in what gets built',
+      'Business analysts moving into product roles',
+      'Leaders building product ownership in India',
+    ],
+    challenge: [
+      'As HQ hands over whole products rather than tasks, India teams are expected to decide what to build, not only how. Many have grown up in a requirements-driven world where the backlog arrives fully formed.',
+      'This programme builds the habits of product thinking: understanding users and the business, framing problems, prioritising with evidence and measuring outcomes, so the centre earns a real seat in product decisions.',
+    ],
+    outcomes: [
+      'Frame work as problems and outcomes, not features and tickets',
+      'Understand users and the business model behind the product',
+      'Prioritise a roadmap with clear trade-offs and evidence',
+      'Define and track product metrics that HQ product leaders recognise',
+    ],
+    modules: [
+      {
+        title: 'From project to product',
+        description: 'What changes when a GCC team owns a product, and what HQ expects of a product owner in India.',
+      },
+      {
+        title: 'Understanding users and the business',
+        description: 'Customer discovery, journey mapping and the commercial model behind the product.',
+      },
+      {
+        title: 'Problem framing and prioritisation',
+        description: 'Writing problem statements, sizing opportunities and making trade-offs visible.',
+      },
+      {
+        title: 'Roadmaps and stakeholder alignment',
+        description: 'Building outcome-based roadmaps and aligning them with HQ product leadership.',
+      },
+      {
+        title: 'Product metrics and experiments',
+        description: 'Choosing metrics that matter, running small experiments and learning from the results.',
+      },
+      {
+        title: 'Working with engineering and design',
+        description: 'Running discovery and delivery together, so ideas reach users faster.',
+      },
+    ],
+    formats: [
+      {
+        name: 'Workshop',
+        duration: '2 days',
+        detail: 'Practical sessions using a product from your own portfolio as the running case.',
+      },
+      {
+        name: 'Cohort programme',
+        duration: '6 weeks',
+        detail: 'Weekly sessions with assignments applied to live products, ending with a roadmap review.',
+      },
+    ],
+    impact: [
+      'Quality of problem statements and roadmaps, reviewed with product sponsors',
+      'Share of backlog items linked to a measurable outcome',
+      'HQ product leaders’ feedback on India team contribution',
+    ],
+    related: ['global-stakeholder-management', 'delivery-excellence-agile'],
+    cta: 'Discuss product thinking for your teams',
+  },
+  {
+    slug: 'cloud-data-security-certifications',
+    title: 'Cloud, Data and Cybersecurity Certification Tracks',
+    icon: 'cloud',
+    summary:
+      'Structured, cohort-based preparation for cloud, data and security certifications, tied to the skills your roadmap needs.',
+    topic: 'cloud-data-security',
+    audienceShort: 'Engineers, data and security teams',
+    durationShort: '6–10 weeks per track',
+    formatShort: 'Certification cohort',
+    whoFor: [
+      'Engineers moving onto cloud platforms',
+      'Data engineers, analysts and platform teams',
+      'Security, risk and infrastructure teams',
+      'L&D teams running certification targets for the centre',
+    ],
+    challenge: [
+      'Certification targets are common in GCC talent plans, but self-study pass rates are often low and the learning rarely connects to the work the centre is taking on.',
+      'We design certification tracks around your technology roadmap, with structured study, hands-on practice and regular progress reviews, so more people pass and the skills show up on projects.',
+    ],
+    outcomes: [
+      'Prepare for the certifications that match the centre’s cloud, data and security roadmap',
+      'Build hands-on skills through labs, not only exam practice',
+      'Apply what they learn to real projects in the centre',
+      'Track progress and readiness across the cohort',
+    ],
+    modules: [
+      {
+        title: 'Skills and certification mapping',
+        description: 'Matching roles to the right certifications on your chosen cloud, data and security platforms.',
+      },
+      {
+        title: 'Cloud foundations and architecture',
+        description: 'Core services, architecture patterns, cost and operations on your primary cloud.',
+      },
+      {
+        title: 'Data engineering and analytics',
+        description: 'Pipelines, platforms and governance for data and analytics teams.',
+      },
+      {
+        title: 'Cybersecurity essentials',
+        description: 'Security fundamentals, cloud security and the controls HQ audit teams look for.',
+      },
+      {
+        title: 'Exam preparation and practice',
+        description: 'Study plans, practice assessments and review sessions before each exam.',
+      },
+      {
+        title: 'Applying it at work',
+        description: 'Short applied projects so the certification turns into contribution on live work.',
+      },
+    ],
+    formats: [
+      {
+        name: 'Certification cohort',
+        duration: '6–10 weeks per track',
+        detail: 'Guided study with weekly live sessions, labs and practice assessments.',
+      },
+      {
+        name: 'Bootcamp',
+        duration: '3–5 days',
+        detail: 'Intensive preparation for teams with a near-term certification deadline.',
+      },
+      {
+        name: 'Progress reporting',
+        duration: 'Throughout',
+        detail: 'Regular readiness reports to L&D and engineering leaders.',
+      },
+    ],
+    impact: [
+      'Certification pass rates against previous self-study cohorts',
+      'Time from enrolment to certification',
+      'Number of certified people deployed onto relevant projects',
+    ],
+    related: ['genai-engineering-delivery', 'delivery-excellence-agile'],
+    cta: 'Plan a certification track',
+  },
+  {
+    slug: 'delivery-excellence-agile',
+    title: 'Delivery Excellence and Agile at Scale',
+    icon: 'gauge',
+    summary:
+      'Predictable, high-quality delivery across distributed teams: Agile at scale (including SAFe), flow and engineering productivity.',
+    topic: 'delivery',
+    audienceShort: 'Delivery leads, Scrum masters, managers',
+    durationShort: '2 days + optional coaching',
+    formatShort: 'Workshop and team coaching',
+    whoFor: [
+      'Delivery managers and programme leads',
+      'Scrum masters, release train engineers and Agile coaches',
+      'Engineering managers responsible for team productivity',
+      'Teams working across India and HQ on shared roadmaps',
+    ],
+    challenge: [
+      'Distributed delivery is hard. Plans slip between locations, dependencies surface late and “Agile” becomes a set of ceremonies rather than a faster way to deliver value.',
+      'This programme focuses on what actually improves delivery: clear planning across teams, healthy flow, fewer handoffs and honest metrics, adapted to the framework your organisation already uses, whether SAFe or another approach.',
+    ],
+    outcomes: [
+      'Plan and coordinate work across multiple teams and locations',
+      'Apply Agile at scale practices, including SAFe where it is your organisation’s framework',
+      'Improve flow by reducing handoffs, waiting time and rework',
+      'Use delivery and productivity metrics that drive improvement, not reporting theatre',
+    ],
+    modules: [
+      {
+        title: 'What delivery excellence looks like in a GCC',
+        description: 'Common failure points in distributed delivery, and what high-performing centres do differently.',
+      },
+      {
+        title: 'Agile at scale in practice',
+        description: 'Planning across teams, managing dependencies and aligning with HQ roadmaps, with SAFe and other frameworks.',
+      },
+      {
+        title: 'Flow and engineering productivity',
+        description: 'Value stream thinking, work in progress limits and removing bottlenecks.',
+      },
+      {
+        title: 'Quality built in',
+        description: 'Definition of done, test automation and release practices that prevent rework.',
+      },
+      {
+        title: 'Metrics that matter',
+        description: 'Flow and delivery metrics, and how to use them for improvement rather than blame.',
+      },
+      {
+        title: 'Improvement plan',
+        description: 'Each team leaves with three changes to try and a way to measure them.',
+      },
+    ],
+    formats: [
+      {
+        name: 'Workshop',
+        duration: '2 days',
+        detail: 'For delivery leaders and Agile roles, built around your current programmes.',
+      },
+      {
+        name: 'Team coaching',
+        duration: '6–8 weeks (optional)',
+        detail: 'Coaching selected teams or release trains as they apply the changes.',
+      },
+    ],
+    impact: [
+      'Predictability: planned versus delivered work across teams',
+      'Flow metrics such as cycle time and work in progress',
+      'Escaped defects and rework, compared with the baseline',
+    ],
+    related: ['ownership-mandate-transfer', 'genai-engineering-delivery'],
+    cta: 'Discuss delivery excellence',
+  },
+  {
+    slug: 'domain-upskilling',
+    title: 'Domain Upskilling: Banking, Insurance, Pharma and Automotive',
+    icon: 'landmark',
+    summary:
+      'Teaches engineers and analysts how the business they support actually works, so they can contribute ideas, not only code.',
+    topic: 'domain',
+    audienceShort: 'Engineers, analysts, new joiners',
+    durationShort: '2–5 days per domain',
+    formatShort: 'Domain bootcamp or series',
+    whoFor: [
+      'Engineers and analysts supporting banking, insurance, pharma or automotive businesses',
+      'Laterals joining from a different industry',
+      'Product owners and BAs who need deeper domain knowledge',
+      'Leaders building domain-led centres of excellence',
+    ],
+    challenge: [
+      'HQ increasingly wants India teams to understand the business, not just the system. Engineers who know how a loan is priced, a claim is settled or a clinical trial runs make better decisions and ask better questions.',
+      'Most domain training is either too generic or too academic. These programmes are built around the processes, regulations and terminology your teams meet every day, with examples from your own systems.',
+    ],
+    outcomes: [
+      'Explain the core business processes and value chain of their domain',
+      'Understand the key regulations and controls that shape the work',
+      'Use domain language confidently with HQ business stakeholders',
+      'Spot improvement opportunities where technology and business meet',
+    ],
+    modules: [
+      {
+        title: 'Banking and financial services',
+        description: 'Retail and corporate banking, payments, lending, risk and regulatory reporting.',
+      },
+      {
+        title: 'Insurance',
+        description: 'Products, underwriting, policy administration, claims and distribution.',
+      },
+      {
+        title: 'Pharma and life sciences',
+        description: 'Drug development, clinical trials, regulatory affairs, pharmacovigilance and GxP basics.',
+      },
+      {
+        title: 'Automotive',
+        description: 'Vehicle development, manufacturing, supply chain, software-defined vehicles and aftersales.',
+      },
+      {
+        title: 'Regulation and compliance in practice',
+        description: 'The rules that shape each domain and what they mean for technology teams.',
+      },
+      {
+        title: 'Applying domain knowledge',
+        description: 'Case work linking business processes to the systems and data your teams own.',
+      },
+    ],
+    formats: [
+      {
+        name: 'Domain bootcamp',
+        duration: '2–5 days per domain',
+        detail: 'Intensive programme for a team or intake, customised to your business lines.',
+      },
+      {
+        name: 'Learning series',
+        duration: 'Weekly, over 6–8 weeks',
+        detail: 'Short sessions alongside work, with case studies and quizzes.',
+      },
+    ],
+    impact: [
+      'Domain knowledge assessment before and after',
+      'Business stakeholder feedback on India team contribution',
+      'Improvement ideas raised and taken forward by participants',
+    ],
+    related: ['product-thinking', 'services-to-captive-onboarding'],
+    cta: 'Discuss domain upskilling',
+  },
 ];
 
 /** Shown alongside the programme cards */
@@ -477,3 +769,8 @@ export const customWorkshop = {
 };
 
 export const getProgramme = (slug: string) => programmes.find((p) => p.slug === slug);
+
+/** Programmes grouped under each topic, in topic order (topics with no programme are skipped). */
+export const programmesByTopic = topics
+  .map((topic) => ({ topic, programmes: programmes.filter((p) => p.topic === topic.slug) }))
+  .filter((g) => g.programmes.length > 0);
