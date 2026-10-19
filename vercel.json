@@ -47,6 +47,16 @@
   ],
   "redirects": [
     {
+      "source": "/insights/sample-what-hq-looks-for{/}?",
+      "destination": "/resources/blog/what-hq-looks-for-before-a-bigger-mandate/",
+      "permanent": true
+    },
+    {
+      "source": "/resources/blog/sample-what-hq-looks-for{/}?",
+      "destination": "/resources/blog/what-hq-looks-for-before-a-bigger-mandate/",
+      "permanent": true
+    },
+    {
       "source": "/insights{/}?",
       "destination": "/resources/",
       "permanent": true

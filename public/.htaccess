@@ -21,6 +21,7 @@ ErrorDocument 404 /404.html
   RewriteRule ^(.*)$ https://%{ENV:CANONICAL_HOST}/$1 [R=301,L]
 
   # Old Insights URLs moved under Resources
+  RewriteRule ^(insights|resources/blog)/sample-what-hq-looks-for/?$ /resources/blog/what-hq-looks-for-before-a-bigger-mandate/ [R=301,L]
   RewriteRule ^insights/?$ /resources/ [R=301,L]
   RewriteRule ^insights/(.+?)/?$ /resources/blog/$1/ [R=301,L]
 
