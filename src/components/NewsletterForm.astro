@@ -5,9 +5,11 @@ import Icon from './Icon.astro';
 interface Props {
   dark?: boolean;
   compact?: boolean;
+  /** Always stack the field and button (for narrow sidebars) */
+  stacked?: boolean;
   id: string;
 }
-const { dark = false, compact = false, id } = Astro.props;
+const { dark = false, compact = false, stacked = false, id } = Astro.props;
 const useEmbed = !isPlaceholder(site.newsletterEmbed);
 ---
 
@@ -25,7 +27,7 @@ const useEmbed = !isPlaceholder(site.newsletterEmbed);
   <label for={id} class={`mb-2 block text-sm font-semibold ${dark ? 'text-white' : 'text-navy'} ${compact ? 'sr-only' : ''}`}>
     Work email
   </label>
-  <div class={`flex gap-2 ${compact ? 'flex-col sm:flex-row' : 'flex-col sm:flex-row'}`}>
+  <div class={`flex gap-2 ${stacked ? 'flex-col' : 'flex-col sm:flex-row'}`}>
     <input
       id={id}
       type="email"

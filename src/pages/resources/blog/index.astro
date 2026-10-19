@@ -1,35 +1,247 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import PageHero from '../../../components/PageHero.astro';
+import Breadcrumb from '../../../components/Breadcrumb.astro';
+import Icon from '../../../components/Icon.astro';
 import ArticleCard from '../../../components/ArticleCard.astro';
+import NewsletterForm from '../../../components/NewsletterForm.astro';
 import CtaBand from '../../../components/CtaBand.astro';
 import { getArticles } from '../../../utils/blog';
+import { topics } from '../../../data/topics';
 
+const PER_PAGE = 10;
 const articles = await getArticles();
+
+// Categories = topic areas that have at least one post, in topic order
+const categories = topics
+  .map((t) => ({ slug: t.slug, label: t.short, count: articles.filter((a) => a.data.topic === t.slug).length }))
+  .filter((c) => c.count > 0);
+
+// Topics = tags, most used first
+const tagCounts = new Map<string, number>();
+articles.forEach((a) => a.data.tags.forEach((t) => tagCounts.set(t, (tagCounts.get(t) ?? 0) + 1)));
+const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).map(([t]) => t);
 ---
 
 <BaseLayout title="Blog" description="Practical articles for GCC site leaders, managers and L&D teams in India.">
-  <PageHero
-    title="Blog"
-    intro="Short, practical articles on mandates, managers, AI and the services-to-captive shift."
-    breadcrumb={[{ label: 'Resources', href: '/resources/' }, { label: 'Blog' }]}
-  />
-  <section class="section" aria-label="Articles">
-    <div class="container-site">
-      {
-        articles.length === 0 ? (
-          <p class="text-slate">New articles are on the way.</p>
-        ) : (
-          <ul class="grid gap-6 md:grid-cols-2">
-            {articles.map((a) => (
-              <li data-reveal>
-                <ArticleCard article={a} />
-              </li>
-            ))}
-          </ul>
-        )
-      }
+  <section class="border-b border-line bg-mist">
+    <div class="container-site flex flex-col-reverse gap-4 py-10 md:flex-row md:items-start md:justify-between md:py-14">
+      <div>
+        <h1 class="text-4xl font-extrabold md:text-5xl">Blog</h1>
+        <p class="mt-3 max-w-xl text-lg text-slate">Practical guides on mandates, managers, AI and the services-to-captive shift.</p>
+      </div>
+      <Breadcrumb items={[{ label: 'Resources', href: '/resources/' }, { label: 'Blog' }]} />
     </div>
   </section>
+
+  <section class="container-site py-10 md:py-14" aria-label="Articles">
+    <div class="grid gap-6 lg:grid-cols-[1fr_300px] lg:grid-rows-[auto_1fr] lg:gap-x-10">
+      <!-- Search (above the list on phones, top of the sidebar on desktop) -->
+      <div class="rounded-[14px] border border-line bg-white p-5 lg:col-start-2 lg:row-start-1">
+        <label for="blog-search" class="sr-only">Search articles</label>
+        <div class="relative">
+          <Icon name="search" size={18} class="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-slate" />
+          <input id="blog-search" type="search" placeholder="Search articles..." class="field pl-10" autocomplete="off" data-blog-search />
+        </div>
+      </div>
+
+      <!-- Articles -->
+      <div class="lg:col-start-1 lg:row-span-2 lg:row-start-1">
+        <p class="text-sm text-slate" role="status" aria-live="polite" data-blog-status>
+          Showing 1–{Math.min(PER_PAGE, articles.length)} of {articles.length} articles
+        </p>
+        <ul class="mt-5 grid gap-6 sm:grid-cols-2" data-blog-list>
+          {
+            articles.map((a, i) => (
+              <li
+                data-topic={a.data.topic}
+                data-tags={a.data.tags.join('|')}
+                data-text={`${a.data.title} ${a.data.description} ${a.data.tags.join(' ')}`.toLowerCase()}
+                hidden={i >= PER_PAGE}
+              >
+                <ArticleCard article={a} headingLevel="h2" eager={i < 2} />
+              </li>
+            ))
+          }
+        </ul>
+        <p class="mt-8 hidden rounded-[14px] border border-dashed border-line p-8 text-center text-slate" data-blog-empty>
+          No articles match. <button type="button" class="link" data-blog-reset>Show all articles</button>
+        </p>
+        <nav aria-label="Blog pages" class="mt-10 hidden" data-blog-pager>
+          <ul class="flex flex-wrap items-center justify-center gap-2" data-blog-pages></ul>
+        </nav>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="space-y-6 self-start lg:col-start-2 lg:row-start-2" aria-label="Browse the blog">
+
+        <div class="rounded-[14px] border border-line bg-white p-5">
+          <h2 class="font-heading text-base font-bold">Categories</h2>
+          <ul class="mt-3 space-y-1">
+            <li>
+              <button
+                type="button"
+                class="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm font-medium text-ink hover:bg-mist aria-pressed:bg-mist aria-pressed:font-bold aria-pressed:text-navy"
+                aria-pressed="true"
+                data-blog-category=""
+              >
+                All articles
+                <span class="rounded-full bg-white px-2 py-0.5 text-xs font-semibold text-slate ring-1 ring-line">{articles.length}</span>
+              </button>
+            </li>
+            {
+              categories.map((c) => (
+                <li>
+                  <button
+                    type="button"
+                    class="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm font-medium text-ink hover:bg-mist aria-pressed:bg-mist aria-pressed:font-bold aria-pressed:text-navy"
+                    aria-pressed="false"
+                    data-blog-category={c.slug}
+                  >
+                    {c.label}
+                    <span class="rounded-full bg-white px-2 py-0.5 text-xs font-semibold text-slate ring-1 ring-line">{c.count}</span>
+                  </button>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="rounded-[14px] border border-line bg-white p-5">
+          <h2 class="font-heading text-base font-bold">Topics</h2>
+          <ul class="mt-3 flex flex-wrap gap-2">
+            {
+              tags.map((t) => (
+                <li>
+                  <button
+                    type="button"
+                    class="rounded-full border border-line px-3 py-1.5 text-xs font-medium text-slate transition-colors hover:border-navy hover:text-navy aria-pressed:border-navy aria-pressed:bg-navy aria-pressed:text-white"
+                    aria-pressed="false"
+                    data-blog-tag={t}
+                  >
+                    {t}
+                  </button>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <div class="bg-dark-pattern rounded-[14px] p-5 text-white">
+          <h2 class="font-heading text-base font-bold text-white">The GCC Enable note</h2>
+          <p class="mt-1.5 mb-4 text-sm text-white/80">One practical idea for GCC managers and L&amp;D leaders, every week.</p>
+          <NewsletterForm dark compact stacked id="blog-sidebar-newsletter" />
+        </div>
+      </aside>
+    </div>
+  </section>
+
   <CtaBand />
 </BaseLayout>
+
+<script>
+  const PER_PAGE = 10;
+  const items = [...document.querySelectorAll<HTMLLIElement>('[data-blog-list] > li')];
+  const status = document.querySelector<HTMLElement>('[data-blog-status]')!;
+  const empty = document.querySelector<HTMLElement>('[data-blog-empty]')!;
+  const pager = document.querySelector<HTMLElement>('[data-blog-pager]')!;
+  const pages = document.querySelector<HTMLElement>('[data-blog-pages]')!;
+  const search = document.querySelector<HTMLInputElement>('[data-blog-search]')!;
+  const catButtons = [...document.querySelectorAll<HTMLButtonElement>('[data-blog-category]')];
+  const tagButtons = [...document.querySelectorAll<HTMLButtonElement>('[data-blog-tag]')];
+
+  const state = { q: '', category: '', tag: '', page: 1 };
+
+  // Restore filters from the URL (?category=…&tag=…&q=…&page=…)
+  const params = new URLSearchParams(location.search);
+  state.category = params.get('category') ?? '';
+  state.tag = params.get('tag') ?? '';
+  state.q = params.get('q') ?? '';
+  state.page = Math.max(1, Number(params.get('page')) || 1);
+  search.value = state.q;
+
+  const syncUrl = () => {
+    const p = new URLSearchParams();
+    if (state.category) p.set('category', state.category);
+    if (state.tag) p.set('tag', state.tag);
+    if (state.q) p.set('q', state.q);
+    if (state.page > 1) p.set('page', String(state.page));
+    const qs = p.toString();
+    history.replaceState(null, '', qs ? `?${qs}` : location.pathname);
+  };
+
+  const render = (scroll = false) => {
+    const q = state.q.trim().toLowerCase();
+    const matches = items.filter(
+      (li) =>
+        (!state.category || li.dataset.topic === state.category) &&
+        (!state.tag || (li.dataset.tags ?? '').split('|').includes(state.tag)) &&
+        (!q || (li.dataset.text ?? '').includes(q)),
+    );
+    const totalPages = Math.max(1, Math.ceil(matches.length / PER_PAGE));
+    state.page = Math.min(state.page, totalPages);
+    const start = (state.page - 1) * PER_PAGE;
+    const visible = new Set(matches.slice(start, start + PER_PAGE));
+    items.forEach((li) => (li.hidden = !visible.has(li)));
+
+    status.textContent = matches.length
+      ? `Showing ${start + 1}–${start + visible.size} of ${matches.length} article${matches.length === 1 ? '' : 's'}`
+      : 'Showing 0 articles';
+    empty.classList.toggle('hidden', matches.length > 0);
+
+    catButtons.forEach((b) => b.setAttribute('aria-pressed', String((b.dataset.blogCategory ?? '') === state.category)));
+    tagButtons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.blogTag === state.tag)));
+
+    pager.classList.toggle('hidden', totalPages < 2);
+    pages.innerHTML = '';
+    for (let n = 1; n <= totalPages; n++) {
+      const li = document.createElement('li');
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = String(n);
+      btn.className =
+        'inline-flex h-10 min-w-10 items-center justify-center rounded-lg border px-3 text-sm font-semibold ' +
+        (n === state.page ? 'border-navy bg-navy text-white' : 'border-line text-navy hover:border-navy');
+      if (n === state.page) btn.setAttribute('aria-current', 'page');
+      btn.setAttribute('aria-label', `Page ${n}`);
+      btn.addEventListener('click', () => {
+        state.page = n;
+        render(true);
+      });
+      li.append(btn);
+      pages.append(li);
+    }
+    syncUrl();
+    if (scroll) status.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  catButtons.forEach((b) =>
+    b.addEventListener('click', () => {
+      state.category = b.dataset.blogCategory ?? '';
+      state.page = 1;
+      render();
+    }),
+  );
+  tagButtons.forEach((b) =>
+    b.addEventListener('click', () => {
+      state.tag = state.tag === b.dataset.blogTag ? '' : (b.dataset.blogTag ?? '');
+      state.page = 1;
+      render();
+    }),
+  );
+  let t: number | undefined;
+  search.addEventListener('input', () => {
+    window.clearTimeout(t);
+    t = window.setTimeout(() => {
+      state.q = search.value;
+      state.page = 1;
+      render();
+    }, 150);
+  });
+  document.querySelector('[data-blog-reset]')?.addEventListener('click', () => {
+    Object.assign(state, { q: '', category: '', tag: '', page: 1 });
+    search.value = '';
+    render();
+  });
+
+  render();
+</script>
