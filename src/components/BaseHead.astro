@@ -38,7 +38,12 @@ const baseLd = [
       addressCountry: 'IN',
     },
     areaServed: 'IN',
-    founder: { '@type': 'Person', name: about.founder.name, jobTitle: about.founder.role },
+    founder: {
+      '@type': 'Person',
+      name: about.founder.name,
+      jobTitle: about.founder.role,
+      ...(about.founder.linkedin ? { sameAs: [about.founder.linkedin] } : {}),
+    },
     sameAs,
   },
   {

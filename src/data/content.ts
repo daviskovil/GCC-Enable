@@ -232,8 +232,7 @@ export const about = {
       { value: '19 countries', label: 'IT service delivery led across Europe' },
       { value: '30,000+ users', label: 'Supported as Country Head, IT End User Services' },
     ],
-    /** PLACEHOLDER: add the LinkedIn profile URL to show a "Connect on LinkedIn" link */
-    linkedin: '',
+    linkedin: 'https://www.linkedin.com/in/davisrajan/',
   },
   values: [
     { icon: 'target', title: 'Focused', body: 'We work only with GCCs, so every example and exercise fits your world.' },

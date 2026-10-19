@@ -268,7 +268,6 @@ Search the project for `PLACEHOLDER`, `YOUR_` and `[` to find them all.
 
 **`src/data/content.ts`**
 
-- [ ] `about.founder.linkedin` in `src/data/content.ts`: add the LinkedIn profile URL (name, bio and photo are done)
 - [ ] Optionally add `hero.jpg` and `about.jpg` to `src/assets/images/` (founder photo is in place)
 - [ ] Before turning on `showTestimonials`, `showClientLogos` or `showFacultySection`, replace every `PLACEHOLDER` entry with real, approved content
 - [ ] Before turning on `showEvents` or `showGuides`, replace the `PLACEHOLDER` entries in `src/data/events.ts` and `src/data/guides.ts`
