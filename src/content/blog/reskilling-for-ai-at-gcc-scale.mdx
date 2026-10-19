@@ -1,0 +1,133 @@
+---
+title: 'Reskilling for AI at GCC scale: a practical playbook for L&D heads'
+ogTitle: 'Reskilling for AI at GCC scale: an L&D playbook'
+description: 'Most GCCs need to reskill a large share of their workforce for AI. A practical, phased playbook for L&D heads that goes beyond tool training.'
+date: 2026-09-28T09:00:00+05:30
+topic: ai
+tags: ['AI reskilling', 'L&D', 'GenAI', 'Workforce planning']
+banner: ../../assets/blog/reskilling-for-ai-at-gcc-scale/banner.png
+bannerAlt: 'Illustration: a grid of people with a growing share highlighted in teal, and a progress bar'
+programmes: ['genai-engineering-delivery', 'ai-ready-leadership']
+---
+
+import Cta from '../../components/blog/Cta.astro';
+import Figure from '../../components/blog/Figure.astro';
+import KeyTakeaways from '../../components/blog/KeyTakeaways.astro';
+import Stat from '../../components/blog/Stat.astro';
+import Steps from '../../components/blog/diagrams/Steps.astro';
+import Compare from '../../components/blog/diagrams/Compare.astro';
+
+For L&D heads in India's GCCs, AI has turned a familiar challenge into an urgent one. Reskilling used to be a steady, role-by-role effort. Now leadership wants a plan for large parts of the workforce at once, and HQ wants to see results.
+
+The scale is real. Most centres are not looking at a few specialist teams; they are looking at a significant share of everyone.
+
+<Stat value="72%" label="of GCCs need to reskill or upskill over 40% of their workforce for AI" source="PwC India–FICCI GCC skills survey, Aug 2026" />
+
+<KeyTakeaways
+  items={[
+    'AI reskilling at scale fails when it is treated as tool training for everyone.',
+    'Segment the workforce by how AI changes each role, and design different journeys for each.',
+    'Leaders and managers go first; without them, adoption stalls.',
+    'Learning must happen inside real workflows, with safe-use rules and a baseline to measure against.',
+  ]}
+/>
+
+## Why the usual approach falls short
+
+The instinctive response to an AI mandate is a large catalogue: online courses on prompting, a licence for an AI assistant, and a target for completions. Completion rates look healthy. Six months later, usage is patchy and nobody can say what changed.
+
+Three things usually go wrong. The training is generic, so people cannot connect it to their own work. Managers are not involved, so teams receive mixed signals about whether to use AI at all. And there is no baseline, so the centre cannot show HQ any impact.
+
+---
+
+## A five-step playbook
+
+A more effective approach treats AI reskilling as a change programme with learning at its centre, not a learning programme on its own.
+
+<Figure caption="A five-step playbook for AI reskilling across a GCC.">
+  <Steps
+    label="Diagram: five-step AI reskilling playbook from segmenting roles to measuring impact"
+    title="AI reskilling playbook"
+    outcome="Measurable adoption"
+    steps={[
+      { icon: 'layout-grid', title: 'Segment roles', body: 'By how AI changes the work' },
+      { icon: 'compass', title: 'Leaders first', body: 'Shared view and sponsorship' },
+      { icon: 'shield-check', title: 'Set safe-use rules', body: 'Clear, practical policies' },
+      { icon: 'code-xml', title: 'Learn in the workflow', body: 'Hands-on, on real tasks' },
+      { icon: 'chart-line', title: 'Measure impact', body: 'Against a baseline' },
+    ]}
+  />
+</Figure>
+
+### 1. Segment by how AI changes the work
+
+Not every role changes in the same way. For some, AI will automate a large part of the routine work. For others, it will augment judgement-heavy tasks. For a few, it will create entirely new responsibilities. Group roles into a small number of segments, such as builders, users and leaders, and design a different journey for each.
+
+### 2. Start with leaders and managers
+
+If leaders cannot explain how AI changes the centre's work, teams will not change theirs. Managers matter even more: they decide whether AI use is encouraged, tolerated or quietly discouraged. Give both groups their own sessions before the wider rollout.
+
+### 3. Make the rules clear
+
+Uncertainty about what is allowed is one of the biggest brakes on adoption. People need simple, practical guidance: which tools are approved, what data can go into a prompt, how to review AI output and who to ask. Work with security and legal teams so the guidance matches HQ policy.
+
+<Cta programme="genai-engineering-delivery" />
+
+---
+
+### 4. Learn inside the workflow
+
+The most effective AI learning happens on real tasks. Engineers learn to use copilots on their own code and tests. Analysts learn on their own reports. Support teams learn on their own tickets. Short, hands-on sessions followed by practice at work beat long courses every time.
+
+<Figure caption="Two ways to run AI reskilling, and the results each tends to produce.">
+  <Compare
+    label="Comparison of a catalogue-led approach and a workflow-led approach to AI reskilling"
+    left="Catalogue-led"
+    right="Workflow-led"
+    rows={[
+      ['Same course for everyone', 'Journeys by role segment'],
+      ['Tracks completions', 'Tracks use and impact'],
+      ['Generic examples', 'Real tasks from the team'],
+      ['Managers not involved', 'Managers sponsor and model use'],
+      ['Policy unclear', 'Safe-use rules agreed up front'],
+    ]}
+  />
+</Figure>
+
+### 5. Measure what changes
+
+Before rollout, agree a small set of measures with business sponsors and take a baseline. For engineering teams that might be cycle time, review effort or defect rates. For operations, it might be handling time or quality scores. Add a simple confident-use survey at 30 and 90 days. These measures turn AI reskilling from a cost into a story HQ wants to hear.
+
+---
+
+## Phasing the rollout
+
+Trying to reach everyone at once usually spreads effort too thin. A phased approach works better:
+
+1. **Pilot** with two or three teams that have supportive managers and measurable work. Learn what works.
+2. **Expand** to the role segments where AI changes the most, using pilot teams as champions.
+3. **Embed** AI skills into onboarding, role profiles and career paths, so new joiners start with them.
+
+Throughout, keep a short monthly report for leadership: who has been reached, how usage is changing and what impact the pilots have shown. It keeps sponsors engaged and makes the case for continued investment.
+
+AI reskilling at GCC scale is a serious undertaking, but it is also an opportunity. Centres that do it well become the place HQ looks to for AI-led change, which is exactly the kind of mandate most GCCs are aiming for.
+
+---
+
+## Working with HQ on AI reskilling
+
+AI reskilling in a GCC rarely happens in isolation. Global organisations usually have their own AI strategy, approved tools, policies and sometimes their own learning programmes. Aligning with them avoids duplication and builds credibility.
+
+**Start from HQ policy.** Find out which AI tools are approved, what data classifications apply and what the global security and legal teams require. Building the centre's guidance on top of these rules, rather than alongside them, prevents conflict later.
+
+**Use global content where it fits.** If HQ already offers AI learning, use it for the foundations and focus local effort on what is specific to the centre: its workflows, its roles and its stakeholders. This keeps costs down and shows HQ that the centre is working with the global plan.
+
+**Share results upwards.** Pilot results from India, especially measured improvements, are valuable to HQ. Many global organisations are still looking for evidence of what works. A centre that can show credible data becomes a natural place to test and lead future AI initiatives.
+
+**Agree ownership.** Be clear about who owns AI skills in the centre: L&D, a CoE, the CTO's office or a combination. Shared ownership without clarity is one of the most common reasons reskilling programmes lose momentum.
+
+### Budgeting for the long term
+
+AI tools and practices will keep changing. Budget for continuous learning rather than a single wave of training: short refreshers as tools evolve, new modules as roles change, and regular sessions for new joiners. Centres that treat AI skills as an ongoing capability, rather than a one-time project, will be better placed as the technology keeps moving.
+
+<Cta title="Planning AI reskilling for your centre?" text="Book a 30-minute discovery call to talk through your role segments and where to start." />

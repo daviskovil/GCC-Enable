@@ -303,9 +303,6 @@
 .prose-gcc .not-prose a {
   text-decoration: none;
 }
-.prose-gcc .not-prose ul.space-y-3 > li + li {
-  margin-top: 0.75rem;
-}
 /* Section divider: thin rule with the brand mark in the middle (Markdown "---") */
 .prose-gcc hr {
   border: 0;

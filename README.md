@@ -123,7 +123,7 @@ Old `/insights/` links redirect to `/resources/` (in `vercel.json` and `.htacces
 
 ### Blog
 
-The content plan for the first 10 posts is in [BLOG-PLAN.md](BLOG-PLAN.md). Posts are `.mdx` files in `src/content/blog/`. Copy the published post as a starting point:
+The blog publishes a new post every Monday. Published posts and upcoming ideas are listed in [BLOG-PLAN.md](BLOG-PLAN.md). Posts are `.mdx` files in `src/content/blog/`. Copy the published post as a starting point:
 
 ```mdx
 ---
@@ -163,15 +163,16 @@ Opening paragraph (shown larger, as the lead).
 - **Byline:** every post is bylined **GCC Enable Editorial** (the default `author`), shown with the logo mark and an "About GCC Enable Editorial" box. In search results it is marked up as an Organization author.
 - **Building blocks:** `<Cta />` (discovery call), `<Cta programme="slug" />`, `<Cta kind="newsletter" />`, `<KeyTakeaways items={[…]} />`, `<Stat value="72%" label="…" source="…" />`, and `<Figure caption="…">` around an image or diagram component (see `src/components/blog/diagrams/`).
 - **Dividers:** a line with only `---` between sections renders as the branded divider.
-- **Banner:** a 1600×640 PNG in `src/assets/blog/<slug>/`. It is optimised to WebP automatically.
+- **Banner:** a 1600×640 PNG in `src/assets/blog/<slug>/`, optimised to WebP automatically. To create one in the house style, add the slug, a motif and an icon to `scripts/make-banners.mjs` and run `node scripts/make-banners.mjs <slug>`.
+- **Word count:** `python scripts/word-count.py` prints the body word count for every post (target 850+).
 - **Social share image:** generated automatically for every post at `/og/blog/<slug>.png` (navy, logo, topic, title), and used for LinkedIn, X and WhatsApp previews. Set `ogTitle` if the title is too long.
 - **Scheduling:** a post whose `date` is in the future is hidden (no page, no listing, no sitemap entry) until a build runs on or after that date. Set `draft: true` to hide a post indefinitely.
 
-**Daily publishing.** `.github/workflows/daily-publish.yml` rebuilds and deploys the site to Vercel at 09:05 IST every day, so scheduled posts appear on their date without anyone touching it. One-time setup:
+**Weekly publishing.** `.github/workflows/weekly-publish.yml` rebuilds and deploys the site to Vercel every Monday at 09:05 IST. Write a post ahead of time, give it the next Monday's date and push it, and it goes live that morning. One-time setup:
 
 1. In Vercel, go to **Account Settings → Tokens** and create a token (scope: your team, no expiry or a long one).
 2. In GitHub, go to **daviskovil/GCC-Enable → Settings → Secrets and variables → Actions → New repository secret**. Name it `VERCEL_TOKEN` and paste the token.
-3. To test it, open **Actions → Daily publish → Run workflow**.
+3. To test it, open **Actions → Weekly publish → Run workflow**.
 
 Until the secret is added, the workflow fails with a clear message and nothing else changes. Posts can still be released by running `npx vercel deploy --prod` on their date.
 
@@ -274,7 +275,7 @@ Search the project for `PLACEHOLDER`, `YOUR_` and `[` to find them all.
 
 **Content**
 
-- [ ] Add the `VERCEL_TOKEN` GitHub secret so scheduled blog posts publish daily (README → Blog)
+- [ ] Add the `VERCEL_TOKEN` GitHub secret so scheduled blog posts publish every Monday (README → Blog)
 - [ ] `src/pages/privacy.astro` and `src/pages/terms.astro`: **have them reviewed by a lawyer**, then fill in `[Date]`, provider names, retention period, grievance officer and jurisdiction, and remove the "for legal review" notice in `src/layouts/LegalLayout.astro`
 
 **Hosting**

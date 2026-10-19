@@ -1,0 +1,50 @@
+---
+/**
+ * Numbered step / signal flow. Use inside <Figure>:
+ *   <Steps label="…" title="The five readiness signals" outcome="A bigger mandate"
+ *     steps={[{ icon: 'users', title: '…', body: '…' }, …]} />
+ */
+import Icon from '../../Icon.astro';
+interface Props {
+  title?: string;
+  outcome?: string;
+  label: string;
+  steps: { icon: string; title: string; body?: string }[];
+}
+const { title, outcome, label, steps } = Astro.props;
+const cols = { 3: 'sm:grid-cols-3', 4: 'sm:grid-cols-4', 5: 'sm:grid-cols-5', 6: 'sm:grid-cols-6' }[steps.length] ?? 'sm:grid-cols-4';
+---
+
+<div class="p-5 md:p-8" role="img" aria-label={label}>
+  {title && <p class="text-center text-xs font-bold tracking-widest text-slate uppercase">{title}</p>}
+  <ol class:list={['relative mt-6 grid gap-3 sm:gap-2', cols]}>
+    <li aria-hidden="true" class="absolute top-7 right-[10%] left-[10%] hidden h-0.5 bg-line sm:block"></li>
+    {
+      steps.map((s, i) => (
+        <li class="relative flex items-center gap-4 rounded-xl bg-white p-3 sm:flex-col sm:bg-transparent sm:p-0 sm:text-center">
+          <span class="relative z-10 inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-2 border-teal bg-white text-teal">
+            <Icon name={s.icon} size={24} />
+            <span class="absolute -top-1 -right-1 inline-flex h-5 w-5 items-center justify-center rounded-full bg-saffron font-heading text-[0.7rem] font-extrabold text-navy">
+              {i + 1}
+            </span>
+          </span>
+          <span>
+            <span class="block font-heading text-[0.95rem] leading-snug font-bold text-navy">{s.title}</span>
+            {s.body && <span class="mt-0.5 block text-sm leading-snug text-slate">{s.body}</span>}
+          </span>
+        </li>
+      ))
+    }
+  </ol>
+  {
+    outcome && (
+      <div class="mt-6 flex items-center justify-center gap-3">
+        <span class="h-px flex-1 bg-line" />
+        <span class="inline-flex items-center gap-2 rounded-full bg-navy px-4 py-2 font-heading text-sm font-bold text-white">
+          <span class="h-2.5 w-2.5 rounded-full bg-saffron" /> {outcome}
+        </span>
+        <span class="h-px flex-1 bg-line" />
+      </div>
+    )
+  }
+</div>
