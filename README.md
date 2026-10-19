@@ -39,6 +39,14 @@ npm run preview
 5. In hPanel → **Security → SSL**, make sure the free SSL certificate is active. `.htaccess` forces HTTPS.
 6. Visit https://gccenable.com and check a few pages, plus a made-up URL to see the custom 404 page.
 
+### Alternative: Vercel (current live hosting)
+
+The site is also deployed on Vercel as the project `gcc-enable` (https://gcc-enable.vercel.app). `vercel.json` sets headers, caching and trailing slashes there; `.htaccess` and `contact.php` are ignored on Vercel, so keep `formHandler: 'web3forms'`.
+
+- Deploy: `npx vercel deploy --prod` (or connect the GitHub repo in the Vercel dashboard for automatic deploys on push)
+- Domains: `gccenable.com` is the primary domain; `www.gccenable.com`, `gccenable.in` and `www.gccenable.in` 301-redirect to it (configured in Vercel → Project → Settings → Domains)
+- DNS (at the domain's DNS provider): `A @ 216.198.79.1` and `A @ 64.29.17.1` for each apex domain (or the single `76.76.21.21`), and `CNAME www cname.vercel-dns.com.`
+
 ### `.htaccess`
 
 `public/.htaccess` is copied into `dist/` on every build. It:
