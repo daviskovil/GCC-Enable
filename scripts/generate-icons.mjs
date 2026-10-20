@@ -119,7 +119,7 @@ if (existsSync(src)) {
 
   const logoOg = await sharp(white).resize({ height: 150 }).png().toBuffer();
   const tagline = await text('Helping GCCs win their next mandate.', 54, 'ExtraBold', '#FFFFFF');
-  const sub = await text('Built for GCCs. Only GCCs.  ·  Training and workshops, Pune', 30, 'SemiBold', '#F5A623');
+  const sub = await text('Training for India’s Global Capability Centres  ·  Pune', 30, 'SemiBold', '#F5A623');
   const domain = await text('gccenable.com', 28, 'SemiBold', '#FFFFFF');
 
   const bg = Buffer.from(`

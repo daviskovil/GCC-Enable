@@ -28,29 +28,29 @@ export const stats = [
     value: 2100,
     suffix: '+',
     decimals: 0,
-    label: 'GCCs in India, employing 2.36 million people',
+    label: 'Global Capability Centres (GCCs) in India, employing 2.36 million people',
     source: 'nasscom–Zinnov India GCC Landscape Report 2026',
   },
 ];
 
 export const puneStat = {
   value: '270+',
-  label: 'GCCs are based in Pune',
+  label: 'Global Capability Centres (GCCs) are based in Pune',
   source: 'KPMG–AmCham, Jun 2026',
 };
 
 export const home = {
   hero: {
-    tag: 'Training and workshops for India’s GCCs',
+    tag: 'Training for India’s Global Capability Centres',
     title: 'Helping GCCs win their next mandate.',
     subtitle:
-      'Practical training and workshops that build the leaders, managers and AI-ready teams your centre needs to take on bigger global responsibilities.',
-    trust: 'Built for GCCs. Only GCCs. · Based in Pune',
+      'Practical training and workshops that build the leaders, managers and AI-ready teams India’s Global Capability Centres (GCCs) need to take on bigger global responsibilities.',
+    trust: 'Only Global Capability Centres in India · Based in Pune',
   },
   problem: {
     title: 'Your mandate is growing. Is your talent model keeping up?',
     body: [
-      'India’s GCCs are no longer cost centres. HQ is handing over products, platforms and decisions, and expects the centre to lead on AI rather than follow.',
+      'India’s Global Capability Centres (GCCs) are no longer cost centres. HQ is handing over products, platforms and decisions, and expects the centre to lead on AI rather than follow.',
       'That raises the bar for everyone. Leaders need a clear view of AI. Managers need to own outcomes without escalating. New joiners need to perform in months, not quarters. Generic training catalogues were not built for any of this.',
     ],
     pains: [
@@ -99,7 +99,7 @@ export const home = {
   },
   formatsTitle: 'Formats that fit how your centre works',
   insightsTitle: 'From the GCC Enable channel',
-  insightsIntro: 'Short, practical conversations on running and growing a GCC in India.',
+  insightsIntro: 'Short, practical conversations on running and growing a Global Capability Centre (GCC) in India.',
   faqTitle: 'Frequently asked questions',
 };
 
@@ -184,7 +184,7 @@ export const formats = [
 
 export const faqs = [
   {
-    q: 'Do you only work with GCCs?',
+    q: 'Do you only work with Global Capability Centres (GCCs)?',
     a: 'Yes. We work only with Global Capability Centres in India. That focus lets us design for captive-centre realities such as HQ relationships, mandate transfers and the services-to-captive shift, rather than adapting a generic catalogue.',
   },
   {
@@ -218,7 +218,7 @@ export const about = {
     'GCC Enable exists to close that gap. We start in Pune, home to more than 270 GCCs, and work with centres across India.',
   ],
   mission:
-    'Our mission is to help India’s GCCs build the capability to win, and keep, bigger global mandates.',
+    'Our mission is to help India’s Global Capability Centres build the capability to win, and keep, bigger global mandates.',
   founder: {
     name: 'Davis Rajan',
     role: 'Founder, GCC Enable',

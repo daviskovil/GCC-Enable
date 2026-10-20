@@ -14,7 +14,7 @@ export interface SeoProps {
 const { title, description = site.description, image = '/og-image.png', type = 'website', noindex = false, jsonLd = [] } =
   Astro.props as SeoProps;
 
-const fullTitle = title ? `${title} | ${site.name}` : `${site.name} | ${site.tagline.replace(/\.$/, '')}`;
+const fullTitle = title ? `${title} | ${site.name}` : `${site.name} | Training for Global Capability Centres in India`;
 const canonical = new URL(Astro.url.pathname, site.url).href;
 const ogImage = new URL(image, site.url).href;
 const sameAs = Object.values(site.social).filter(Boolean);
@@ -38,6 +38,7 @@ const baseLd = [
       addressCountry: 'IN',
     },
     areaServed: 'IN',
+    knowsAbout: ['Global Capability Centres (GCCs) in India', 'GCC leadership development', 'AI upskilling for GCCs', 'GCC onboarding'],
     founder: {
       '@type': 'Person',
       name: about.founder.name,

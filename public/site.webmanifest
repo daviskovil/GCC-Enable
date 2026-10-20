@@ -1,7 +1,7 @@
 {
   "name": "GCC Enable",
   "short_name": "GCC Enable",
-  "description": "Training and workshops built only for India's GCCs.",
+  "description": "Training and workshops built only for India's Global Capability Centres (GCCs).",
   "start_url": "/",
   "display": "browser",
   "background_color": "#FFFFFF",

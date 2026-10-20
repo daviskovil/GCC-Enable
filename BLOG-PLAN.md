@@ -39,3 +39,4 @@ Topic areas with no post yet come first.
 - **Length:** 850+ words of body copy (run `python scripts/word-count.py`), short paragraphs, 4–6 `##` sections separated by `---` dividers.
 - **Required pieces:** banner (add the slug to `scripts/make-banners.mjs`, then run `node scripts/make-banners.mjs <slug>`), `<KeyTakeaways>` near the top, at least one `<Figure>` diagram (`Steps`, `Compare` or `Timeline`), one mid-article `<Cta programme="…" />` and a closing `<Cta />`.
 - **Spelling:** Indian English (programme, organisation, centre).
+- **Say what GCC means:** "GCC" is also the Gulf Cooperation Council. In the `description` and at the first mention in the body, write **Global Capability Centres (GCCs)**, ideally with "India" nearby. Plain "GCC" is fine after that.
