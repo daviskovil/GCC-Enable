@@ -117,7 +117,7 @@ const lastIndex = mainNav.length - 1;
     </nav>
 
     <div class="flex items-center gap-3">
-      <a href="/contact/" class="btn btn-primary hidden sm:inline-flex">Book a discovery call</a>
+      <a href={site.bookingPage} class="btn btn-primary hidden sm:inline-flex">Book a discovery call</a>
       <button
         type="button"
         class="inline-flex h-11 w-11 items-center justify-center rounded-lg text-navy hover:bg-mist lg:hidden"
@@ -211,7 +211,7 @@ const lastIndex = mainNav.length - 1;
         </ul>
       </nav>
       <div class="border-t border-line p-4 sm:p-6">
-        <a href="/contact/" class="btn btn-primary w-full">Book a discovery call</a>
+        <a href={site.bookingPage} class="btn btn-primary w-full">Book a discovery call</a>
         <a href={`mailto:${site.email}`} class="mt-4 flex items-center justify-center gap-2 text-sm font-semibold text-navy">
           <Icon name="mail" size={16} class="text-teal" />{site.email}
         </a>

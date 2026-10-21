@@ -178,6 +178,12 @@ Until the secret is added, the workflow fails with a clear message and nothing e
 
 ---
 
+## Booking discovery calls (Calendly)
+
+Every "Book a discovery call" button goes to **/book-a-call/**, which embeds the Calendly scheduler (`bookingUrl` in `src/config/site.ts`, currently `https://calendly.com/davis-rajan-gccenable/30min`). Calendly is connected to the Microsoft 365 calendar of davis.rajan@gccenable.com and adds a Microsoft Teams link to each booking. To change the event, availability or questions, edit them in Calendly; if the link changes, update `bookingUrl` and redeploy. The Contact page stays for written enquiries.
+
+---
+
 ## 5. Forms
 
 ### Contact and newsletter forms: Web3Forms (default)
@@ -262,7 +268,6 @@ Search the project for `PLACEHOLDER`, `YOUR_` and `[` to find them all.
 - [ ] `youtubeChannelUrl`
 - [ ] `videos`: replace the three `PLACEHOLDER-*` IDs once episodes are live
 - [ ] `newsletterEmbed`: replace `PLACEHOLDER_NEWSLETTER_FORM_ACTION_URL`, or leave it and receive signups by email
-- [ ] `bookingUrl`: add a Calendly or Cal.com link to show the calendar button on Contact
 - [ ] `ga4Id`: add if you want analytics
 
 **`src/data/content.ts`**

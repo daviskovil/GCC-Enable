@@ -8,6 +8,7 @@ import AudienceCard from '../../components/AudienceCard.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { audiences, type Audience } from '../../data/audiences';
 import { getProgramme, type Programme } from '../../data/programmes';
+import { site } from '../../config/site';
 
 export function getStaticPaths() {
   return audiences.map((a) => ({ params: { slug: a.slug }, props: { audience: a } }));
@@ -28,7 +29,7 @@ const others = audiences.filter((x) => x.slug !== a.slug);
           <h1 class="mt-6 text-4xl font-extrabold md:text-5xl">{a.title}</h1>
           <p class="mt-5 max-w-2xl text-lg text-slate md:text-xl">{a.intro}</p>
           <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a href="/contact/" class="btn btn-primary">Book a discovery call <Icon name="arrow-right" size={18} /></a>
+            <a href={site.bookingPage} class="btn btn-primary">Book a discovery call <Icon name="arrow-right" size={18} /></a>
             <a href="#programmes" class="btn btn-outline">Recommended programmes</a>
           </div>
         </div>

@@ -7,3 +7,7 @@ dist/
 .vercel
 
 .vercel
+
+# Personal content kept out of the website repo
+YouTube/
+Claude outputs/

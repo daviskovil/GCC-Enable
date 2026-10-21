@@ -89,7 +89,7 @@ import { site } from '../config/site';
           }
         </ul>
         <div class="mt-8 flex flex-wrap items-center gap-4">
-          <a href="/contact/" class="btn btn-primary">Talk to {about.founder.name.split(' ')[0]} <Icon name="arrow-right" size={18} /></a>
+          <a href={site.bookingPage} class="btn btn-primary">Talk to {about.founder.name.split(' ')[0]} <Icon name="arrow-right" size={18} /></a>
           {
             about.founder.linkedin && (
               <a href={about.founder.linkedin} class="link-arrow" target="_blank" rel="noopener noreferrer">

@@ -66,7 +66,8 @@ export const mainNav: NavGroup[] = visible<NavGroup>([
         show: site.showFacultySection,
       },
       { label: 'Careers / Join as faculty', href: '/careers/', description: 'Work with us or teach with us.', icon: 'briefcase-business' },
-      { label: 'Contact', href: '/contact/', description: 'Book a discovery call or send a note.', icon: 'send' },
+      { label: 'Book a discovery call', href: site.bookingPage, description: 'Pick a 30-minute slot that suits you.', icon: 'calendar-check' },
+      { label: 'Contact', href: '/contact/', description: 'Send us a note or an enquiry.', icon: 'send' },
     ]),
   },
 ]);

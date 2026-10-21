@@ -7,6 +7,7 @@
  */
 import Icon from '../Icon.astro';
 import { getProgramme } from '../../data/programmes';
+import { site } from '../../config/site';
 
 interface Props {
   kind?: 'call' | 'programme' | 'newsletter';
@@ -23,7 +24,7 @@ const content = {
     eyebrow: 'Talk to us',
     title: title ?? 'Want to discuss this for your centre?',
     text: text ?? 'Book a 30-minute discovery call. We will tell you honestly where we can help and where we cannot.',
-    href: '/contact/',
+    href: site.bookingPage,
     label: 'Book a discovery call',
     icon: 'calendar-check',
   },

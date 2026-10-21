@@ -1,0 +1,141 @@
+---
+/** Discovery call booking page: brand panel on the left, embedded Calendly scheduler on the right. */
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import Logo from '../components/Logo.astro';
+import { site } from '../config/site';
+import { about } from '../data/content';
+import founderPhoto from '../assets/images/founder.jpg';
+
+const embedUrl = (() => {
+  const u = new URL(site.bookingUrl);
+  u.searchParams.set('hide_event_type_details', '1');
+  u.searchParams.set('hide_gdpr_banner', '1');
+  u.searchParams.set('primary_color', '0f2a4a');
+  return u.toString();
+})();
+
+const points = [
+  { icon: 'clock', text: '30 minutes' },
+  { icon: 'video', text: 'Microsoft Teams (link in your confirmation email)' },
+  { icon: 'globe', text: 'Times shown in your own time zone' },
+];
+
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  name: 'Book a discovery call',
+  url: new URL(site.bookingPage, site.url).href,
+  potentialAction: { '@type': 'ScheduleAction', target: site.bookingUrl },
+};
+---
+
+<BaseLayout
+  title="Book a discovery call"
+  description="Book a 30-minute discovery call with GCC Enable on Microsoft Teams. Pick a time that suits you to talk about your Global Capability Centre (GCC)."
+  jsonLd={[ld]}
+>
+  <section class="border-b border-line bg-mist">
+    <div class="container-site py-10 text-center md:py-14">
+      <h1 class="text-4xl font-extrabold md:text-5xl">Book a discovery call</h1>
+      <p class="mx-auto mt-4 max-w-2xl text-lg text-slate">
+        A 30-minute conversation on whatever you’d like to discuss: a programme, a challenge in your Global Capability
+        Centre, a partnership, or just an introduction.
+      </p>
+    </div>
+  </section>
+
+  <section class="container-site py-10 md:py-14" aria-label="Choose a time">
+    <div class="mx-auto grid max-w-5xl overflow-hidden rounded-[18px] border border-line bg-white shadow-card lg:grid-cols-[minmax(0,340px)_1fr]">
+      <!-- Brand panel -->
+      <aside class="order-2 border-t border-line p-7 md:p-9 lg:order-1 lg:border-t-0 lg:border-r" aria-label="About this call">
+        <Logo />
+        <h2 class="mt-8 text-2xl font-extrabold">Discovery call</h2>
+        <ul class="mt-5 space-y-3">
+          {
+            points.map((p) => (
+              <li class="flex gap-3 text-ink">
+                <Icon name={p.icon} size={20} class="mt-0.5 shrink-0 text-teal" />
+                <span>{p.text}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="mt-6 text-slate">
+          Tell us a little about yourself when you book, and we’ll come prepared. No sales pitch, no obligation.
+        </p>
+
+        <div class="mt-8 flex items-center gap-4 border-t border-line pt-6">
+          <Image
+            src={founderPhoto}
+            alt={about.founder.name}
+            width={56}
+            height={56}
+            widths={[56, 112]}
+            sizes="56px"
+            class="h-14 w-14 shrink-0 rounded-full border border-line object-cover"
+          />
+          <div>
+            <p class="font-heading font-bold text-navy">{about.founder.name}</p>
+            <p class="text-sm text-slate">{about.founder.role}</p>
+          </div>
+        </div>
+
+        <p class="mt-8 text-sm text-slate">
+          Prefer to write instead? <a href="/contact/" class="link">Send us a note</a> or email
+          <a href={`mailto:${site.email}`} class="link">{site.email}</a>.
+        </p>
+      </aside>
+
+      <!-- Scheduler -->
+      <div class="relative order-1 min-h-[700px] bg-white lg:order-2">
+        <div
+          class="calendly-inline-widget h-[700px] w-full min-w-[300px] md:h-[720px]"
+          data-url={embedUrl}
+          data-booking-widget
+        >
+        </div>
+        <div class="absolute inset-0 flex flex-col items-center justify-center gap-4 p-8 text-center" data-booking-loading>
+          <span class="inline-flex h-12 w-12 animate-spin items-center justify-center rounded-full border-4 border-line border-t-teal" aria-hidden="true"></span>
+          <p class="text-slate">Loading the calendar…</p>
+          <a href={site.bookingUrl} target="_blank" rel="noopener noreferrer" class="link text-sm">Or open the calendar in a new tab</a>
+        </div>
+        <noscript>
+          <div class="absolute inset-0 flex items-center justify-center bg-white p-8 text-center">
+            <a href={site.bookingUrl} class="btn btn-primary">Open the booking calendar</a>
+          </div>
+        </noscript>
+      </div>
+    </div>
+
+    <p class="mx-auto mt-6 max-w-5xl text-center text-sm text-slate">
+      Calendar not showing? <a href={site.bookingUrl} target="_blank" rel="noopener noreferrer" class="link">Open it on Calendly</a>.
+    </p>
+  </section>
+</BaseLayout>
+
+<script>
+  // Load Calendly's widget script only on this page, and hide the loading state once the calendar is in.
+  const widget = document.querySelector<HTMLElement>('[data-booking-widget]');
+  const loading = document.querySelector<HTMLElement>('[data-booking-loading]');
+  if (widget) {
+    const script = document.createElement('script');
+    script.src = 'https://assets.calendly.com/assets/external/widget.js';
+    script.async = true;
+    document.head.appendChild(script);
+
+    const hideLoading = () => loading?.remove();
+    new MutationObserver((_, obs) => {
+      const frame = widget.querySelector('iframe');
+      if (frame) {
+        frame.addEventListener('load', hideLoading, { once: true });
+        window.setTimeout(hideLoading, 4000);
+        obs.disconnect();
+      }
+    }).observe(widget, { childList: true, subtree: true });
+    script.addEventListener('error', () => {
+      if (loading) loading.querySelector('p')!.textContent = 'The calendar could not load here.';
+    });
+  }
+</script>

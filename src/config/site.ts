@@ -71,7 +71,9 @@ export const site = {
   ] as Video[],
 
   /** Calendar booking link (Calendly, Cal.com, Google Calendar). Leave empty to hide the button. */
-  bookingUrl: '',
+  bookingUrl: 'https://calendly.com/davis-rajan-gccenable/30min',
+  /** On-site page that embeds the booking calendar; every "Book a discovery call" button links here */
+  bookingPage: '/book-a-call/',
 
   /** Contact form handler: 'web3forms' (default) or 'php' (uses public/contact.php on Hostinger). */
   formHandler: 'web3forms' as 'web3forms' | 'php',
